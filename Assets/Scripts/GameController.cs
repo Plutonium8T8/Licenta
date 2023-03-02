@@ -8,13 +8,27 @@ public class GameController : MonoBehaviour
 {
     [SerializeField] private CameraController _camera;
 
+    [SerializeField] private float _edgeSize = 10f;
+
+    private float _zoom = 12f;
+
+    private float _zoomSpeed = 100f;
+
+    private float _cameraMoveAmount = 10f;
+
+    private float _mapHeight = 50f;
+
+    private float _mapWidth = 50f;
+
+    private Vector3 cameraPosition = new Vector3(0, 0);
+
     private Vector2 _startPosition;
 
     private List<Unit> selectedEntitiesList;
 
     private void Start()
     {
-        _camera.Setup(() => new Vector3(2,2));
+        _camera.Setup(() => cameraPosition, () => _zoom);
     }
     private void Awake()
     {
@@ -22,12 +36,68 @@ public class GameController : MonoBehaviour
     }
     private void Update()
     {
-        if (Input.GetMouseButtonDown(0)) // GetMouseButtonDown(LeftClick)
+        // Camera WASD movement
+        if (Input.GetKey(KeyCode.W) && cameraPosition.y <= _mapHeight)
+        {
+            cameraPosition.y += _cameraMoveAmount * Time.deltaTime;
+        }
+        if (Input.GetKey(KeyCode.A) && cameraPosition.x >= -_mapWidth)
+        {
+            cameraPosition.x -= _cameraMoveAmount * Time.deltaTime;
+        }
+        if (Input.GetKey(KeyCode.S) && cameraPosition.y >= -_mapHeight)
+        {
+            cameraPosition.y -= _cameraMoveAmount * Time.deltaTime;
+        }
+        if (Input.GetKey(KeyCode.D) && cameraPosition.x <= _mapWidth)
+        {
+            cameraPosition.x += _cameraMoveAmount * Time.deltaTime;
+        }
+
+        // Mouse-edge camera movement
+
+        if (Input.mouseScrollDelta.y > 0)
+        {
+            _zoom -= _zoomSpeed * Time.deltaTime;
+        }
+        if (Input.mouseScrollDelta.y < 0)
+        {
+            _zoom += _zoomSpeed * Time.deltaTime;
+        }
+
+        _zoom = Mathf.Clamp(_zoom, 3f, 25f);
+
+        // Right edge
+        if (Input.mousePosition.x > Screen.width - _edgeSize)
+        {
+            cameraPosition.x += _cameraMoveAmount * Time.deltaTime;
+        }
+        // Left edge
+        if (Input.mousePosition.x < _edgeSize)
+        {
+            cameraPosition.x -= _cameraMoveAmount * Time.deltaTime;
+        }
+        // Top edge
+        if (Input.mousePosition.y > Screen.height - _edgeSize)
+        {
+            cameraPosition.y += _cameraMoveAmount * Time.deltaTime;
+        }
+        // Bottom edge
+        if (Input.mousePosition.y < _edgeSize)
+        {
+            cameraPosition.y -= _cameraMoveAmount * Time.deltaTime;
+        }
+
+        // LeftClick
+
+        if (Input.GetMouseButtonDown(0)) 
         {
             _startPosition = UtilsClass.GetMouseWorldPosition();
         }
 
-        if (Input.GetMouseButtonUp(0)) // GetMouseButtonUp(LeftClick)
+        // LeftClick + LeftShift
+
+        if (Input.GetMouseButtonUp(0))
         {
             Collider2D[] collider2DArray = Physics2D.OverlapAreaAll(_startPosition, UtilsClass.GetMouseWorldPosition());
 
@@ -49,6 +119,8 @@ public class GameController : MonoBehaviour
                 }
             }
         }
+
+        // RightClick
 
         if (Input.GetMouseButtonDown(1))
         {

@@ -521,6 +521,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -4675121800400306068, guid: cf47e543752f15a43b4d9439c229b35a, type: 3}
+      propertyPath: cameraZoomSpeed
+      value: 20
+      objectReference: {fileID: 0}
     - target: {fileID: 1467992771528227649, guid: cf47e543752f15a43b4d9439c229b35a, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -578,16 +582,12 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1467992771528227774, guid: cf47e543752f15a43b4d9439c229b35a, type: 3}
+      propertyPath: orthographic size
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 1467992771528227774, guid: cf47e543752f15a43b4d9439c229b35a, type: 3}
       propertyPath: m_CullingMask.m_Bits
       value: 2147483647
-      objectReference: {fileID: 0}
-    - target: {fileID: 0}
-      propertyPath: cameraSpeed
-      value: 0.00000001
-      objectReference: {fileID: 0}
-    - target: {fileID: 0}
-      propertyPath: cameraMovementRatio
-      value: 0.00000001
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cf47e543752f15a43b4d9439c229b35a, type: 3}
