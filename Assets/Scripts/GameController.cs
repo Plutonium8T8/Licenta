@@ -8,13 +8,13 @@ public class GameController : MonoBehaviour
 {
     // [SerializeField] private Transform selectionAreaTransform;
 
-    private Vector2 startPosition;
+    private Vector2 _startPosition;
 
-    private List<Unit> selectedEntitiesList;
+    private List<Unit> _selectedEntitiesList;
 
     private void Awake()
     {
-        selectedEntitiesList = new List<Unit>();
+        _selectedEntitiesList = new List<Unit>();
 
         // selectionAreaTransform.gameObject.SetActive(false);
     }
@@ -25,12 +25,12 @@ public class GameController : MonoBehaviour
             Vector2 currentMousePosition = UtilsClass.GetMouseWorldPosition();
 
             Vector2 lowerLeft = new Vector2(
-                Mathf.Min(startPosition.x, currentMousePosition.x),
-                Mathf.Min(startPosition.y, currentMousePosition.y)
+                Mathf.Min(_startPosition.x, currentMousePosition.x),
+                Mathf.Min(_startPosition.y, currentMousePosition.y)
                 );
             Vector2 upperRight = new Vector2(
-                Mathf.Max(startPosition.x, currentMousePosition.x),
-                Mathf.Max(startPosition.y, currentMousePosition.y)
+                Mathf.Max(_startPosition.x, currentMousePosition.x),
+                Mathf.Max(_startPosition.y, currentMousePosition.y)
                 );
 
             // selectionAreaTransform.position = lowerLeft;
@@ -42,21 +42,21 @@ public class GameController : MonoBehaviour
         {
             // selectionAreaTransform.gameObject.SetActive(true);
 
-            startPosition = UtilsClass.GetMouseWorldPosition();
+            _startPosition = UtilsClass.GetMouseWorldPosition();
         }
 
         if (Input.GetMouseButtonUp(0)) // GetMouseButtonUp(LeftClick)
         {
             // selectionAreaTransform.gameObject.SetActive(false);
 
-            Collider2D[] collider2DArray = Physics2D.OverlapAreaAll(startPosition, UtilsClass.GetMouseWorldPosition());
+            Collider2D[] collider2DArray = Physics2D.OverlapAreaAll(_startPosition, UtilsClass.GetMouseWorldPosition());
 
-            foreach (Unit unit in selectedEntitiesList)
+            foreach (Unit unit in _selectedEntitiesList)
             {
                 unit.SetSelectedVisible(false);
             }
 
-            selectedEntitiesList.Clear();
+            _selectedEntitiesList.Clear();
 
             foreach (Collider2D collider2D in collider2DArray)
             {
@@ -65,20 +65,21 @@ public class GameController : MonoBehaviour
                 if (unit != null)
                 {
                     unit.SetSelectedVisible(true);
-                    selectedEntitiesList.Add(unit);
+                    _selectedEntitiesList.Add(unit);
                 }
             }
         }
 
         if (Input.GetMouseButtonDown(1))
         {
-            foreach (Unit unit in selectedEntitiesList)
+            Debug.Log(!Input.GetKey(KeyCode.LeftShift));
+            foreach (Unit unit in _selectedEntitiesList)
             {
                 if (!Input.GetKey(KeyCode.LeftShift))
                 {
-                    unit.movement.Clear();
+                    unit.ClearMovement();
                 }
-                unit.movement.Add(UtilsClass.GetMouseWorldPosition());
+                unit.AddMovement(UtilsClass.GetMouseWorldPosition());
             }
         }
     }
