@@ -8,6 +8,8 @@ public class GameController : MonoBehaviour
 {
     // [SerializeField] private Transform selectionAreaTransform;
 
+    // [SerializeField] public CameraController cameraController;
+
     private Vector2 _startPosition;
 
     private List<Unit> _selectedEntitiesList;
