@@ -9,11 +9,7 @@ public class Unit : MonoBehaviour
 {
     private GameObject selectedGameObject;
 
-    public Rigidbody2D rigidBody;
-
-    private int pathFindingTimer = 0;
-
-    private int elapsedTime = 0;    
+    public Rigidbody2D rigidBody;  
 
     public float moveSpeed = 0.1f;
 
@@ -35,41 +31,10 @@ public class Unit : MonoBehaviour
         {
             if (rigidBody.position != movement.ElementAt(0))
             {
-                /*Vector2 previousPosition;
-
-                if (elapsedTime % 100 == 0) 
-                { 
-                    previousPosition = rigidBody.position; Vector2 deltaPreviousPosition = rigidBody.position - previousPosition;
-
-                    *//*                Debug.Log("Delta: " + deltaPreviousPosition);
-                                    Debug.Log("Delta x: " + deltaPreviousPosition.x);
-                                    Debug.Log("Delta y: " + deltaPreviousPosition.y);*//*
-
-                    Debug.Log("1: " + rigidBody.position);
-                    Debug.Log("2: " + previousPosition);
-
-                    if (Mathf.Abs(deltaPreviousPosition.x) == 0 && Mathf.Abs(deltaPreviousPosition.y) == 0)
-                    {
-                        pathFindingTimer++;
-                    }
-                }*/
-   
-
                 rigidBody.transform.position = Vector2.MoveTowards(rigidBody.position, movement[0], moveSpeed);
-
-                
-
-                if (pathFindingTimer > 100)
-                {
-                    pathFindingTimer = 0;
-                    movement.Remove(movement.ElementAt(0));
-                }
-
-                elapsedTime++;
             }
             else
             {
-                pathFindingTimer = 0;
                 movement.Remove(movement.ElementAt(0));
             }
         }
