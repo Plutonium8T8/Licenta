@@ -6,10 +6,16 @@ using Utils;
 
 public class GameController : MonoBehaviour
 {
+    [SerializeField] private CameraController _camera;
+
     private Vector2 _startPosition;
 
     private List<Unit> selectedEntitiesList;
 
+    private void Start()
+    {
+        _camera.Setup(() => new Vector3(2,2));
+    }
     private void Awake()
     {
         selectedEntitiesList = new List<Unit>();
