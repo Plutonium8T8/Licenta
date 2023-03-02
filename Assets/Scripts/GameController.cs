@@ -12,16 +12,17 @@ public class GameController : MonoBehaviour
 
     private Vector2 _startPosition;
 
-    private List<Unit> _selectedEntitiesList;
+    private List<Unit> selectedEntitiesList;
 
     private void Awake()
     {
-        _selectedEntitiesList = new List<Unit>();
+        selectedEntitiesList = new List<Unit>();
 
         // selectionAreaTransform.gameObject.SetActive(false);
     }
     private void Update()
     {
+        Debug.Log(1);
         if (Input.GetMouseButton(0))
         {
             Vector2 currentMousePosition = UtilsClass.GetMouseWorldPosition();
@@ -53,12 +54,12 @@ public class GameController : MonoBehaviour
 
             Collider2D[] collider2DArray = Physics2D.OverlapAreaAll(_startPosition, UtilsClass.GetMouseWorldPosition());
 
-            foreach (Unit unit in _selectedEntitiesList)
+            foreach (Unit unit in selectedEntitiesList)
             {
                 unit.SetSelectedVisible(false);
             }
 
-            _selectedEntitiesList.Clear();
+            selectedEntitiesList.Clear();
 
             foreach (Collider2D collider2D in collider2DArray)
             {
@@ -67,21 +68,20 @@ public class GameController : MonoBehaviour
                 if (unit != null)
                 {
                     unit.SetSelectedVisible(true);
-                    _selectedEntitiesList.Add(unit);
+                    selectedEntitiesList.Add(unit);
                 }
             }
         }
 
         if (Input.GetMouseButtonDown(1))
         {
-            Debug.Log(!Input.GetKey(KeyCode.LeftShift));
-            foreach (Unit unit in _selectedEntitiesList)
+            foreach (Unit unit in selectedEntitiesList)
             {
                 if (!Input.GetKey(KeyCode.LeftShift))
                 {
-                    unit.ClearMovement();
+                    unit.movement.Clear();
                 }
-                unit.AddMovement(UtilsClass.GetMouseWorldPosition());
+                unit.movement.Add(UtilsClass.GetMouseWorldPosition());
             }
         }
     }

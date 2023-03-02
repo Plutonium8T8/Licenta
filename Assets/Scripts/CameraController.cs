@@ -5,19 +5,15 @@ using System;
 
 public class CameraController : MonoBehaviour
 {
-    private Func<Vector3> GetCameraPositionFunc;
-
-    [SerializeField] private Camera _camera;
-
-    public void Setup(Func<Vector3> GetCameraPositionFunc)
+    // Start is called before the first frame update
+    void Start()
     {
-        this.GetCameraPositionFunc = GetCameraPositionFunc;
+        
     }
 
-    private void Update()
+    // Update is called once per frame
+    void Update()
     {
-        /*Vector3 cameraPosition = new Vector3(2,2);
-        cameraPosition.z = -20;
-        _camera.transform.position = cameraPosition;*/
+        
     }
 }
