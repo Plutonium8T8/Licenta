@@ -6,7 +6,7 @@ using System;
 
 public class HealthSystem
 {
-    private int health;
+    private float health;
 
     private int maxHealth;
 
@@ -18,12 +18,12 @@ public class HealthSystem
         health = maxHealth;
     }
 
-    public int GetHealth()
+    public float GetHealth()
     {
         return health;
     }
 
-    public void Damage(int damageAmount)
+    public void Damage(float damageAmount)
     {
         if (health - damageAmount >= 0)
         {
@@ -42,10 +42,10 @@ public class HealthSystem
 
     public float GetHealthPerent()
     {
-        return (float)health / maxHealth;
+        return health / maxHealth;
     }
 
-    public void Heal(int healAmount)
+    public void Heal(float healAmount)
     {
         if (health + healAmount <= maxHealth)
         {

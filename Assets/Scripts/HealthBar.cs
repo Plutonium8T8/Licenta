@@ -17,12 +17,12 @@ public class HealthBar : MonoBehaviour
         transform.Find("Bar").localScale = new Vector3(healthSystem.GetHealthPerent(), 1);
     }
 
-    public void Heal(int healAmount)
+    public void Heal(float healAmount)
     {
         healthSystem.Heal(healAmount);
     }
 
-    public void Damage(int damageAmount)
+    public void Damage(float damageAmount)
     {
         healthSystem.Damage(damageAmount);
     }

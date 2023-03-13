@@ -144,8 +144,6 @@ public class GameController : MonoBehaviour
                     selectedEntitiesList.Add(unit);
                 }
             }
-
-            Debug.Log(selectedEntitiesList.Count);
         }
 
         // RightClick
