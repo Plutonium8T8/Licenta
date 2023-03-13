@@ -4,7 +4,8 @@ MonoImporter:
   externalObjects: {}
   serializedVersion: 2
   defaultReferences:
-  - rigidBody: {fileID: -6573690345449577923, guid: 57945f454f23a7045b2f53d03fd91ae8, type: 3}
+  - healthBar: {fileID: -6963319146461864331, guid: e09a00a72904d2c4ba0c57eaad21279f, type: 3}
+  - rigidBody: {fileID: 91552504244468656, guid: 57945f454f23a7045b2f53d03fd91ae8, type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

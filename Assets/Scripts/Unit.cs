@@ -1,17 +1,14 @@
 using Mono.Cecil.Cil;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using UnityEngine;
 
-public class Unit : MonoBehaviour
+public class Unit : Entity
 {
     private GameObject selectedGameObject;
-
-    public Rigidbody2D rigidBody;  
-
-    public float moveSpeed = 0.1f;
 
     public List<Vector2> movement = new List<Vector2>();
 
@@ -19,6 +16,15 @@ public class Unit : MonoBehaviour
     {
         selectedGameObject = transform.Find("Selected").gameObject;
         SetSelectedVisible(false);
+    }
+
+    private void Start()
+    {
+        healthBar = transform.GetChild(1).GetComponent<HealthBar>();
+
+        HealthSystem healthSystem = new HealthSystem(100);
+
+        healthBar.Setup(healthSystem);
     }
 
     public void SetSelectedVisible(bool visible)

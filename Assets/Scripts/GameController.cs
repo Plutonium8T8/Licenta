@@ -10,6 +10,8 @@ public class GameController : MonoBehaviour
 
     [SerializeField] private float _edgeSize = 10f;
 
+    [SerializeField] public GameObject entity;
+
     private float _zoom = 12f;
 
     private float _zoomSpeed = 100f;
@@ -34,6 +36,30 @@ public class GameController : MonoBehaviour
     {
         selectedEntitiesList = new List<Unit>();
     }
+
+    private void FixedUpdate()
+    {
+        if (Input.GetKey(KeyCode.L))
+        {
+            foreach (Unit unit in selectedEntitiesList)
+            {
+                unit.healthBar.Heal(1);
+            }
+        }
+
+        if (Input.GetKey(KeyCode.K))
+        {
+            foreach (Unit unit in selectedEntitiesList)
+            {
+                unit.healthBar.Damage(1);
+            }
+        }
+
+        if (Input.GetKey(KeyCode.J))
+        {
+            Instantiate(entity, new Vector3(0, 0, 0), Quaternion.identity);
+        }
+    }
     private void Update()
     {
         // Camera WASD movement
@@ -55,7 +81,7 @@ public class GameController : MonoBehaviour
         }
 
         // Mouse-edge camera movement
-
+ 
         if (Input.mouseScrollDelta.y > 0)
         {
             _zoom -= _zoomSpeed * Time.deltaTime;
@@ -65,7 +91,7 @@ public class GameController : MonoBehaviour
             _zoom += _zoomSpeed * Time.deltaTime;
         }
 
-        _zoom = Mathf.Clamp(_zoom, 3f, 25f);
+        _zoom = Mathf.Clamp(_zoom, 10f, 50f);
 
         // Right edge
         if (Input.mousePosition.x > Screen.width - _edgeSize)
@@ -118,6 +144,8 @@ public class GameController : MonoBehaviour
                     selectedEntitiesList.Add(unit);
                 }
             }
+
+            Debug.Log(selectedEntitiesList.Count);
         }
 
         // RightClick

@@ -91,6 +91,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _camera: {fileID: -4675121800400306068}
+  _edgeSize: 10
+  entity: {fileID: 91552503244315846, guid: 57945f454f23a7045b2f53d03fd91ae8, type: 3}
 --- !u!114 &-4675121800400306068
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -103,6 +105,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33523837ee5057c43a27690d9a2a9837, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cameraZoomSpeed: 50
   cameraMoveSpeed: 20
 --- !u!81 &1467992771528227772
 AudioListener:
