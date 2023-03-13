@@ -18,15 +18,6 @@ public class Unit : Entity
         SetSelectedVisible(false);
     }
 
-    private void Start()
-    {
-        healthBar = transform.GetChild(1).GetComponent<HealthBar>();
-
-        HealthSystem healthSystem = new HealthSystem(100);
-
-        healthBar.Setup(healthSystem);
-    }
-
     public void SetSelectedVisible(bool visible)
     {
         selectedGameObject.SetActive(visible);
