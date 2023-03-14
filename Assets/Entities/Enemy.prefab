@@ -334,7 +334,7 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
-  m_SpriteSortPoint: 0
+  m_SpriteSortPoint: 1
 --- !u!114 &1258744698952391531
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -350,6 +350,7 @@ MonoBehaviour:
   healthBar: {fileID: 0}
   rigidBody: {fileID: 8054825278611296882}
   moveSpeed: 0.1
+  damage: 0
   movement: []
 --- !u!70 &8054825278611296881
 CapsuleCollider2D:
@@ -364,8 +365,8 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.00000105, y: -0.37}
-  m_Size: {x: 0.55, y: 0.25}
+  m_Offset: {x: -0.0000010720377, y: -0.24290226}
+  m_Size: {x: 0.48899406, y: 0.48386088}
   m_Direction: 1
 --- !u!50 &8054825278611296882
 Rigidbody2D:

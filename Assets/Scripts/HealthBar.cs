@@ -14,7 +14,7 @@ public class HealthBar : MonoBehaviour
 
     private void HealthSystem_OnHealthChange1(object sender, System.EventArgs e)
     {
-        transform.Find("Bar").localScale = new Vector3(healthSystem.GetHealthPerent(), 1);
+        transform.Find("Bar").localScale = new Vector3(healthSystem.GetHealthPercent(), 1);
     }
 
     public void Heal(float healAmount)
@@ -25,5 +25,10 @@ public class HealthBar : MonoBehaviour
     public void Damage(float damageAmount)
     {
         healthSystem.Damage(damageAmount);
+    }
+
+    public float GetHealthPercent()
+    {
+        return healthSystem.GetHealthPercent();
     }
 }

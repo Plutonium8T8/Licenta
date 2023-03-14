@@ -410,10 +410,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1122008537, guid: 57945f454f23a7045b2f53d03fd91ae8, type: 3}
-      propertyPath: m_IsTrigger
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 91552503244315846, guid: 57945f454f23a7045b2f53d03fd91ae8, type: 3}
       propertyPath: m_Name
       value: Unit
@@ -471,17 +467,9 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: -4675121800400306068, guid: cf47e543752f15a43b4d9439c229b35a, type: 3}
-      propertyPath: cameraZoomSpeed
-      value: 20
-      objectReference: {fileID: 0}
     - target: {fileID: 1467992771528227649, guid: cf47e543752f15a43b4d9439c229b35a, type: 3}
       propertyPath: m_RootOrder
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1467992771528227649, guid: cf47e543752f15a43b4d9439c229b35a, type: 3}
-      propertyPath: m_LocalScale.z
-      value: -10
       objectReference: {fileID: 0}
     - target: {fileID: 1467992771528227649, guid: cf47e543752f15a43b4d9439c229b35a, type: 3}
       propertyPath: m_LocalPosition.x
@@ -526,18 +514,6 @@ PrefabInstance:
     - target: {fileID: 1467992771528227773, guid: cf47e543752f15a43b4d9439c229b35a, type: 3}
       propertyPath: m_Name
       value: Main Camera
-      objectReference: {fileID: 0}
-    - target: {fileID: 1467992771528227774, guid: cf47e543752f15a43b4d9439c229b35a, type: 3}
-      propertyPath: orthographic
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1467992771528227774, guid: cf47e543752f15a43b4d9439c229b35a, type: 3}
-      propertyPath: orthographic size
-      value: 12
-      objectReference: {fileID: 0}
-    - target: {fileID: 1467992771528227774, guid: cf47e543752f15a43b4d9439c229b35a, type: 3}
-      propertyPath: m_CullingMask.m_Bits
-      value: 2147483647
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cf47e543752f15a43b4d9439c229b35a, type: 3}
@@ -595,14 +571,6 @@ PrefabInstance:
     - target: {fileID: 8054825278611296876, guid: b5dce57501c01014c9b2b3cb407d8470, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8054825278611296881, guid: b5dce57501c01014c9b2b3cb407d8470, type: 3}
-      propertyPath: m_IsTrigger
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8242946836197931024, guid: b5dce57501c01014c9b2b3cb407d8470, type: 3}
-      propertyPath: m_IsTrigger
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b5dce57501c01014c9b2b3cb407d8470, type: 3}

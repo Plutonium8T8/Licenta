@@ -70,10 +70,20 @@ public class Unit : Entity
         {
             Enemy enemy = collider.GetComponent<Enemy>();
 
-            if (enemy != null && damageCollider.Distance(collider).distance < -4.7f)
+            if (enemy != null)
             {
-                healthBar.Damage(enemy.damage * Time.deltaTime);
-                break;
+                if (damageCollider.Distance(collider).distance < -4.5f)
+                {
+                    healthBar.Damage(enemy.damage * Time.deltaTime);
+
+                    if (healthBar.GetHealthPercent() == 0)
+                    {
+                        Destroy(transform.gameObject);
+                    }
+
+                    break;
+                }
+                    
             }
         }
     }

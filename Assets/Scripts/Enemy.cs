@@ -10,9 +10,11 @@ public class Enemy : Entity
 
     private CircleCollider2D aggroCollider;
 
+    private CapsuleCollider2D attackCollider;
+
     public int damage;
 
-    private float attackRange = 0.5f;
+    private float attackRange = -0.000005f;
 
     public List<Vector2> movement = new List<Vector2>();
 
@@ -24,11 +26,13 @@ public class Enemy : Entity
     {
         moveSpeed = 0.05f;
 
-        damage = 1;
+        damage = 10;
 
         startingPosition = transform.position;
 
         aggroCollider = GetComponent<CircleCollider2D>();
+
+        attackCollider = GetComponent<CapsuleCollider2D>();
 
         healthBar = transform.GetChild(0).GetComponent<HealthBar>();
 
@@ -64,7 +68,15 @@ public class Enemy : Entity
                 unitAggroFound = true;
                 moveSpeed = 0.05f;
                 movement.Clear();
-                movement.Add(new Vector3(unit.transform.position.x - attackRange, unit.transform.position.y - attackRange));
+
+                if (!attackCollider.IsTouching(collider))
+                {
+                    movement.Add(new Vector3(unit.transform.position.x, unit.transform.position.y));
+                }
+                else
+                {
+                    movement.Clear();
+                }
                 break;
             }
         }

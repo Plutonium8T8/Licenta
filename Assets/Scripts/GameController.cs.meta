@@ -6,6 +6,7 @@ MonoImporter:
   defaultReferences:
   - _camera: {instanceID: 0}
   - entity: {fileID: 91552503244315846, guid: 57945f454f23a7045b2f53d03fd91ae8, type: 3}
+  - selectionAreaTransform: {fileID: 3021515782766604586, guid: 5a873671cc05cd14c9b6d1647b88575f, type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
