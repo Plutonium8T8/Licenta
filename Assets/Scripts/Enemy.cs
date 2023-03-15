@@ -14,8 +14,6 @@ public class Enemy : Entity
 
     public int damage;
 
-    private float attackRange = -0.000005f;
-
     public List<Vector2> movement = new List<Vector2>();
 
     private List<Collider2D> entities;
@@ -26,15 +24,15 @@ public class Enemy : Entity
     {
         moveSpeed = 0.05f;
 
-        damage = 10;
+        damage = 0;
 
         startingPosition = transform.position;
 
         aggroCollider = GetComponent<CircleCollider2D>();
 
-        attackCollider = GetComponent<CapsuleCollider2D>();
-
         healthBar = transform.GetChild(0).GetComponent<HealthBar>();
+
+        capsuleCollider = GetComponent<CapsuleCollider2D>();
 
         HealthSystem healthSystem = new HealthSystem(100);
 
@@ -51,6 +49,7 @@ public class Enemy : Entity
         entities = new List<Collider2D>();
 
         ContactFilter2D colliderFiler = new ContactFilter2D();
+
         colliderFiler.NoFilter();
 
         entities.Clear();
@@ -65,12 +64,14 @@ public class Enemy : Entity
 
             if (unit != null)
             {
-                unitAggroFound = true;
                 moveSpeed = 0.05f;
+
                 movement.Clear();
 
-                if (!attackCollider.IsTouching(collider))
+                if (entities.Count(x => x.GetComponent<Unit>() == collider.GetComponent<Unit>()) >= 2)
                 {
+                    unitAggroFound = true;
+
                     movement.Add(new Vector3(unit.transform.position.x, unit.transform.position.y));
                 }
                 else
