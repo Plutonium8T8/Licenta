@@ -2,7 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
+using static UnityEngine.UI.CanvasScaler;
 
 public class Enemy : Entity
 {
@@ -10,11 +12,11 @@ public class Enemy : Entity
 
     private CircleCollider2D aggroCollider;
 
-    private CapsuleCollider2D attackCollider;
+    private CapsuleCollider2D enemyCollider;
 
     public int damage;
 
-    public List<Vector2> movement = new List<Vector2>();
+    public List<Action> actions = new List<Action>();
 
     private List<Collider2D> entities;
 
@@ -24,7 +26,7 @@ public class Enemy : Entity
     {
         moveSpeed = 0.05f;
 
-        damage = 0;
+        damage = 5;
 
         startingPosition = transform.position;
 
@@ -32,7 +34,7 @@ public class Enemy : Entity
 
         healthBar = transform.GetChild(0).GetComponent<HealthBar>();
 
-        capsuleCollider = GetComponent<CapsuleCollider2D>();
+        enemyCollider = GetComponent<CapsuleCollider2D>();
 
         HealthSystem healthSystem = new HealthSystem(100);
 
@@ -43,7 +45,20 @@ public class Enemy : Entity
     {
         return startingPosition + Utils.UtilsClass.GetRandomDirection() * Random.Range(1f, 1f);
     }
-
+    void FixedUpdate()
+    {
+        if (actions.Count > 0)
+        {
+            if (rigidBody.position != (Vector2)((Move)actions.ElementAt(0)).GetMovement())
+            {
+                rigidBody.transform.position = Vector2.MoveTowards(rigidBody.position, (Vector2)((Move)actions.ElementAt(0)).GetMovement(), moveSpeed);
+            }
+            else
+            {
+                actions.Remove(actions.ElementAt(0));
+            }
+        }
+    }
     private void Update()
     {
         entities = new List<Collider2D>();
@@ -58,51 +73,58 @@ public class Enemy : Entity
 
         unitAggroFound = false;
 
+        Unit aggroUnit = null;
+
+        float minimalDistance = float.MaxValue;
+
         foreach (Collider2D collider in entities)
         {
             Unit unit = collider.GetComponent<Unit>();
 
             if (unit != null)
             {
-                moveSpeed = 0.05f;
+                Debug.Log(enemyCollider.Distance(unit.GetComponent<CapsuleCollider2D>()).distance);
 
-                movement.Clear();
-
-                if (entities.Count(x => x.GetComponent<Unit>() == collider.GetComponent<Unit>()) >= 2)
+                if (minimalDistance > unit.GetComponent<CapsuleCollider2D>().Distance(enemyCollider).distance)
                 {
-                    unitAggroFound = true;
+                    minimalDistance = unit.GetComponent<CapsuleCollider2D>().Distance(enemyCollider).distance;
 
-                    movement.Add(new Vector3(unit.transform.position.x, unit.transform.position.y));
+                    aggroUnit = unit;
                 }
-                else
-                {
-                    movement.Clear();
-                }
-                break;
+            }
+        }
+
+        if (aggroUnit != null)
+        {
+            moveSpeed = 0.05f;
+
+            actions.Clear();
+
+            if (entities.Count(x => x.GetComponent<Unit>() == aggroUnit) >= 2)
+            {
+                unitAggroFound = true;
+
+                actions.Add(new Move(new Vector3(aggroUnit.transform.position.x, aggroUnit.transform.position.y)));
+            }
+            else
+            {
+                actions.Clear();
+            }
+
+            if (enemyCollider.Distance(aggroUnit.GetComponent<CapsuleCollider2D>()).distance <= 0)
+            {
+                aggroUnit.Damage(damage * Time.deltaTime);
+
+                actions.Remove(actions.ElementAt(0));
             }
         }
 
         if (!unitAggroFound)
         {
             moveSpeed = 0.005f;
-            if (movement.Count == 0)
+            if (actions.Count == 0)
             {
-                movement.Add(GetRoamingPosition());
-            }
-        }
-    }
-
-    void FixedUpdate()
-    {
-        if (movement.Count > 0)
-        {
-            if (rigidBody.position != movement.ElementAt(0))
-            {
-                rigidBody.transform.position = Vector2.MoveTowards(rigidBody.position, movement[0], moveSpeed);
-            }
-            else
-            {
-                movement.Remove(movement.ElementAt(0));
+                actions.Add(new Move(GetRoamingPosition()));
             }
         }
     }

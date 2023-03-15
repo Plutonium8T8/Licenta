@@ -14,7 +14,7 @@ public class Unit : Entity
 
     private List<Collider2D> entities;
 
-    public List<Vector2> movement = new List<Vector2>();
+    public List<Action> actions = new List<Action>();
 
     private void Awake()
     {
@@ -33,28 +33,43 @@ public class Unit : Entity
         damageCollider = GetComponent<CircleCollider2D>();
     }
 
+    public void Damage(float damage)
+    {
+        healthBar.Damage(damage);
+    }
+
+    public void Heal(float heal)
+    {
+        healthBar.Heal(heal);
+    }
+
     public void SetSelectedVisible(bool visible)
     {
         selectedGameObject.SetActive(visible);
     }
     void FixedUpdate()
     {
-        if (movement.Count > 0)
+        if (actions.Count > 0)
         {
-            if (rigidBody.position != movement.ElementAt(0))
+            if (rigidBody.position != (Vector2)((Move)actions.ElementAt(0)).GetMovement())
             {
-                rigidBody.transform.position = Vector2.MoveTowards(rigidBody.position, movement[0], moveSpeed);
+                rigidBody.transform.position = Vector2.MoveTowards(rigidBody.position, (Vector2)((Move)actions.ElementAt(0)).GetMovement(), moveSpeed);
             }
             else
             {
-                movement.Remove(movement.ElementAt(0));
+                actions.Remove(actions.ElementAt(0));
             }
+        }
+
+        if (healthBar.GetHealthPercent() == 0)
+        {
+            Destroy(transform.gameObject);
         }
     }
 
     public void Update()
     {
-        entities = new List<Collider2D>();
+        /*entities = new List<Collider2D>();
 
         ContactFilter2D colliderFiler = new ContactFilter2D();
 
@@ -85,6 +100,6 @@ public class Unit : Entity
                 }
                     
             }
-        }
+        }*/
     }
 }

@@ -190,9 +190,9 @@ public class GameController : MonoBehaviour
                 {
                     if (!Input.GetKey(KeyCode.LeftShift))
                     {
-                        unit.movement.Clear();
+                        unit.actions.Clear();
                     }
-                    unit.movement.Add(UtilsClass.GetMouseWorldPosition());
+                    unit.actions.Add(new Move(UtilsClass.GetMouseWorldPosition()));
                 }
                 
             }
