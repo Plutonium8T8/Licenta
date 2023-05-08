@@ -11,5 +11,12 @@ public class Entity : MonoBehaviour
 
     public Rigidbody2D rigidBody;
 
-    public float moveSpeed = 0.1f;
+    public float moveSpeed = 0.025f;
+    public void Update()
+    {
+        if (healthBar.GetHealthPercent() == 0)
+        {
+            Destroy(transform.gameObject);
+        }
+    }
 }

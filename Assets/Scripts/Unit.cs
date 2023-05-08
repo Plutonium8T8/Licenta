@@ -16,6 +16,10 @@ public class Unit : Entity
 
     public List<Action> actions = new List<Action>();
 
+    private Vector3 prevPos;
+
+    private int count = 0;
+
     private void Awake()
     {
         selectedGameObject = transform.Find("Selected").gameObject;
@@ -31,6 +35,8 @@ public class Unit : Entity
         healthBar.Setup(healthSystem);
 
         damageCollider = GetComponent<CircleCollider2D>();
+
+        prevPos = transform.position;
     }
 
     public void Damage(float damage)
@@ -61,10 +67,22 @@ public class Unit : Entity
             }
         }
 
-        if (healthBar.GetHealthPercent() == 0)
+        if (Vector2.Distance(transform.position, prevPos) <= 0.09f && actions.Count() > 0)
         {
-            Destroy(transform.gameObject);
+            count++;
         }
+        else
+        {
+            count = 0;
+        }
+
+        if (count == 50)
+        {
+            count = 0;
+            actions.Remove(actions.ElementAt(0));
+        }
+
+        prevPos = transform.position;
     }
 
     public void Update()

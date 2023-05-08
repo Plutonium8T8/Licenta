@@ -75,6 +75,8 @@ public class Enemy : Entity
 
         Unit aggroUnit = null;
 
+        Building aggroBuilding = null;
+
         float minimalDistance = float.MaxValue;
 
         foreach (Collider2D collider in entities)
@@ -83,8 +85,6 @@ public class Enemy : Entity
 
             if (unit != null)
             {
-                Debug.Log(enemyCollider.Distance(unit.GetComponent<CapsuleCollider2D>()).distance);
-
                 if (minimalDistance > unit.GetComponent<CapsuleCollider2D>().Distance(enemyCollider).distance)
                 {
                     minimalDistance = unit.GetComponent<CapsuleCollider2D>().Distance(enemyCollider).distance;
@@ -92,11 +92,20 @@ public class Enemy : Entity
                     aggroUnit = unit;
                 }
             }
+            else
+            {
+                Building building = collider.GetComponent<Building>();
+
+                if (building != null)
+                { 
+                    aggroBuilding = building;
+                }
+            }
         }
 
         if (aggroUnit != null)
         {
-            moveSpeed = 0.05f;
+            moveSpeed = 0.0125f;
 
             actions.Clear();
 
@@ -114,6 +123,20 @@ public class Enemy : Entity
             if (enemyCollider.Distance(aggroUnit.GetComponent<CapsuleCollider2D>()).distance <= 0)
             {
                 aggroUnit.Damage(damage * Time.deltaTime);
+
+                actions.Remove(actions.ElementAt(0));
+            }
+        }
+
+        if (aggroBuilding != null)
+        {
+            unitAggroFound = true;
+
+            actions.Add(new Move(new Vector3(aggroBuilding.transform.position.x, aggroBuilding.transform.position.y)));
+
+            if (enemyCollider.Distance(aggroBuilding.GetComponent<PolygonCollider2D>()).distance <= 0)
+            {
+                aggroBuilding.Damage(damage * Time.deltaTime);
 
                 actions.Remove(actions.ElementAt(0));
             }
