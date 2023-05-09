@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 using Utils;
 
 public class GameController : MonoBehaviour
@@ -32,6 +33,8 @@ public class GameController : MonoBehaviour
     private GameObject newBuilding;
 
     private GridManager gridManager;
+
+    [SerializeField] private Text prodStats;
 
 
     private float _zoom = 12f;
@@ -76,6 +79,32 @@ public class GameController : MonoBehaviour
         gridManager = grid.GetComponent<GridManager>();
 
         gameBuildings = new List<GameObject>();
+
+        prodStats.text =
+                "Wood: " + woodStorage + " (+" + woodProduction + ")\n" +
+                "Stone: " + stoneStorage + " (+" + stoneProduction + ")\n" +
+                "Iron: " + ironStorage + " (+" + ironProduction + ")\n" +
+                "Gold: " + goldStorage + " (+" + goldProduction + ")\n" +
+                "Titanium: " + titaniumStorage + " (+" + titaniumProduction + ")";
+
+        TimeTickSystem.OnTick += delegate (object sender, TimeTickSystem.OnTickEventArgs e)
+        {
+            if (Application.isPlaying && e.tick % 10 == 0)
+            {
+                woodStorage += woodProduction;
+                stoneStorage += stoneProduction;
+                ironStorage += ironProduction;
+                goldStorage += goldProduction;
+                titaniumStorage += titaniumProduction;
+
+                prodStats.text =
+                "Wood: " + woodStorage + " (+" + woodProduction + ")\n" +
+                "Stone: " + stoneStorage + " (+" + stoneProduction + ")\n" +
+                "Iron: " + ironStorage + " (+" + ironProduction + ")\n" +
+                "Gold: " + goldStorage + " (+" + goldProduction + ")\n" +
+                "Titanium: " + titaniumStorage + " (+" + titaniumProduction + ")";
+            }
+        };
     }
     private void Awake()
     {
@@ -96,7 +125,7 @@ public class GameController : MonoBehaviour
                 }
             }
         }
-
+        
         if (gameBuildings.Count != gameBuildings.Where(x => !x.IsDestroyed()).Count())
         {
             woodProduction = 0;
@@ -105,10 +134,12 @@ public class GameController : MonoBehaviour
             goldProduction = 0;
             titaniumProduction = 0;
 
-            gameBuildings = gameBuildings.Where(x => !x.IsDestroyed()).ToList();
+            gameBuildings = gameBuildings.Where(x => x.IsDestroyed() == false).ToList();
 
             foreach (GameObject building in gameBuildings)
             {
+                buildingData = building.GetComponent<Building>();
+
                 if (buildingData.productionType == 1)
                 {
                     woodProduction += buildingData.productionRate;
@@ -129,13 +160,9 @@ public class GameController : MonoBehaviour
                 {
                     titaniumProduction += buildingData.productionRate;
                 }
-            }
 
-            Debug.Log("Wood: " + woodProduction);
-            Debug.Log("Stone: " + stoneProduction);
-            Debug.Log("Iron: " + ironProduction);
-            Debug.Log("Gold: " + goldProduction);
-            Debug.Log("Titanium: " + titaniumProduction);
+                Debug.Log(buildingData.productionRate);
+            }
         }
 
         if (Input.GetKey(KeyCode.F1) && !placingBuilding)
@@ -345,11 +372,7 @@ public class GameController : MonoBehaviour
                     titaniumProduction += buildingData.productionRate;
                 }
 
-                Debug.Log("Wood: " + woodProduction);
-                Debug.Log("Stone: " + stoneProduction);
-                Debug.Log("Iron: " + ironProduction);
-                Debug.Log("Gold: " + goldProduction);
-                Debug.Log("Titanium: " + titaniumProduction);
+                Debug.Log(buildingData.productionRate);
 
                 gameBuildings.Add(newBuilding);
             }
