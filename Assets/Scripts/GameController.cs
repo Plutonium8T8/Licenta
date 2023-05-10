@@ -509,8 +509,6 @@ public class GameController : MonoBehaviour
 
                 int y = Mathf.CeilToInt(posX * 2f - (x - gridManager.gridWidth));
 
-                Debug.Log(x + " " + y);
-
                 if ((gridManager.tileMap[x - 1, y - 1] != 999) &&
                     (gridManager.tileMap[x - 1, y] != 999) &&
                     (gridManager.tileMap[x - 1, y + 1] != 999) &&
