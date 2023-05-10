@@ -84,40 +84,4 @@ public class Unit : Entity
 
         prevPos = transform.position;
     }
-
-    public void Update()
-    {
-        /*entities = new List<Collider2D>();
-
-        ContactFilter2D colliderFiler = new ContactFilter2D();
-
-        colliderFiler.NoFilter();
-
-        colliderFiler.useTriggers = true;
-
-        entities.Clear();
-
-        damageCollider.OverlapCollider(colliderFiler, entities);
-
-        foreach (Collider2D collider in entities)
-        {
-            Enemy enemy = collider.GetComponent<Enemy>();
-
-            if (enemy != null)
-            {
-                if (damageCollider.Distance(collider).distance < -4.5f)
-                {
-                    healthBar.Damage(enemy.damage * Time.deltaTime);
-
-                    if (healthBar.GetHealthPercent() == 0)
-                    {
-                        Destroy(transform.gameObject);
-                    }
-
-                    break;
-                }
-                    
-            }
-        }*/
-    }
 }

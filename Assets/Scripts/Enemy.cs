@@ -14,11 +14,19 @@ public class Enemy : Entity
 
     private CapsuleCollider2D enemyCollider;
 
-    public int damage;
-
     public List<Action> actions = new List<Action>();
 
     private List<Collider2D> entities;
+
+    public int damage;
+
+    private int attackRate = 10;
+
+    private int currentTick;
+
+    private int targetTick;
+
+    private bool isAttacking = false;
 
     private bool unitAggroFound;
 
@@ -26,7 +34,7 @@ public class Enemy : Entity
     {
         moveSpeed = 0.05f;
 
-        damage = 5;
+        damage = 25;
 
         startingPosition = transform.position;
 
@@ -39,6 +47,14 @@ public class Enemy : Entity
         HealthSystem healthSystem = new HealthSystem(100);
 
         healthBar.Setup(healthSystem);
+
+        TimeTickSystem.OnTick += delegate (object sender, TimeTickSystem.OnTickEventArgs e)
+        {
+            if (Application.isPlaying && e.tick % 10 == 0)
+            {
+                currentTick = e.tick;
+            }
+        };
     }
 
     private Vector3 GetRoamingPosition()
@@ -120,11 +136,25 @@ public class Enemy : Entity
                 actions.Clear();
             }
 
-            if (enemyCollider.Distance(aggroUnit.GetComponent<CapsuleCollider2D>()).distance <= 0)
+            if (enemyCollider.Distance(aggroUnit.GetComponent<CapsuleCollider2D>()).distance <= 0 && !isAttacking)
             {
-                aggroUnit.Damage(damage * Time.deltaTime);
+                targetTick = currentTick + attackRate;
+
+                isAttacking = true;
 
                 actions.Remove(actions.ElementAt(0));
+            }
+
+            if (enemyCollider.Distance(aggroUnit.GetComponent<CapsuleCollider2D>()).distance > 0)
+            {
+                isAttacking = false;
+            }
+
+            if (isAttacking && currentTick == targetTick)
+            {
+                aggroUnit.Damage(damage);
+
+                isAttacking = false;
             }
         }
 
@@ -132,13 +162,31 @@ public class Enemy : Entity
         {
             unitAggroFound = true;
 
+            moveSpeed = 0.0125f;
+
+            actions.Clear();
+
             actions.Add(new Move(new Vector3(aggroBuilding.transform.position.x, aggroBuilding.transform.position.y)));
 
-            if (enemyCollider.Distance(aggroBuilding.GetComponent<PolygonCollider2D>()).distance <= 0)
+            if (enemyCollider.Distance(aggroBuilding.GetComponent<PolygonCollider2D>()).distance <= 0 && !isAttacking)
             {
-                aggroBuilding.Damage(damage * Time.deltaTime);
+                targetTick = currentTick + attackRate;
+
+                isAttacking = true;
 
                 actions.Remove(actions.ElementAt(0));
+            }
+
+            if (enemyCollider.Distance(aggroBuilding.GetComponent<PolygonCollider2D>()).distance > 0)
+            {
+                isAttacking = false;
+            }
+
+            if (isAttacking && currentTick == targetTick)
+            {
+                aggroBuilding.Damage(damage);
+
+                isAttacking = false;
             }
         }
 

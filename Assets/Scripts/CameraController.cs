@@ -26,7 +26,7 @@ public class CameraController : MonoBehaviour
         this.GetCameraZoomFunc = GetCameraZoomFunc;
     }
 
-    public void OnConnectedToServer(Func<Vector3> GetCameraPositionFunc)
+    public void OnCameraMovement(Func<Vector3> GetCameraPositionFunc)
     {
         this.GetCameraPositionFunc = GetCameraPositionFunc;
     }
