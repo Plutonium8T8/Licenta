@@ -57,7 +57,7 @@ GameObject:
   - component: {fileID: 835274392943880872}
   - component: {fileID: 835274392943880873}
   - component: {fileID: 835274392943880874}
-  - component: {fileID: 835274392943880875}
+  - component: {fileID: 9148442706432212495}
   - component: {fileID: 835274392943880868}
   - component: {fileID: 835274392943880869}
   m_Layer: 0
@@ -156,7 +156,7 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!114 &835274392943880875
+--- !u!114 &9148442706432212495
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -165,12 +165,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 835274392943880870}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 313446516c47ef145b219a1aad5e9e56, type: 3}
+  m_Script: {fileID: 11500000, guid: ecba1141f3f04224295e12342e1020de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   productionRate: 0
   productionType: 0
-  healthBar: {fileID: 0}
+  healthBar: {fileID: 835274392921077405}
   level: 0
 --- !u!114 &835274392943880868
 MonoBehaviour:

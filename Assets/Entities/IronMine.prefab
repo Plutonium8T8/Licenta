@@ -324,7 +324,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   productionRate: 0
   productionType: 0
-  healthBar: {fileID: 0}
+  healthBar: {fileID: 4195589262270643957}
   level: 0
 --- !u!114 &4195589262260413132
 MonoBehaviour:

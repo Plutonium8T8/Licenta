@@ -26,8 +26,6 @@ public class Building : MonoBehaviour
     }
     public void Damage(float damage)
     {
-        Debug.Log(damage);
-
         healthBar.Damage(damage);
     }
 

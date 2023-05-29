@@ -12,9 +12,13 @@ public class GameController : MonoBehaviour
 
     [SerializeField] private float _edgeSize = 10f;
 
-    [SerializeField] public GameObject entity;
+    [SerializeField] public GameObject unit;
+
+    [SerializeField] public GameObject enemy;
 
     [SerializeField] public GameObject[] buildings;
+
+    [SerializeField] public GameObject CommandCenter;
 
     [SerializeField] public Grid grid;
 
@@ -22,9 +26,6 @@ public class GameController : MonoBehaviour
     private Vector3 cameraPosition = new Vector3(0, 0);
 
     private Vector2 _startPosition;
-
-    private List<int> targetTick;
-
 
     private List<Unit> selectedEntitiesList;
 
@@ -41,6 +42,8 @@ public class GameController : MonoBehaviour
     private GridManager gridManager;
 
     [SerializeField] private Text prodStats;
+
+    [SerializeField] private Button[] constructionButtons;
 
 
     private float _zoom = 12f;
@@ -60,26 +63,26 @@ public class GameController : MonoBehaviour
 
     private int ironProduction = 0;
 
-    private int goldProduction = 0;
+    private int goldProduction = 20;
 
     private int titaniumProduction = 0;
 
 
-    private int woodStorage = 0;
+    private int woodStorage = 999;
 
-    private int stoneStorage = 0;
+    private int stoneStorage = 999;
 
     private int ironStorage = 0;
 
-    private int goldStorage = 0;
+    private int goldStorage = 100;
 
     private int titaniumStorage = 0;
 
-    private int foodStorage = 0;
+    private int foodStorage = 20;
 
-    private int workers = 0;
+    private int workers = 20;
 
-    private int engineers = 0;
+    private int engineers = 10;
 
 
     private int productionTickRate = 50;
@@ -89,9 +92,9 @@ public class GameController : MonoBehaviour
 
     private bool placingBuilding = false;
 
-    private bool JPressed = false;
+    private bool buildingWall = false;
 
-    private bool spawningUnits = false;
+    private bool buildingMenuOpen = false;
 
     private void Start()
     {
@@ -99,7 +102,15 @@ public class GameController : MonoBehaviour
 
         gridManager = grid.GetComponent<GridManager>();
 
+        Instantiate(CommandCenter, new Vector3(0f,0f), Quaternion.identity);
+
         gameBuildings = new List<GameObject>();
+
+        foreach (Button button in constructionButtons)
+        {
+            button.gameObject.SetActive(buildingMenuOpen);
+            button.onClick.AddListener(PlaceWoodCutterButton);
+        }
 
         prodStats.text =
                 "Wood: " + woodStorage + " (+" + woodProduction + ")\n" +
@@ -132,8 +143,6 @@ public class GameController : MonoBehaviour
         selectedBuildingsList = new List<Building>();
 
         productionBuildingsList = new List<Building>();
-
-        targetTick = new List<int>();
 
         _camera.Setup(() => cameraPosition, () => _zoom);
     }
@@ -297,6 +306,19 @@ public class GameController : MonoBehaviour
 
     private void PlaceWall(KeyCode key)
     {
+        if (buildingWall && !placingBuilding)
+        {
+            newBuilding = Instantiate(buildings[9], UtilsClass.GetMouseWorldPosition(), Quaternion.identity);
+
+            newBuilding.GetComponent<Rigidbody2D>().simulated = false;
+
+            buildingData = newBuilding.GetComponent<Building>();
+
+            buildingData.productionType = 10;
+
+            placingBuilding = true;
+        }
+
         if (Input.GetKey(key) && !placingBuilding)
         {
             newBuilding = Instantiate(buildings[9], UtilsClass.GetMouseWorldPosition(), Quaternion.identity);
@@ -308,6 +330,59 @@ public class GameController : MonoBehaviour
             buildingData.productionType = 10;
 
             placingBuilding = true;
+
+            buildingWall = true;
+        }
+    }
+
+    private void PlaceMilitaryAcademy(KeyCode key)
+    {
+        if (Input.GetKey(key) && !placingBuilding)
+        {
+            newBuilding = Instantiate(buildings[10], UtilsClass.GetMouseWorldPosition(), Quaternion.identity);
+
+            newBuilding.GetComponent<Rigidbody2D>().simulated = false;
+
+            buildingData = newBuilding.GetComponent<Building>();
+
+            buildingData.productionType = 11;
+
+            placingBuilding = true;
+        }
+    }
+
+    private void PlaceWoodCutterButton()
+    {
+        newBuilding = Instantiate(buildings[0], UtilsClass.GetMouseWorldPosition(), Quaternion.identity);
+
+        newBuilding.GetComponent<Rigidbody2D>().simulated = false;
+
+        buildingData = newBuilding.GetComponent<Building>();
+
+        buildingData.productionType = 1;
+
+        placingBuilding = true;
+    }
+
+    private void CameraToCenter(KeyCode key)
+    {
+        if (Input.GetKeyUp(key))
+        {
+            cameraPosition.x = 0;
+            cameraPosition.y = 0;
+        }
+    }
+
+    private void DeleteBuildings(KeyCode key)
+    {
+        if (Input.GetKey(key))
+        {
+            foreach (Building building in selectedBuildingsList)
+            {
+                Destroy(building.GameObject());
+            }
+
+            selectedBuildingsList.Clear();
         }
     }
 
@@ -321,7 +396,8 @@ public class GameController : MonoBehaviour
                 buildingData.productionType == 4 ||
                 buildingData.productionType == 5 ||
                 buildingData.productionType == 6 ||
-                buildingData.productionType == 9)
+                buildingData.productionType == 9 ||
+                buildingData.productionType == 11)
             {
                 newBuilding.transform.position = new Vector2(UtilsClass.GetMouseWorldPosition().x - 1, UtilsClass.GetMouseWorldPosition().y + 0.25f);
             }
@@ -341,6 +417,11 @@ public class GameController : MonoBehaviour
         {
             Destroy(newBuilding);
 
+            if (buildingWall)
+            {
+                buildingWall = false;
+            }
+
             placingBuilding = false;
         }
     }
@@ -355,7 +436,8 @@ public class GameController : MonoBehaviour
                 buildingData.productionType == 4 ||
                 buildingData.productionType == 5 ||
                 buildingData.productionType == 6 ||
-                buildingData.productionType == 9)
+                buildingData.productionType == 9 ||
+                buildingData.productionType == 11)
             {
                 float posX = Mathf.RoundToInt(newBuilding.transform.position.x * 2f) / 2f;
 
@@ -385,21 +467,7 @@ public class GameController : MonoBehaviour
                     (gridManager.tileMap[x + 2, y + 1] != 999) &&
                     (gridManager.tileMap[x + 2, y + 2] != 999))
                 {
-                    placingBuilding = false;
-
-                    gridManager.tileMap[x, y] = 999;
-                    gridManager.tileMap[x + 1, y] = 999;
-                    gridManager.tileMap[x, y + 1] = 999;
-                    gridManager.tileMap[x + 1, y + 1] = 999;
-
-                    gridManager.bitMap[x, y] = 999;
-                    gridManager.bitMap[x + 1, y] = 999;
-                    gridManager.bitMap[x, y + 1] = 999;
-                    gridManager.bitMap[x + 1, y + 1] = 999;
-
-                    newBuilding.GetComponent<Rigidbody2D>().simulated = true;
-
-                    if (buildingData.productionType == 1)
+                    if (buildingData.productionType == 1 && woodStorage >= 4 && goldStorage >= 4 && goldProduction >= 1 && workers >= 2)
                     {
                         for (int i = x - 2; i <= x + 3; i++)
                         {
@@ -412,9 +480,26 @@ public class GameController : MonoBehaviour
                             }
                         }
 
+                        workers -= 2;
+                        woodStorage -= 4;
+                        goldStorage -= 4;
+                        goldProduction -= 1;
                         woodProduction += buildingData.productionRate;
+
+                        gridManager.tileMap[x, y] = 999;
+                        gridManager.tileMap[x + 1, y] = 999;
+                        gridManager.tileMap[x, y + 1] = 999;
+                        gridManager.tileMap[x + 1, y + 1] = 999;
+
+                        gridManager.bitMap[x, y] = 999;
+                        gridManager.bitMap[x + 1, y] = 999;
+                        gridManager.bitMap[x, y + 1] = 999;
+                        gridManager.bitMap[x + 1, y + 1] = 999;
+
+                        placingBuilding = false;
+                        newBuilding.GetComponent<Rigidbody2D>().simulated = true;
                     }
-                    else if (buildingData.productionType == 2)
+                    else if (buildingData.productionType == 2 && woodStorage >= 4 && goldStorage >= 4 && goldProduction >= 2 && workers >= 2)
                     {
                         for (int i = x - 2; i <= x + 3; i++)
                         {
@@ -427,9 +512,26 @@ public class GameController : MonoBehaviour
                             }
                         }
 
+                        workers -= 2;
+                        woodStorage -= 4;
+                        goldStorage -= 4;
+                        goldProduction -= 2;
                         stoneProduction += buildingData.productionRate;
+
+                        gridManager.tileMap[x, y] = 999;
+                        gridManager.tileMap[x + 1, y] = 999;
+                        gridManager.tileMap[x, y + 1] = 999;
+                        gridManager.tileMap[x + 1, y + 1] = 999;
+
+                        gridManager.bitMap[x, y] = 999;
+                        gridManager.bitMap[x + 1, y] = 999;
+                        gridManager.bitMap[x, y + 1] = 999;
+                        gridManager.bitMap[x + 1, y + 1] = 999;
+
+                        placingBuilding = false;
+                        newBuilding.GetComponent<Rigidbody2D>().simulated = true;
                     }
-                    else if (buildingData.productionType == 3)
+                    else if (buildingData.productionType == 3 && woodStorage >= 4 && goldStorage >= 8 && goldProduction >= 4 && stoneStorage >= 4 && workers >= 2)
                     {
                         for (int i = x - 2; i <= x + 3; i++)
                         {
@@ -437,14 +539,32 @@ public class GameController : MonoBehaviour
                             {
                                 if (gridManager.tileMap[i, j] == 5)
                                 {
-                                    buildingData.productionRate += 1 * buildingData.level;
+                                    buildingData.productionRate += 2 * buildingData.level; 
                                 }
                             }
                         }
 
+                        workers -= 2;
+                        woodStorage -= 4;
+                        goldStorage -= 8;
+                        goldProduction -= 4;
+                        stoneStorage -= 4;
                         ironProduction += buildingData.productionRate;
+
+                        gridManager.tileMap[x, y] = 999;
+                        gridManager.tileMap[x + 1, y] = 999;
+                        gridManager.tileMap[x, y + 1] = 999;
+                        gridManager.tileMap[x + 1, y + 1] = 999;
+
+                        gridManager.bitMap[x, y] = 999;
+                        gridManager.bitMap[x + 1, y] = 999;
+                        gridManager.bitMap[x, y + 1] = 999;
+                        gridManager.bitMap[x + 1, y + 1] = 999;
+
+                        placingBuilding = false;
+                        newBuilding.GetComponent<Rigidbody2D>().simulated = true;
                     }
-                    else if (buildingData.productionType == 4)
+                    else if (buildingData.productionType == 4 && woodStorage >= 4 && goldStorage >= 16 && ironStorage >= 8 && workers >= 2)
                     {
                         for (int i = x - 2; i <= x + 3; i++)
                         {
@@ -452,14 +572,31 @@ public class GameController : MonoBehaviour
                             {
                                 if (gridManager.tileMap[i, j] == 6)
                                 {
-                                    buildingData.productionRate += 1 * buildingData.level;
+                                    buildingData.productionRate += 8 * buildingData.level;
                                 }
                             }
                         }
 
+                        workers -= 2;
+                        woodStorage -= 4;
+                        goldStorage -= 16;
+                        ironStorage -= 8;
                         goldProduction += buildingData.productionRate;
+
+                        gridManager.tileMap[x, y] = 999;
+                        gridManager.tileMap[x + 1, y] = 999;
+                        gridManager.tileMap[x, y + 1] = 999;
+                        gridManager.tileMap[x + 1, y + 1] = 999;
+
+                        gridManager.bitMap[x, y] = 999;
+                        gridManager.bitMap[x + 1, y] = 999;
+                        gridManager.bitMap[x, y + 1] = 999;
+                        gridManager.bitMap[x + 1, y + 1] = 999;
+
+                        placingBuilding = false;
+                        newBuilding.GetComponent<Rigidbody2D>().simulated = true;
                     }
-                    else if (buildingData.productionType == 5)
+                    else if (buildingData.productionType == 5 && woodStorage >= 4 && goldStorage >= 16 && goldProduction >= 16 && ironStorage >= 16 && workers >= 2)
                     {
                         for (int i = x - 2; i <= x + 3; i++)
                         {
@@ -472,9 +609,27 @@ public class GameController : MonoBehaviour
                             }
                         }
 
+                        workers -= 2;
+                        woodStorage -= 4;
+                        goldStorage -= 16;
+                        goldProduction -= 16;
+                        ironStorage -= 16;
                         titaniumProduction += buildingData.productionRate;
+
+                        gridManager.tileMap[x, y] = 999;
+                        gridManager.tileMap[x + 1, y] = 999;
+                        gridManager.tileMap[x, y + 1] = 999;
+                        gridManager.tileMap[x + 1, y + 1] = 999;
+
+                        gridManager.bitMap[x, y] = 999;
+                        gridManager.bitMap[x + 1, y] = 999;
+                        gridManager.bitMap[x, y + 1] = 999;
+                        gridManager.bitMap[x + 1, y + 1] = 999;
+
+                        placingBuilding = false;
+                        newBuilding.GetComponent<Rigidbody2D>().simulated = true;
                     }
-                    else if (buildingData.productionType == 6)
+                    else if (buildingData.productionType == 6 && woodStorage >= 4 && goldStorage >= 4 && goldProduction >= 2 && workers >= 2)
                     {
                         for (int i = x - 2; i <= x + 3; i++)
                         {
@@ -487,12 +642,68 @@ public class GameController : MonoBehaviour
                             }
                         }
 
+                        workers -= 2;
+                        woodStorage -= 4;
+                        goldStorage -= 4;
+                        goldProduction -= 2;
                         foodStorage += buildingData.productionRate;
+
+                        gridManager.tileMap[x, y] = 999;
+                        gridManager.tileMap[x + 1, y] = 999;
+                        gridManager.tileMap[x, y + 1] = 999;
+                        gridManager.tileMap[x + 1, y + 1] = 999;
+
+                        gridManager.bitMap[x, y] = 999;
+                        gridManager.bitMap[x + 1, y] = 999;
+                        gridManager.bitMap[x, y + 1] = 999;
+                        gridManager.bitMap[x + 1, y + 1] = 999;
+
+                        placingBuilding = false;
+                        newBuilding.GetComponent<Rigidbody2D>().simulated = true;
                     }
-                    else if (buildingData.productionType == 9)
+                    else if (buildingData.productionType == 9 && foodStorage >= 3 && woodStorage >= 4 && goldStorage >= 2)
                     {
                         workers += buildingData.level * 4;
                         engineers += buildingData.level * 2;
+                        goldProduction += buildingData.level * 4;
+                        woodStorage -= 4;
+                        foodStorage -= 3;
+                        goldStorage -= 2;
+
+                        gridManager.tileMap[x, y] = 999;
+                        gridManager.tileMap[x + 1, y] = 999;
+                        gridManager.tileMap[x, y + 1] = 999;
+                        gridManager.tileMap[x + 1, y + 1] = 999;
+
+                        gridManager.bitMap[x, y] = 999;
+                        gridManager.bitMap[x + 1, y] = 999;
+                        gridManager.bitMap[x, y + 1] = 999;
+                        gridManager.bitMap[x + 1, y + 1] = 999;
+
+                        placingBuilding = false;
+                        newBuilding.GetComponent<Rigidbody2D>().simulated = true;
+                    }
+                    else if (buildingData.productionType == 11 && stoneStorage >= 5 && woodStorage >= 4 && goldStorage >= 2)
+                    {
+                        workers += buildingData.level * 4;
+                        engineers += buildingData.level * 2;
+                        goldProduction += buildingData.level * 4;
+                        woodStorage -= 4;
+                        stoneStorage -= 5;
+                        goldStorage -= 2;
+
+                        gridManager.tileMap[x, y] = 999;
+                        gridManager.tileMap[x + 1, y] = 999;
+                        gridManager.tileMap[x, y + 1] = 999;
+                        gridManager.tileMap[x + 1, y + 1] = 999;
+
+                        gridManager.bitMap[x, y] = 999;
+                        gridManager.bitMap[x + 1, y] = 999;
+                        gridManager.bitMap[x, y + 1] = 999;
+                        gridManager.bitMap[x + 1, y + 1] = 999;
+
+                        placingBuilding = false;
+                        newBuilding.GetComponent<Rigidbody2D>().simulated = true;
                     }
 
                     gameBuildings.Add(newBuilding);
@@ -522,15 +733,7 @@ public class GameController : MonoBehaviour
                     (gridManager.tileMap[x + 1, y + 1] != 999))
 
                 {
-                    placingBuilding = false;
-
-                    gridManager.tileMap[x, y] = 999;
-
-                    gridManager.bitMap[x, y] = 999;
-
-                    newBuilding.GetComponent<Rigidbody2D>().simulated = true;
-
-                    if (buildingData.productionType == 8)
+                    if (buildingData.productionType == 8 && woodStorage >= 2 && goldStorage >= 2 && goldProduction >= 1 && workers >= 1)
                     {
                         for (int i = x - 2; i <= x + 2; i++)
                         {
@@ -539,13 +742,26 @@ public class GameController : MonoBehaviour
                                 if (gridManager.tileMap[i, j] == 0)
                                 {
                                     buildingData.productionRate += 1 * buildingData.level;
+                                    
                                 }
                             }
                         }
 
+                        workers -= 1;
+                        woodStorage -= 2;
+                        goldStorage -= 2;
+                        goldProduction -= 1;
                         foodStorage += buildingData.productionRate;
+
+                        placingBuilding = false;
+
+                        gridManager.tileMap[x, y] = 999;
+
+                        gridManager.bitMap[x, y] = 999;
+
+                        newBuilding.GetComponent<Rigidbody2D>().simulated = true;
                     }
-                    else if (buildingData.productionType == 7)
+                    else if (buildingData.productionType == 7 && woodStorage >= 2 && goldStorage >= 2 && goldProduction >= 1 && workers >= 1)
                     {
                         for (int i = x - 2; i <= x + 2; i++)
                         {
@@ -558,14 +774,26 @@ public class GameController : MonoBehaviour
                             }
                         }
 
+                        workers -= 1;
+                        woodStorage -= 2;
+                        goldStorage -= 2;
+                        goldProduction -= 1;
                         foodStorage += buildingData.productionRate;
+
+                        placingBuilding = false;
+
+                        gridManager.tileMap[x, y] = 999;
+
+                        gridManager.bitMap[x, y] = 999;
+
+                        newBuilding.GetComponent<Rigidbody2D>().simulated = true;
                     }
 
                     gameBuildings.Add(newBuilding);
                 }
             }
 
-            if (buildingData.productionType == 10)
+            if (buildingData.productionType == 10 && woodStorage >= 1)
             {
                 float posX = Mathf.RoundToInt(newBuilding.transform.position.x * 2f) / 2f;
 
@@ -575,7 +803,7 @@ public class GameController : MonoBehaviour
 
                 int y = Mathf.CeilToInt(posX * 2f - (x - gridManager.gridWidth));
 
-                if (gridManager.tileMap[x, y] == 1 || gridManager.tileMap[x, y] == 3)
+                if (gridManager.tileMap[x, y] == 1 || gridManager.tileMap[x, y] == 3 && woodStorage >= 1)
                 {
                     placingBuilding = false;
 
@@ -586,6 +814,8 @@ public class GameController : MonoBehaviour
                     newBuilding.GetComponent<Rigidbody2D>().simulated = true;
 
                     gameBuildings.Add(newBuilding);
+
+                    woodStorage -= 1;
                 }
             }
         }
@@ -598,10 +828,10 @@ public class GameController : MonoBehaviour
             woodProduction = 0;
             stoneProduction = 0;
             ironProduction = 0;
-            goldProduction = 0;
+            goldProduction = 20;
             titaniumProduction = 0;
-            workers = 0;
-            engineers = 0;
+            workers = 20;
+            engineers = 10;
 
             gameBuildings = gameBuildings.Where(x => x.IsDestroyed() == false).ToList();
 
@@ -737,22 +967,28 @@ public class GameController : MonoBehaviour
 
             foreach (Collider2D collider2D in collider2DArray.Distinct())
             {
-                Unit unit = collider2D.GetComponent<Unit>();
-
-                if (unit != null && collider2DArray.Count(x => x.GetComponent<Unit>() == unit) >= 2)
+                if (collider2D.GetComponent<Unit>() != null)
                 {
-                    unit.SetSelectedVisible(true);
-                    selectedEntitiesList.Add(unit);
-                }
+                    Unit unit = collider2D.GetComponent<Unit>();
 
-                Building building = collider2D.GetComponent<Building>();
-
-                if (building != null)
-                {
-                    if (building.productionType == 1)
+                    if (unit != null && collider2DArray.Count(x => x.GetComponent<Unit>() == unit) >= 2)
                     {
-                        selectedBuildingsList.Add(building);
+                        unit.SetSelectedVisible(true);
+                        selectedEntitiesList.Add(unit);
                     }
+                }
+                else
+                {
+                    Building building = collider2D.GetComponent<Building>();                
+
+                    if (building != null)
+                    {
+                        if (building.productionType == 11)
+                        {
+                            selectedBuildingsList.Add(building);
+                        }
+                    }
+
                 }
             }
         }
@@ -761,17 +997,61 @@ public class GameController : MonoBehaviour
 
         if (Input.GetMouseButtonDown(1))
         {
+            Collider2D[] collider2DArray = Physics2D.OverlapAreaAll(UtilsClass.GetMouseWorldPosition(), UtilsClass.GetMouseWorldPosition());
+
+            Enemy target = null;
+
+            foreach (Collider2D collider2D in collider2DArray.Distinct())
+            {
+                Enemy enemy = collider2D.GetComponent<Enemy>();
+
+                if (enemy != null && collider2DArray.Count(x => x.GetComponent<Enemy>() == enemy) >= 2)
+                {
+                    target = enemy;
+                    break;
+                }
+            }
+
             foreach (Unit unit in selectedEntitiesList)
             {
-                if (!unit.IsDestroyed())
+                if (target != null)
                 {
-                    if (!Input.GetKey(KeyCode.LeftShift))
+                    if (!unit.IsDestroyed())
                     {
-                        unit.actions.Clear();
-                    }
-                    unit.actions.Add(new Move(UtilsClass.GetMouseWorldPosition()));
-                }
+                        if (!Input.GetKey(KeyCode.LeftShift))
+                        {
+                            unit.actions.Clear();
+                        }
 
+                        Debug.Log(target);
+
+                        unit.actions.Add(new Attack(target));
+                    }
+                }
+                else
+                {
+                    if (!unit.IsDestroyed())
+                    {
+                        if (!Input.GetKey(KeyCode.LeftShift))
+                        {
+                            unit.actions.Clear();
+                        }
+                        unit.actions.Add(new Move(UtilsClass.GetMouseWorldPosition()));
+                    }
+                }
+            }
+        }
+    }
+
+    private void ToggleBuildingMenu(KeyCode key)
+    {
+        if (Input.GetKeyUp(key))
+        {
+            buildingMenuOpen = !buildingMenuOpen;
+
+            foreach (Button button in constructionButtons)
+            {
+                button.gameObject.SetActive(true);
             }
         }
     }
@@ -779,6 +1059,8 @@ public class GameController : MonoBehaviour
     private void FixedUpdate()
     {
         UpdateProductionStats();
+
+        ToggleBuildingMenu(KeyCode.B);
 
         PlaceWoodCutter(KeyCode.F1);
 
@@ -800,6 +1082,8 @@ public class GameController : MonoBehaviour
 
         PlaceWall(KeyCode.F10);
 
+        PlaceMilitaryAcademy(KeyCode.F11);
+
         PlacingBuilding();
 
         CancelPlacingBuilding();
@@ -807,6 +1091,10 @@ public class GameController : MonoBehaviour
         ConfirmPlacingBuilding();
 
         UpdateBuildingsList();
+
+        CameraToCenter(KeyCode.LeftAlt);
+
+        DeleteBuildings(KeyCode.Delete);
 
 
         if (Input.GetKey(KeyCode.L))
@@ -835,58 +1123,34 @@ public class GameController : MonoBehaviour
             }
         }
 
-        if (Input.GetKeyDown(KeyCode.J) && selectedBuildingsList.Count != 0 && !JPressed)
+        if (Input.GetKey(KeyCode.P))
         {
-            if (targetTick.Count == 0)
-            {
-                targetTick.Add(currentTick + productionTickRate);
-            }
-            else
-            {
-                targetTick.Add(targetTick.ElementAt(targetTick.Count - 1) + productionTickRate);
-            }
-
             foreach (Building building in selectedBuildingsList)
             {
-                if (!productionBuildingsList.Contains(building))
+                if (!building.IsDestroyed())
                 {
-                    productionBuildingsList.Add(building);
+                    if (building.GetType() == typeof(MilitaryAcademy))
+                    {
+                        if (engineers >= 1 && goldProduction >= 1 && ironStorage >= 1)
+                        {
+                            ((MilitaryAcademy)building).AddToProductionQueue(unit, ((MilitaryAcademy)building).GetLastTimingTick() + unit.GetComponent<Unit>().GetProductionTime());
+                            engineers -= 1;
+                            goldProduction -= 1;
+                            ironStorage -= 1;
+                        }
+                    }
                 }
             }
-
-            JPressed = true;
-
-            spawningUnits = true;
-
-            Debug.Log(targetTick.Count);
         }
 
-        if (Input.GetKeyUp(KeyCode.J))
+        if (Input.GetKey(KeyCode.M))
         {
-            JPressed = false;
+            Instantiate(unit, UtilsClass.GetMouseWorldPosition(), Quaternion.identity);
         }
 
-        if (targetTick.Count != 0)
+        if (Input.GetKey(KeyCode.O))
         {
-            if (targetTick.ElementAt(0) == currentTick && spawningUnits)
-            {
-                Debug.Log(productionBuildingsList.Count);
-
-                foreach (Building building in productionBuildingsList)
-                {
-                    Instantiate(entity, new Vector3(building.transform.position.x + 1f, building.transform.position.y + 1f, 0), Quaternion.identity);
-                }
-
-                targetTick.RemoveAt(0);
-
-                Debug.Log(targetTick.Count);
-
-                spawningUnits = false;
-            }
-        }
-        else
-        {
-            productionBuildingsList.Clear();
+            Instantiate(enemy, UtilsClass.GetMouseWorldPosition(), Quaternion.identity);
         }
     }
     private void Update()

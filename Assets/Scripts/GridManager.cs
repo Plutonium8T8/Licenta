@@ -43,11 +43,11 @@ public class GridManager : MonoBehaviour
 
         float clamp_perlin = Mathf.Clamp(raw_perlin, 0.0f, 1.0f);
 
-        if (clamp_perlin < passableProbability)
+        if (clamp_perlin <= passableProbability)
         {
             bitMap[x, y] = 0;
         }
-        else if (clamp_perlin <= passableProbability + impassableProbability)
+        else if (clamp_perlin > passableProbability)
         {
             bitMap[x, y] = 999;
         }
@@ -98,6 +98,20 @@ public class GridManager : MonoBehaviour
             }
         }
     }
+
+    public void CorrectBitMap()
+    {
+        for (int x = 1; x < gridWidth - 1; x++)
+        {
+            for (int y = 1; y < gridHeight - 1; y++)
+            {
+                if (bitMap[x, y] == 0)
+                {
+                    bitMap[x, y] = 999;
+                }
+            }
+        }
+    }
     private void GenerateTerrainMap()
     {
         for (int x = 0; x < gridWidth; x++)
@@ -130,14 +144,17 @@ public class GridManager : MonoBehaviour
                         if (random >= 0.0f && random < waterProbability)
                         {
                             tileMap[x, y] = 4;
+                            bitMap[x, y] = 999;
                         }
                         else if (random >= waterProbability && random < waterProbability + woodProbability)
                         {
                             tileMap[x, y] = 0;
+                            bitMap[x, y] = 999;
                         }
                         else if (random >= waterProbability + woodProbability && random < waterProbability + woodProbability + stoneProbability)
                         {
                             tileMap[x, y] = 2;
+                            bitMap[x, y] = 999;
                         }
                     }
                     else
@@ -145,34 +162,42 @@ public class GridManager : MonoBehaviour
                         if (tileMap[x - 1, y - 1] != -1)
                         {
                             tileMap[x, y] = tileMap[x - 1, y - 1];
+                            bitMap[x, y] = 999;
                         }
                         else if (tileMap[x - 1, y] != -1)
                         {
                             tileMap[x, y] = tileMap[x - 1, y];
+                            bitMap[x, y] = 999;
                         }
                         else if (tileMap[x - 1, y + 1] != -1)
                         {
                             tileMap[x, y] = tileMap[x - 1, y + 1];
+                            bitMap[x, y] = 999;
                         }
                         else if (tileMap[x, y - 1] != -1)
                         {
                             tileMap[x, y] = tileMap[x, y - 1];
+                            bitMap[x, y] = 999;
                         }
                         else if (tileMap[x, y + 1] != -1)
                         {
                             tileMap[x, y] = tileMap[x, y + 1];
+                            bitMap[x, y] = 999;
                         }
                         else if (tileMap[x + 1, y - 1] != -1)
                         {
                             tileMap[x, y] = tileMap[x + 1, y - 1];
+                            bitMap[x, y] = 999;
                         }
                         else if (tileMap[x + 1, y] != -1)
                         {
                             tileMap[x, y] = tileMap[x + 1, y];
+                            bitMap[x, y] = 999;
                         }
                         else if (tileMap[x + 1, y + 1] != -1)
                         {
                             tileMap[x, y] = tileMap[x + 1, y + 1];
+                            bitMap[x, y] = 999;
                         }
                     }
                 }
@@ -283,6 +308,8 @@ public class GridManager : MonoBehaviour
 
         GenerateTerrainMap();
 
+        CorrectBitMap();
+
         for (int x = 0; x < gridWidth; x++)
         {
             for (int y = 0; y < gridHeight; y++)
@@ -297,7 +324,7 @@ public class GridManager : MonoBehaviour
 
                     newTile.transform.position = new Vector2(posX, posY);
 
-                    newTile.name = x + " , " + y + " : " + posX + " , " + posY;
+                    newTile.name = x + " , " + y + " : " + posX + " , " + posY + " , " + bitMap[x,y];
                 }
             }
         }

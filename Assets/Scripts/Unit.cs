@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Unit : Entity
@@ -16,9 +17,17 @@ public class Unit : Entity
 
     public List<Action> actions = new List<Action>();
 
-    private Vector3 prevPos;
+    private int productionTime = 20;
 
-    private int count = 0;
+    private int currentTick;
+
+    private int targetTick;
+
+    public int damage;
+
+    private int attackRate = 10;
+
+    private bool attacking = false;
 
     private void Awake()
     {
@@ -36,7 +45,15 @@ public class Unit : Entity
 
         damageCollider = GetComponent<CircleCollider2D>();
 
-        prevPos = transform.position;
+        damage = 50;
+
+        TimeTickSystem.OnTick += delegate (object sender, TimeTickSystem.OnTickEventArgs e)
+        {
+            if (Application.isPlaying && e.tick % 10 == 0)
+            {
+                currentTick = e.tick;
+            }
+        };
     }
 
     public void Damage(float damage)
@@ -49,39 +66,59 @@ public class Unit : Entity
         healthBar.Heal(heal);
     }
 
+    public int GetProductionTime()
+    {
+        return productionTime;  
+    }
+
     public void SetSelectedVisible(bool visible)
     {
         selectedGameObject.SetActive(visible);
     }
     void FixedUpdate()
     {
+        if (healthBar.GetHealthPercent() == 0)
+        {
+            Destroy(transform.gameObject);
+        }
+
         if (actions.Count > 0)
         {
-            if (rigidBody.position != (Vector2)((Move)actions.ElementAt(0)).GetMovement())
+            if (actions.ElementAt(0).GetType() == typeof(Move))
             {
-                rigidBody.transform.position = Vector2.MoveTowards(rigidBody.position, (Vector2)((Move)actions.ElementAt(0)).GetMovement(), moveSpeed);
+                if (rigidBody.position != (Vector2)((Move)actions.ElementAt(0)).GetMovement())
+                {
+                    rigidBody.transform.position = Vector2.MoveTowards(rigidBody.position, (Vector2)((Move)actions.ElementAt(0)).GetMovement(), moveSpeed);
+                }
+                else
+                {
+                    actions.Remove(actions.ElementAt(0));
+                }
             }
-            else
+            else if (actions.ElementAt(0).GetType() == typeof(Attack))
             {
-                actions.Remove(actions.ElementAt(0));
+                if (((Attack)actions.ElementAt(0)).target.IsDestroyed())
+                {
+                    actions.RemoveAt(0);
+                }
+                else if (damageCollider.Distance(((Attack)actions.ElementAt(0)).target.GetComponent<CapsuleCollider2D>()).distance > 0.25 && !attacking)
+                {
+                    rigidBody.transform.position = Vector2.MoveTowards(rigidBody.position, (Vector2)((Attack)actions.ElementAt(0)).target.transform.position, moveSpeed);
+                }
+                else if (damageCollider.Distance(((Attack)actions.ElementAt(0)).target.GetComponent<CapsuleCollider2D>()).distance <= 0.25 && !attacking)
+                {
+                    targetTick = currentTick + attackRate;
+
+                    attacking = true;
+                }
+
+                if (currentTick == targetTick && attacking)
+                {
+                    ((Attack)actions.ElementAt(0)).target.Damage(damage);
+
+                    attacking = false;
+                }
             }
         }
-
-        if (Vector2.Distance(transform.position, prevPos) <= 0.09f && actions.Count() > 0)
-        {
-            count++;
-        }
-        else
-        {
-            count = 0;
-        }
-
-        if (count == 50)
-        {
-            count = 0;
-            actions.Remove(actions.ElementAt(0));
-        }
-
-        prevPos = transform.position;
     }
 }
