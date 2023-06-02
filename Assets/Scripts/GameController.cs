@@ -104,6 +104,8 @@ public class GameController : MonoBehaviour
 
         Instantiate(CommandCenter, new Vector3(0f,0f), Quaternion.identity);
 
+        CommandCenter.GetComponent<Building>().isPlaced = true;
+
         gameBuildings = new List<GameObject>();
 
         foreach (Button button in constructionButtons)
@@ -497,6 +499,7 @@ public class GameController : MonoBehaviour
                         gridManager.bitMap[x + 1, y + 1] = 999;
 
                         placingBuilding = false;
+                        buildingData.isPlaced = true;
                         newBuilding.GetComponent<Rigidbody2D>().simulated = true;
                     }
                     else if (buildingData.productionType == 2 && woodStorage >= 4 && goldStorage >= 4 && goldProduction >= 2 && workers >= 2)
@@ -529,6 +532,7 @@ public class GameController : MonoBehaviour
                         gridManager.bitMap[x + 1, y + 1] = 999;
 
                         placingBuilding = false;
+                        buildingData.isPlaced = true;
                         newBuilding.GetComponent<Rigidbody2D>().simulated = true;
                     }
                     else if (buildingData.productionType == 3 && woodStorage >= 4 && goldStorage >= 8 && goldProduction >= 4 && stoneStorage >= 4 && workers >= 2)
@@ -562,6 +566,7 @@ public class GameController : MonoBehaviour
                         gridManager.bitMap[x + 1, y + 1] = 999;
 
                         placingBuilding = false;
+                        buildingData.isPlaced = true;
                         newBuilding.GetComponent<Rigidbody2D>().simulated = true;
                     }
                     else if (buildingData.productionType == 4 && woodStorage >= 4 && goldStorage >= 16 && ironStorage >= 8 && workers >= 2)
@@ -594,6 +599,7 @@ public class GameController : MonoBehaviour
                         gridManager.bitMap[x + 1, y + 1] = 999;
 
                         placingBuilding = false;
+                        buildingData.isPlaced = true;
                         newBuilding.GetComponent<Rigidbody2D>().simulated = true;
                     }
                     else if (buildingData.productionType == 5 && woodStorage >= 4 && goldStorage >= 16 && goldProduction >= 16 && ironStorage >= 16 && workers >= 2)
@@ -627,6 +633,7 @@ public class GameController : MonoBehaviour
                         gridManager.bitMap[x + 1, y + 1] = 999;
 
                         placingBuilding = false;
+                        buildingData.isPlaced = true;
                         newBuilding.GetComponent<Rigidbody2D>().simulated = true;
                     }
                     else if (buildingData.productionType == 6 && woodStorage >= 4 && goldStorage >= 4 && goldProduction >= 2 && workers >= 2)
@@ -659,6 +666,7 @@ public class GameController : MonoBehaviour
                         gridManager.bitMap[x + 1, y + 1] = 999;
 
                         placingBuilding = false;
+                        buildingData.isPlaced = true;
                         newBuilding.GetComponent<Rigidbody2D>().simulated = true;
                     }
                     else if (buildingData.productionType == 9 && foodStorage >= 3 && woodStorage >= 4 && goldStorage >= 2)
@@ -681,6 +689,7 @@ public class GameController : MonoBehaviour
                         gridManager.bitMap[x + 1, y + 1] = 999;
 
                         placingBuilding = false;
+                        buildingData.isPlaced = true;
                         newBuilding.GetComponent<Rigidbody2D>().simulated = true;
                     }
                     else if (buildingData.productionType == 11 && stoneStorage >= 5 && woodStorage >= 4 && goldStorage >= 2)
@@ -703,6 +712,7 @@ public class GameController : MonoBehaviour
                         gridManager.bitMap[x + 1, y + 1] = 999;
 
                         placingBuilding = false;
+                        buildingData.isPlaced = true;
                         newBuilding.GetComponent<Rigidbody2D>().simulated = true;
                     }
 
@@ -755,6 +765,8 @@ public class GameController : MonoBehaviour
 
                         placingBuilding = false;
 
+                        buildingData.isPlaced = true;
+
                         gridManager.tileMap[x, y] = 999;
 
                         gridManager.bitMap[x, y] = 999;
@@ -782,6 +794,8 @@ public class GameController : MonoBehaviour
 
                         placingBuilding = false;
 
+                        buildingData.isPlaced = true;
+
                         gridManager.tileMap[x, y] = 999;
 
                         gridManager.bitMap[x, y] = 999;
@@ -806,6 +820,8 @@ public class GameController : MonoBehaviour
                 if (gridManager.tileMap[x, y] == 1 || gridManager.tileMap[x, y] == 3 && woodStorage >= 1)
                 {
                     placingBuilding = false;
+
+                    buildingData.isPlaced = true;
 
                     gridManager.tileMap[x, y] = 999;
 

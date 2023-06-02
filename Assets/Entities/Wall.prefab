@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 7213696375323699811}
   - component: {fileID: 4920077694965234498}
   - component: {fileID: 4920077694965234499}
+  - component: {fileID: -4713651618857219178}
   m_Layer: 0
   m_Name: Wall
   m_TagString: Untagged
@@ -167,6 +168,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 99cd5e0247c4f374788f00b7670780ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!58 &-4713651618857219178
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 971227100076147398}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0.5, y: 0}
+  serializedVersion: 2
+  m_Radius: 2.5
 --- !u!1 &4920077695499229315
 GameObject:
   m_ObjectHideFlags: 0

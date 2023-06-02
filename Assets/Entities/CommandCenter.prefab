@@ -144,6 +144,7 @@ GameObject:
   - component: {fileID: 7735158280860322523}
   - component: {fileID: 7735158280860322520}
   - component: {fileID: 7735158280860322521}
+  - component: {fileID: 2656836822029354779}
   m_Layer: 0
   m_Name: CommandCenter
   m_TagString: Untagged
@@ -159,7 +160,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7735158280860322526}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -0.38, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -297,6 +298,22 @@ PolygonCollider2D:
       - {x: 0.02, y: 0.02}
       - {x: -2.55, y: -1.31}
       - {x: -0.02, y: -2.55}
+--- !u!58 &2656836822029354779
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7735158280860322526}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: -1}
+  serializedVersion: 2
+  m_Radius: 10
 --- !u!1 &7735158280870388409
 GameObject:
   m_ObjectHideFlags: 0

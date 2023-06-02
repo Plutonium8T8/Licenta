@@ -260,6 +260,7 @@ GameObject:
   - component: {fileID: 3273420598189088337}
   - component: {fileID: 3273420598189088350}
   - component: {fileID: 3273420598189088351}
+  - component: {fileID: 6086230106343821078}
   m_Layer: 0
   m_Name: StoneMine
   m_TagString: Untagged
@@ -413,3 +414,19 @@ PolygonCollider2D:
       - {x: 1, y: 0.5}
       - {x: 0, y: 0}
       - {x: 1, y: -0.5}
+--- !u!58 &6086230106343821078
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3273420598189088348}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 1, y: 0}
+  serializedVersion: 2
+  m_Radius: 5

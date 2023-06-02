@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class GridManager : MonoBehaviour
@@ -325,6 +326,8 @@ public class GridManager : MonoBehaviour
                     newTile.transform.position = new Vector2(posX, posY);
 
                     newTile.name = x + " , " + y + " : " + posX + " , " + posY + " , " + bitMap[x,y];
+
+                    newTile.GetComponent<Renderer>().enabled = false;
                 }
             }
         }
@@ -334,6 +337,3 @@ public class GridManager : MonoBehaviour
         return this;
     }
 }
-
-// posX * 2f - (x - gridWidth) = y;
-// (posY * 4f + posX * 2f - gridWidth) / 2f = x);

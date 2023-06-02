@@ -2,6 +2,7 @@ using Mono.Cecil.Cil;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.Tracing;
 using System.Linq;
 using System.Threading;
 using Unity.VisualScripting;
@@ -11,9 +12,13 @@ public class Unit : Entity
 {
     private GameObject selectedGameObject;
 
+    private ContactFilter2D colliderFiler;
+
     private CircleCollider2D damageCollider;
 
     private List<Collider2D> entities;
+
+    private List<Collider2D> colliders;
 
     public List<Action> actions = new List<Action>();
 
@@ -46,6 +51,12 @@ public class Unit : Entity
         damageCollider = GetComponent<CircleCollider2D>();
 
         damage = 50;
+
+        colliders = new List<Collider2D>();
+
+        colliderFiler = new ContactFilter2D();
+
+        colliderFiler.NoFilter();
 
         TimeTickSystem.OnTick += delegate (object sender, TimeTickSystem.OnTickEventArgs e)
         {
@@ -108,7 +119,7 @@ public class Unit : Entity
                 else if (damageCollider.Distance(((Attack)actions.ElementAt(0)).target.GetComponent<CapsuleCollider2D>()).distance <= 0.25 && !attacking)
                 {
                     targetTick = currentTick + attackRate;
-
+                    
                     attacking = true;
                 }
 
@@ -117,6 +128,46 @@ public class Unit : Entity
                     ((Attack)actions.ElementAt(0)).target.Damage(damage);
 
                     attacking = false;
+                }
+            }
+        }
+
+        damageCollider.OverlapCollider(colliderFiler, colliders);
+
+        foreach (Collider2D collider in colliders)
+        {
+            if (collider.GetComponent<Tile>() != null)
+            {
+                if (collider.GameObject().GetComponent<Renderer>().enabled == false)
+                {
+                    collider.GameObject().GetComponent<Renderer>().enabled = true;
+
+                    collider.gameObject.transform.Find("Shadow").gameObject.GetComponent<Renderer>().enabled = false;
+                }
+                else
+
+                if (collider.GameObject().GetComponent<Renderer>().enabled == true)
+                {
+                    Debug.Log(collider.Distance(damageCollider).distance);
+
+                    collider.gameObject.transform.Find("Shadow").gameObject.GetComponent<Renderer>().enabled = true;
+                }
+            }
+
+            if (collider.GetComponent<Enemy>() != null)
+            {
+                Enemy enemy = collider.GetComponent<Enemy>();
+
+                if (colliders.Count(x => x.GetComponent<Enemy>() == enemy) >= 2)
+                {
+                    if (enemy.GameObject().GetComponent<Renderer>().enabled == false)
+                    {
+                        enemy.GameObject().GetComponent<Renderer>().enabled = true;
+
+                        enemy.healthBar.transform.Find("BarBackground").GetComponent<Renderer>().enabled = true;
+
+                        enemy.healthBar.transform.Find("Bar").transform.Find("BarSprite").GetComponent<Renderer>().enabled = true;
+                    }
                 }
             }
         }

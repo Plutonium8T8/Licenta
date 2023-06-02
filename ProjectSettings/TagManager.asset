@@ -13,8 +13,8 @@ TagManager:
   - UI
   - 
   - 
-  - Fog Of War Main
-  - Fog Of War Secondary
+  - FowMain
+  - FowSecond
   - 
   - 
   - 
@@ -40,4 +40,7 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Fog Of War
+    uniqueID: 3700852907
     locked: 0

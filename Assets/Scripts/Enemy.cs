@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
-using static UnityEngine.UI.CanvasScaler;
 
 public class Enemy : Entity
 {
@@ -57,6 +56,12 @@ public class Enemy : Entity
                 currentTick = e.tick;
             }
         };
+
+        gameObject.GetComponent<Renderer>().enabled = false;
+
+        healthBar.transform.Find("BarBackground").GetComponent<Renderer>().enabled = false;
+
+        healthBar.transform.Find("Bar").transform.Find("BarSprite").GetComponent<Renderer>().enabled = false;
     }
 
     public void Damage(float damage)
