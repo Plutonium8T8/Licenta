@@ -144,14 +144,14 @@ public class Unit : Entity
 
                     collider.gameObject.transform.Find("Shadow").gameObject.GetComponent<Renderer>().enabled = false;
                 }
-                else
+/*                else
 
                 if (collider.GameObject().GetComponent<Renderer>().enabled == true)
                 {
                     Debug.Log(collider.Distance(damageCollider).distance);
 
                     collider.gameObject.transform.Find("Shadow").gameObject.GetComponent<Renderer>().enabled = true;
-                }
+                }*/
             }
 
             if (collider.GetComponent<Enemy>() != null)

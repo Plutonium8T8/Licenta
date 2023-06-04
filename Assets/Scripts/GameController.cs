@@ -43,8 +43,6 @@ public class GameController : MonoBehaviour
 
     [SerializeField] private Text prodStats;
 
-    [SerializeField] private Button[] constructionButtons;
-
 
     private float _zoom = 12f;
 
@@ -108,11 +106,31 @@ public class GameController : MonoBehaviour
 
         gameBuildings = new List<GameObject>();
 
-        foreach (Button button in constructionButtons)
-        {
-            button.gameObject.SetActive(buildingMenuOpen);
-            button.onClick.AddListener(PlaceWoodCutterButton);
-        }
+        transform.Find("BuildingUI").transform.Find("WoodCutterButton").gameObject.GetComponent<Button>().onClick.AddListener(PlaceWoodCutterButton);
+
+        transform.Find("BuildingUI").transform.Find("StoneMineButton").gameObject.GetComponent<Button>().onClick.AddListener(PlaceStoneMineButton);
+
+        transform.Find("BuildingUI").transform.Find("IronMineButton").gameObject.GetComponent<Button>().onClick.AddListener(PlaceIronMineButton);
+
+        transform.Find("BuildingUI").transform.Find("GoldMineButton").gameObject.GetComponent<Button>().onClick.AddListener(PlaceGoldMineButton);
+
+        transform.Find("BuildingUI").transform.Find("TitaniumMineButton").gameObject.GetComponent<Button>().onClick.AddListener(PlaceTitaniumMineButton);
+
+        transform.Find("BuildingUI").transform.Find("HouseButton").gameObject.GetComponent<Button>().onClick.AddListener(PlaceHouseButton);
+
+        transform.Find("BuildingUI").transform.Find("FarmButton").gameObject.GetComponent<Button>().onClick.AddListener(PlaceFarmButton);
+
+        transform.Find("BuildingUI").transform.Find("HuntersHutButton").gameObject.GetComponent<Button>().onClick.AddListener(PlaceHuntersHutButton);
+
+        transform.Find("BuildingUI").transform.Find("FishermansHutButton").gameObject.GetComponent<Button>().onClick.AddListener(PlaceFishermanHutButton);
+
+        transform.Find("BuildingUI").transform.Find("MilitaryAcademyButton").gameObject.GetComponent<Button>().onClick.AddListener(PlaceMilitaryAcademyButton);
+
+        transform.Find("BuildingUI").transform.Find("WallButton").gameObject.GetComponent<Button>().onClick.AddListener(PlaceWallButton);
+
+
+        transform.Find("MilitaryAcademyUI").transform.Find("CreateUnitButton").gameObject.GetComponent<Button>().onClick.AddListener(CreateUnit);
+
 
         prodStats.text =
                 "Wood: " + woodStorage + " (+" + woodProduction + ")\n" +
@@ -168,7 +186,7 @@ public class GameController : MonoBehaviour
         {
             newBuilding = Instantiate(buildings[0], UtilsClass.GetMouseWorldPosition(), Quaternion.identity);
 
-            newBuilding.GetComponent<Rigidbody2D>().simulated = false;
+            
 
             buildingData = newBuilding.GetComponent<Building>();
 
@@ -184,7 +202,7 @@ public class GameController : MonoBehaviour
         {
             newBuilding = Instantiate(buildings[1], UtilsClass.GetMouseWorldPosition(), Quaternion.identity);
 
-            newBuilding.GetComponent<Rigidbody2D>().simulated = false;
+            
 
             buildingData = newBuilding.GetComponent<Building>();
 
@@ -200,7 +218,7 @@ public class GameController : MonoBehaviour
         {
             newBuilding = Instantiate(buildings[2], UtilsClass.GetMouseWorldPosition(), Quaternion.identity);
 
-            newBuilding.GetComponent<Rigidbody2D>().simulated = false;
+            
 
             buildingData = newBuilding.GetComponent<Building>();
 
@@ -216,7 +234,7 @@ public class GameController : MonoBehaviour
         {
             newBuilding = Instantiate(buildings[3], UtilsClass.GetMouseWorldPosition(), Quaternion.identity);
 
-            newBuilding.GetComponent<Rigidbody2D>().simulated = false;
+            
 
             buildingData = newBuilding.GetComponent<Building>();
 
@@ -232,7 +250,7 @@ public class GameController : MonoBehaviour
         {
             newBuilding = Instantiate(buildings[4], UtilsClass.GetMouseWorldPosition(), Quaternion.identity);
 
-            newBuilding.GetComponent<Rigidbody2D>().simulated = false;
+            
 
             buildingData = newBuilding.GetComponent<Building>();
 
@@ -248,7 +266,7 @@ public class GameController : MonoBehaviour
         {
             newBuilding = Instantiate(buildings[5], UtilsClass.GetMouseWorldPosition(), Quaternion.identity);
 
-            newBuilding.GetComponent<Rigidbody2D>().simulated = false;
+            
 
             buildingData = newBuilding.GetComponent<Building>();
 
@@ -264,7 +282,7 @@ public class GameController : MonoBehaviour
         {
             newBuilding = Instantiate(buildings[6], UtilsClass.GetMouseWorldPosition(), Quaternion.identity);
 
-            newBuilding.GetComponent<Rigidbody2D>().simulated = false;
+            
 
             buildingData = newBuilding.GetComponent<Building>();
 
@@ -280,7 +298,7 @@ public class GameController : MonoBehaviour
         {
             newBuilding = Instantiate(buildings[7], UtilsClass.GetMouseWorldPosition(), Quaternion.identity);
 
-            newBuilding.GetComponent<Rigidbody2D>().simulated = false;
+            
 
             buildingData = newBuilding.GetComponent<Building>();
 
@@ -296,7 +314,7 @@ public class GameController : MonoBehaviour
         {
             newBuilding = Instantiate(buildings[8], UtilsClass.GetMouseWorldPosition(), Quaternion.identity);
 
-            newBuilding.GetComponent<Rigidbody2D>().simulated = false;
+            
 
             buildingData = newBuilding.GetComponent<Building>();
 
@@ -312,7 +330,7 @@ public class GameController : MonoBehaviour
         {
             newBuilding = Instantiate(buildings[9], UtilsClass.GetMouseWorldPosition(), Quaternion.identity);
 
-            newBuilding.GetComponent<Rigidbody2D>().simulated = false;
+            
 
             buildingData = newBuilding.GetComponent<Building>();
 
@@ -325,7 +343,7 @@ public class GameController : MonoBehaviour
         {
             newBuilding = Instantiate(buildings[9], UtilsClass.GetMouseWorldPosition(), Quaternion.identity);
 
-            newBuilding.GetComponent<Rigidbody2D>().simulated = false;
+            
 
             buildingData = newBuilding.GetComponent<Building>();
 
@@ -343,7 +361,7 @@ public class GameController : MonoBehaviour
         {
             newBuilding = Instantiate(buildings[10], UtilsClass.GetMouseWorldPosition(), Quaternion.identity);
 
-            newBuilding.GetComponent<Rigidbody2D>().simulated = false;
+            
 
             buildingData = newBuilding.GetComponent<Building>();
 
@@ -353,15 +371,158 @@ public class GameController : MonoBehaviour
         }
     }
 
-    private void PlaceWoodCutterButton()
+    public  void PlaceWoodCutterButton()
     {
         newBuilding = Instantiate(buildings[0], UtilsClass.GetMouseWorldPosition(), Quaternion.identity);
 
-        newBuilding.GetComponent<Rigidbody2D>().simulated = false;
+        
 
         buildingData = newBuilding.GetComponent<Building>();
 
         buildingData.productionType = 1;
+
+        placingBuilding = true;
+    }
+
+    private void PlaceStoneMineButton()
+    {
+        newBuilding = Instantiate(buildings[1], UtilsClass.GetMouseWorldPosition(), Quaternion.identity);
+
+        
+
+        buildingData = newBuilding.GetComponent<Building>();
+
+        buildingData.productionType = 2;
+
+        placingBuilding = true;
+    }
+
+    private void PlaceIronMineButton()
+    {
+        newBuilding = Instantiate(buildings[2], UtilsClass.GetMouseWorldPosition(), Quaternion.identity);
+
+        
+
+        buildingData = newBuilding.GetComponent<Building>();
+
+        buildingData.productionType = 3;
+
+        placingBuilding = true;
+    }
+
+    private void PlaceGoldMineButton()
+    {
+        newBuilding = Instantiate(buildings[3], UtilsClass.GetMouseWorldPosition(), Quaternion.identity);
+
+        
+
+        buildingData = newBuilding.GetComponent<Building>();
+
+        buildingData.productionType = 4;
+
+        placingBuilding = true;
+    }
+
+    private void PlaceTitaniumMineButton()
+    {
+        newBuilding = Instantiate(buildings[4], UtilsClass.GetMouseWorldPosition(), Quaternion.identity);
+
+        
+
+        buildingData = newBuilding.GetComponent<Building>();
+
+        buildingData.productionType = 5;
+
+        placingBuilding = true;
+    }
+
+    private void PlaceFarmButton()
+    {
+        newBuilding = Instantiate(buildings[5], UtilsClass.GetMouseWorldPosition(), Quaternion.identity);
+
+        
+
+        buildingData = newBuilding.GetComponent<Building>();
+
+        buildingData.productionType = 6;
+
+        placingBuilding = true;
+    }
+
+    private void PlaceFishermanHutButton()
+    {
+        newBuilding = Instantiate(buildings[6], UtilsClass.GetMouseWorldPosition(), Quaternion.identity);
+
+        
+
+        buildingData = newBuilding.GetComponent<Building>();
+
+        buildingData.productionType = 7;
+
+        placingBuilding = true;
+    }
+
+    private void PlaceHuntersHutButton()
+    {
+        newBuilding = Instantiate(buildings[7], UtilsClass.GetMouseWorldPosition(), Quaternion.identity);
+
+        
+
+        buildingData = newBuilding.GetComponent<Building>();
+
+        buildingData.productionType = 8;
+
+        placingBuilding = true;
+    }
+
+    private void PlaceHouseButton()
+    {
+        newBuilding = Instantiate(buildings[8], UtilsClass.GetMouseWorldPosition(), Quaternion.identity);
+
+        
+
+        buildingData = newBuilding.GetComponent<Building>();
+
+        buildingData.productionType = 9;
+
+        placingBuilding = true;
+    }
+
+    private void PlaceWallButton()
+    {
+        if (buildingWall && !placingBuilding)
+        {
+            newBuilding = Instantiate(buildings[9], UtilsClass.GetMouseWorldPosition(), Quaternion.identity);
+
+            
+
+            buildingData = newBuilding.GetComponent<Building>();
+
+            buildingData.productionType = 10;
+
+            placingBuilding = true;
+        }
+
+        newBuilding = Instantiate(buildings[9], UtilsClass.GetMouseWorldPosition(), Quaternion.identity);
+
+        
+
+        buildingData = newBuilding.GetComponent<Building>();
+
+        buildingData.productionType = 10;
+
+        placingBuilding = true;
+
+        buildingWall = true;
+    }
+
+    private void PlaceMilitaryAcademyButton()
+    {
+        newBuilding = Instantiate(buildings[10], UtilsClass.GetMouseWorldPosition(), Quaternion.identity);
+
+        buildingData = newBuilding.GetComponent<Building>();
+
+        buildingData.productionType = 11;
 
         placingBuilding = true;
     }
@@ -500,7 +661,7 @@ public class GameController : MonoBehaviour
 
                         placingBuilding = false;
                         buildingData.isPlaced = true;
-                        newBuilding.GetComponent<Rigidbody2D>().simulated = true;
+                        
                     }
                     else if (buildingData.productionType == 2 && woodStorage >= 4 && goldStorage >= 4 && goldProduction >= 2 && workers >= 2)
                     {
@@ -533,7 +694,7 @@ public class GameController : MonoBehaviour
 
                         placingBuilding = false;
                         buildingData.isPlaced = true;
-                        newBuilding.GetComponent<Rigidbody2D>().simulated = true;
+                        
                     }
                     else if (buildingData.productionType == 3 && woodStorage >= 4 && goldStorage >= 8 && goldProduction >= 4 && stoneStorage >= 4 && workers >= 2)
                     {
@@ -567,7 +728,7 @@ public class GameController : MonoBehaviour
 
                         placingBuilding = false;
                         buildingData.isPlaced = true;
-                        newBuilding.GetComponent<Rigidbody2D>().simulated = true;
+                        
                     }
                     else if (buildingData.productionType == 4 && woodStorage >= 4 && goldStorage >= 16 && ironStorage >= 8 && workers >= 2)
                     {
@@ -600,7 +761,7 @@ public class GameController : MonoBehaviour
 
                         placingBuilding = false;
                         buildingData.isPlaced = true;
-                        newBuilding.GetComponent<Rigidbody2D>().simulated = true;
+                        
                     }
                     else if (buildingData.productionType == 5 && woodStorage >= 4 && goldStorage >= 16 && goldProduction >= 16 && ironStorage >= 16 && workers >= 2)
                     {
@@ -634,7 +795,7 @@ public class GameController : MonoBehaviour
 
                         placingBuilding = false;
                         buildingData.isPlaced = true;
-                        newBuilding.GetComponent<Rigidbody2D>().simulated = true;
+                       
                     }
                     else if (buildingData.productionType == 6 && woodStorage >= 4 && goldStorage >= 4 && goldProduction >= 2 && workers >= 2)
                     {
@@ -667,7 +828,6 @@ public class GameController : MonoBehaviour
 
                         placingBuilding = false;
                         buildingData.isPlaced = true;
-                        newBuilding.GetComponent<Rigidbody2D>().simulated = true;
                     }
                     else if (buildingData.productionType == 9 && foodStorage >= 3 && woodStorage >= 4 && goldStorage >= 2)
                     {
@@ -690,16 +850,16 @@ public class GameController : MonoBehaviour
 
                         placingBuilding = false;
                         buildingData.isPlaced = true;
-                        newBuilding.GetComponent<Rigidbody2D>().simulated = true;
                     }
-                    else if (buildingData.productionType == 11 && stoneStorage >= 5 && woodStorage >= 4 && goldStorage >= 2)
+                    else if (buildingData.productionType == 11 && stoneStorage >= 16 && woodStorage >= 8 && ironStorage >= 16 && goldStorage >= 64)
                     {
                         workers += buildingData.level * 4;
                         engineers += buildingData.level * 2;
                         goldProduction += buildingData.level * 4;
-                        woodStorage -= 4;
-                        stoneStorage -= 5;
-                        goldStorage -= 2;
+                        woodStorage -= 8;
+                        stoneStorage -= 16;
+                        ironStorage -= 16;
+                        goldStorage -= 64;
 
                         gridManager.tileMap[x, y] = 999;
                         gridManager.tileMap[x + 1, y] = 999;
@@ -713,14 +873,13 @@ public class GameController : MonoBehaviour
 
                         placingBuilding = false;
                         buildingData.isPlaced = true;
-                        newBuilding.GetComponent<Rigidbody2D>().simulated = true;
                     }
 
                     gameBuildings.Add(newBuilding);
                 }
             }
 
-            if (buildingData.productionType == 7 || buildingData.productionType == 8)
+            if (buildingData.productionType == 7 || buildingData.productionType == 8 && placingBuilding)
             {
                 float posX = Mathf.RoundToInt(newBuilding.transform.position.x * 2f) / 2f;
 
@@ -771,7 +930,7 @@ public class GameController : MonoBehaviour
 
                         gridManager.bitMap[x, y] = 999;
 
-                        newBuilding.GetComponent<Rigidbody2D>().simulated = true;
+                        
                     }
                     else if (buildingData.productionType == 7 && woodStorage >= 2 && goldStorage >= 2 && goldProduction >= 1 && workers >= 1)
                     {
@@ -799,15 +958,13 @@ public class GameController : MonoBehaviour
                         gridManager.tileMap[x, y] = 999;
 
                         gridManager.bitMap[x, y] = 999;
-
-                        newBuilding.GetComponent<Rigidbody2D>().simulated = true;
                     }
 
                     gameBuildings.Add(newBuilding);
                 }
             }
 
-            if (buildingData.productionType == 10 && woodStorage >= 1)
+            if (buildingData.productionType == 10 && woodStorage >= 1 && placingBuilding && stoneStorage >= 1)
             {
                 float posX = Mathf.RoundToInt(newBuilding.transform.position.x * 2f) / 2f;
 
@@ -817,7 +974,7 @@ public class GameController : MonoBehaviour
 
                 int y = Mathf.CeilToInt(posX * 2f - (x - gridManager.gridWidth));
 
-                if (gridManager.tileMap[x, y] == 1 || gridManager.tileMap[x, y] == 3 && woodStorage >= 1)
+                if ((gridManager.tileMap[x, y] == 1 || gridManager.tileMap[x, y] == 3) && woodStorage >= 1 && stoneStorage >= 1)
                 {
                     placingBuilding = false;
 
@@ -827,11 +984,11 @@ public class GameController : MonoBehaviour
 
                     gridManager.bitMap[x, y] = 999;
 
-                    newBuilding.GetComponent<Rigidbody2D>().simulated = true;
-
                     gameBuildings.Add(newBuilding);
 
                     woodStorage -= 1;
+
+                    stoneStorage -= 1;
                 }
             }
         }
@@ -965,7 +1122,7 @@ public class GameController : MonoBehaviour
 
         // LeftClick up
 
-        if (Input.GetMouseButtonUp(0))
+        if (Input.GetMouseButtonUp(0) && !placingBuilding)
         {
             Collider2D[] collider2DArray = Physics2D.OverlapAreaAll(_startPosition, UtilsClass.GetMouseWorldPosition());
 
@@ -997,7 +1154,7 @@ public class GameController : MonoBehaviour
                 {
                     Building building = collider2D.GetComponent<Building>();                
 
-                    if (building != null)
+                    if (building != null && collider2DArray.Count(x => x.GetComponent<Building>() == building) >= 2)
                     {
                         if (building.productionType == 11)
                         {
@@ -1059,24 +1216,70 @@ public class GameController : MonoBehaviour
         }
     }
 
-    private void ToggleBuildingMenu(KeyCode key)
+    public void ToggleBuildingMenu()
     {
-        if (Input.GetKeyUp(key))
-        {
-            buildingMenuOpen = !buildingMenuOpen;
+        buildingMenuOpen = !buildingMenuOpen;
 
-            foreach (Button button in constructionButtons)
+        transform.Find("BuildingUI").transform.Find("WoodCutterButton").gameObject.GetComponent<Button>().gameObject.SetActive(buildingMenuOpen);
+
+        transform.Find("BuildingUI").transform.Find("StoneMineButton").gameObject.GetComponent<Button>().gameObject.SetActive(buildingMenuOpen);
+
+        transform.Find("BuildingUI").transform.Find("IronMineButton").gameObject.GetComponent<Button>().gameObject.SetActive(buildingMenuOpen);
+
+        transform.Find("BuildingUI").transform.Find("GoldMineButton").gameObject.GetComponent<Button>().gameObject.SetActive(buildingMenuOpen);
+
+        transform.Find("BuildingUI").transform.Find("TitaniumMineButton").gameObject.GetComponent<Button>().gameObject.SetActive(buildingMenuOpen);
+
+        transform.Find("BuildingUI").transform.Find("HouseButton").gameObject.GetComponent<Button>().gameObject.SetActive(buildingMenuOpen);
+
+        transform.Find("BuildingUI").transform.Find("FarmButton").gameObject.GetComponent<Button>().gameObject.SetActive(buildingMenuOpen);
+
+        transform.Find("BuildingUI").transform.Find("HuntersHutButton").gameObject.GetComponent<Button>().gameObject.SetActive(buildingMenuOpen);
+
+        transform.Find("BuildingUI").transform.Find("FishermansHutButton").gameObject.GetComponent<Button>().gameObject.SetActive(buildingMenuOpen);
+
+        transform.Find("BuildingUI").transform.Find("MilitaryAcademyButton").gameObject.GetComponent<Button>().gameObject.SetActive(buildingMenuOpen);
+
+        transform.Find("BuildingUI").transform.Find("WallButton").gameObject.GetComponent<Button>().gameObject.SetActive(buildingMenuOpen);
+    }
+    
+    private void CreateUnit()
+    {
+        foreach (Building building in selectedBuildingsList.Where(x => x.GetType() == typeof(MilitaryAcademy)))
+        {
+            if (!building.IsDestroyed())
             {
-                button.gameObject.SetActive(true);
+                if (engineers >= 1 && goldProduction >= 1 && ironStorage >= 1)
+                {
+                    ((MilitaryAcademy)building).AddToProductionQueue(unit, ((MilitaryAcademy)building).GetLastTimingTick() + unit.GetComponent<Unit>().GetProductionTime());
+                    engineers -= 1;
+                    goldProduction -= 1;
+                    ironStorage -= 1;
+                }
             }
         }
     }
 
+    private void MilitaryAcademyCreateUnitsUI()
+    {
+        if (!buildingMenuOpen)
+        {
+            if (selectedBuildingsList.Where(x => x.GetType() == typeof(MilitaryAcademy)).Count() > 0)
+            {
+                transform.Find("MilitaryAcademyUI").transform.Find("CreateUnitButton").gameObject.GetComponent<Button>().gameObject.SetActive(true);
+            }
+            else
+            {
+                if (transform.Find("MilitaryAcademyUI").transform.Find("CreateUnitButton").gameObject.GetComponent<Button>().gameObject.activeInHierarchy)
+                {
+                    transform.Find("MilitaryAcademyUI").transform.Find("CreateUnitButton").gameObject.GetComponent<Button>().gameObject.SetActive(false);
+                }
+            }
+        }
+    }
     private void FixedUpdate()
     {
         UpdateProductionStats();
-
-        ToggleBuildingMenu(KeyCode.B);
 
         PlaceWoodCutter(KeyCode.F1);
 
@@ -1112,6 +1315,7 @@ public class GameController : MonoBehaviour
 
         DeleteBuildings(KeyCode.Delete);
 
+        MilitaryAcademyCreateUnitsUI();
 
         if (Input.GetKey(KeyCode.L))
         {

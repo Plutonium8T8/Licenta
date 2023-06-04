@@ -142,7 +142,6 @@ GameObject:
   - component: {fileID: 7735158280860322469}
   - component: {fileID: 7735158280860322522}
   - component: {fileID: 7735158280860322523}
-  - component: {fileID: 7735158280860322520}
   - component: {fileID: 7735158280860322521}
   - component: {fileID: 2656836822029354779}
   m_Layer: 0
@@ -236,6 +235,7 @@ MonoBehaviour:
   productionType: -1
   healthBar: {fileID: 7735158279771967431}
   level: 2
+  isPlaced: 1
 --- !u!114 &7735158280860322523
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -248,27 +248,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 99cd5e0247c4f374788f00b7670780ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!50 &7735158280860322520
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7735158280860322526}
-  m_BodyType: 2
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!60 &7735158280860322521
 PolygonCollider2D:
   m_ObjectHideFlags: 0
