@@ -30,7 +30,7 @@ public class MilitaryAcademy : Building
         
     }
 
-    private void Start()
+    private new void Start()
     {
         base.Start();
 
@@ -44,7 +44,7 @@ public class MilitaryAcademy : Building
         };
     }
 
-    private void Update()
+    private new void Update()
     {
         base.Update();
 

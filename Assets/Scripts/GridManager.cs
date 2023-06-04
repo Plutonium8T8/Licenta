@@ -28,7 +28,6 @@ public class GridManager : MonoBehaviour
     [SerializeField] float stoneProbability = 0.6f;
 
     [SerializeField] float passableProbability = 0.7f;
-    [SerializeField] float impassableProbability = 0.3f;
 
     public int[,] bitMap;
 

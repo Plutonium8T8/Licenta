@@ -5,6 +5,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 using Utils;
+using static UnityEngine.UI.CanvasScaler;
 
 public class GameController : MonoBehaviour
 {
@@ -12,7 +13,13 @@ public class GameController : MonoBehaviour
 
     [SerializeField] private float _edgeSize = 10f;
 
-    [SerializeField] public GameObject unit;
+    [SerializeField] public GameObject HeavyCommander;
+
+    [SerializeField] public GameObject Soldier;
+
+    [SerializeField] public GameObject Scout;
+
+    [SerializeField] public GameObject Sniper;
 
     [SerializeField] public GameObject enemy;
 
@@ -129,7 +136,13 @@ public class GameController : MonoBehaviour
         transform.Find("BuildingUI").transform.Find("WallButton").gameObject.GetComponent<Button>().onClick.AddListener(PlaceWallButton);
 
 
-        transform.Find("MilitaryAcademyUI").transform.Find("CreateUnitButton").gameObject.GetComponent<Button>().onClick.AddListener(CreateUnit);
+        transform.Find("MilitaryAcademyUI").transform.Find("CreateHeavyCommander").gameObject.GetComponent<Button>().onClick.AddListener(CreateHeavyCommander);
+
+        transform.Find("MilitaryAcademyUI").transform.Find("CreateSoldier").gameObject.GetComponent<Button>().onClick.AddListener(CreateSoldier);
+
+        transform.Find("MilitaryAcademyUI").transform.Find("CreateScout").gameObject.GetComponent<Button>().onClick.AddListener(CreateScout);
+
+        transform.Find("MilitaryAcademyUI").transform.Find("CreateSniper").gameObject.GetComponent<Button>().onClick.AddListener(CreateSniper);
 
 
         prodStats.text =
@@ -156,6 +169,7 @@ public class GameController : MonoBehaviour
             }
         };
     }
+
     private void Awake()
     {
         selectedEntitiesList = new List<Unit>();
@@ -186,7 +200,7 @@ public class GameController : MonoBehaviour
         {
             newBuilding = Instantiate(buildings[0], UtilsClass.GetMouseWorldPosition(), Quaternion.identity);
 
-            
+            newBuilding.GetComponent<Rigidbody2D>().simulated = false;
 
             buildingData = newBuilding.GetComponent<Building>();
 
@@ -202,7 +216,7 @@ public class GameController : MonoBehaviour
         {
             newBuilding = Instantiate(buildings[1], UtilsClass.GetMouseWorldPosition(), Quaternion.identity);
 
-            
+            newBuilding.GetComponent<Rigidbody2D>().simulated = false;
 
             buildingData = newBuilding.GetComponent<Building>();
 
@@ -218,7 +232,7 @@ public class GameController : MonoBehaviour
         {
             newBuilding = Instantiate(buildings[2], UtilsClass.GetMouseWorldPosition(), Quaternion.identity);
 
-            
+            newBuilding.GetComponent<Rigidbody2D>().simulated = false;
 
             buildingData = newBuilding.GetComponent<Building>();
 
@@ -234,7 +248,7 @@ public class GameController : MonoBehaviour
         {
             newBuilding = Instantiate(buildings[3], UtilsClass.GetMouseWorldPosition(), Quaternion.identity);
 
-            
+            newBuilding.GetComponent<Rigidbody2D>().simulated = false;
 
             buildingData = newBuilding.GetComponent<Building>();
 
@@ -250,7 +264,7 @@ public class GameController : MonoBehaviour
         {
             newBuilding = Instantiate(buildings[4], UtilsClass.GetMouseWorldPosition(), Quaternion.identity);
 
-            
+            newBuilding.GetComponent<Rigidbody2D>().simulated = false;
 
             buildingData = newBuilding.GetComponent<Building>();
 
@@ -266,7 +280,7 @@ public class GameController : MonoBehaviour
         {
             newBuilding = Instantiate(buildings[5], UtilsClass.GetMouseWorldPosition(), Quaternion.identity);
 
-            
+            newBuilding.GetComponent<Rigidbody2D>().simulated = false;
 
             buildingData = newBuilding.GetComponent<Building>();
 
@@ -282,7 +296,7 @@ public class GameController : MonoBehaviour
         {
             newBuilding = Instantiate(buildings[6], UtilsClass.GetMouseWorldPosition(), Quaternion.identity);
 
-            
+            newBuilding.GetComponent<Rigidbody2D>().simulated = false;
 
             buildingData = newBuilding.GetComponent<Building>();
 
@@ -298,7 +312,7 @@ public class GameController : MonoBehaviour
         {
             newBuilding = Instantiate(buildings[7], UtilsClass.GetMouseWorldPosition(), Quaternion.identity);
 
-            
+            newBuilding.GetComponent<Rigidbody2D>().simulated = false;
 
             buildingData = newBuilding.GetComponent<Building>();
 
@@ -314,7 +328,7 @@ public class GameController : MonoBehaviour
         {
             newBuilding = Instantiate(buildings[8], UtilsClass.GetMouseWorldPosition(), Quaternion.identity);
 
-            
+            newBuilding.GetComponent<Rigidbody2D>().simulated = false;
 
             buildingData = newBuilding.GetComponent<Building>();
 
@@ -330,7 +344,7 @@ public class GameController : MonoBehaviour
         {
             newBuilding = Instantiate(buildings[9], UtilsClass.GetMouseWorldPosition(), Quaternion.identity);
 
-            
+            newBuilding.GetComponent<Rigidbody2D>().simulated = false;
 
             buildingData = newBuilding.GetComponent<Building>();
 
@@ -361,7 +375,7 @@ public class GameController : MonoBehaviour
         {
             newBuilding = Instantiate(buildings[10], UtilsClass.GetMouseWorldPosition(), Quaternion.identity);
 
-            
+            newBuilding.GetComponent<Rigidbody2D>().simulated = false;
 
             buildingData = newBuilding.GetComponent<Building>();
 
@@ -371,11 +385,11 @@ public class GameController : MonoBehaviour
         }
     }
 
-    public  void PlaceWoodCutterButton()
+    private  void PlaceWoodCutterButton()
     {
         newBuilding = Instantiate(buildings[0], UtilsClass.GetMouseWorldPosition(), Quaternion.identity);
 
-        
+        newBuilding.GetComponent<Rigidbody2D>().simulated = false;
 
         buildingData = newBuilding.GetComponent<Building>();
 
@@ -388,7 +402,7 @@ public class GameController : MonoBehaviour
     {
         newBuilding = Instantiate(buildings[1], UtilsClass.GetMouseWorldPosition(), Quaternion.identity);
 
-        
+        newBuilding.GetComponent<Rigidbody2D>().simulated = false;
 
         buildingData = newBuilding.GetComponent<Building>();
 
@@ -401,7 +415,7 @@ public class GameController : MonoBehaviour
     {
         newBuilding = Instantiate(buildings[2], UtilsClass.GetMouseWorldPosition(), Quaternion.identity);
 
-        
+        newBuilding.GetComponent<Rigidbody2D>().simulated = false;
 
         buildingData = newBuilding.GetComponent<Building>();
 
@@ -414,7 +428,7 @@ public class GameController : MonoBehaviour
     {
         newBuilding = Instantiate(buildings[3], UtilsClass.GetMouseWorldPosition(), Quaternion.identity);
 
-        
+        newBuilding.GetComponent<Rigidbody2D>().simulated = false;
 
         buildingData = newBuilding.GetComponent<Building>();
 
@@ -427,7 +441,7 @@ public class GameController : MonoBehaviour
     {
         newBuilding = Instantiate(buildings[4], UtilsClass.GetMouseWorldPosition(), Quaternion.identity);
 
-        
+        newBuilding.GetComponent<Rigidbody2D>().simulated = false;
 
         buildingData = newBuilding.GetComponent<Building>();
 
@@ -440,7 +454,7 @@ public class GameController : MonoBehaviour
     {
         newBuilding = Instantiate(buildings[5], UtilsClass.GetMouseWorldPosition(), Quaternion.identity);
 
-        
+        newBuilding.GetComponent<Rigidbody2D>().simulated = false;
 
         buildingData = newBuilding.GetComponent<Building>();
 
@@ -453,7 +467,7 @@ public class GameController : MonoBehaviour
     {
         newBuilding = Instantiate(buildings[6], UtilsClass.GetMouseWorldPosition(), Quaternion.identity);
 
-        
+        newBuilding.GetComponent<Rigidbody2D>().simulated = false;
 
         buildingData = newBuilding.GetComponent<Building>();
 
@@ -466,7 +480,7 @@ public class GameController : MonoBehaviour
     {
         newBuilding = Instantiate(buildings[7], UtilsClass.GetMouseWorldPosition(), Quaternion.identity);
 
-        
+        newBuilding.GetComponent<Rigidbody2D>().simulated = false;
 
         buildingData = newBuilding.GetComponent<Building>();
 
@@ -479,7 +493,7 @@ public class GameController : MonoBehaviour
     {
         newBuilding = Instantiate(buildings[8], UtilsClass.GetMouseWorldPosition(), Quaternion.identity);
 
-        
+        newBuilding.GetComponent<Rigidbody2D>().simulated = false;
 
         buildingData = newBuilding.GetComponent<Building>();
 
@@ -494,7 +508,7 @@ public class GameController : MonoBehaviour
         {
             newBuilding = Instantiate(buildings[9], UtilsClass.GetMouseWorldPosition(), Quaternion.identity);
 
-            
+            newBuilding.GetComponent<Rigidbody2D>().simulated = false;
 
             buildingData = newBuilding.GetComponent<Building>();
 
@@ -519,6 +533,8 @@ public class GameController : MonoBehaviour
     private void PlaceMilitaryAcademyButton()
     {
         newBuilding = Instantiate(buildings[10], UtilsClass.GetMouseWorldPosition(), Quaternion.identity);
+
+        newBuilding.GetComponent<Rigidbody2D>().simulated = false;
 
         buildingData = newBuilding.GetComponent<Building>();
 
@@ -991,6 +1007,11 @@ public class GameController : MonoBehaviour
                     stoneStorage -= 1;
                 }
             }
+
+            if (buildingData.isPlaced) 
+            { 
+                newBuilding.GetComponent<Rigidbody2D>().simulated = true;
+            }
         }
     }
 
@@ -1243,7 +1264,7 @@ public class GameController : MonoBehaviour
         transform.Find("BuildingUI").transform.Find("WallButton").gameObject.GetComponent<Button>().gameObject.SetActive(buildingMenuOpen);
     }
     
-    private void CreateUnit()
+    private void CreateHeavyCommander()
     {
         foreach (Building building in selectedBuildingsList.Where(x => x.GetType() == typeof(MilitaryAcademy)))
         {
@@ -1251,7 +1272,58 @@ public class GameController : MonoBehaviour
             {
                 if (engineers >= 1 && goldProduction >= 1 && ironStorage >= 1)
                 {
-                    ((MilitaryAcademy)building).AddToProductionQueue(unit, ((MilitaryAcademy)building).GetLastTimingTick() + unit.GetComponent<Unit>().GetProductionTime());
+                    ((MilitaryAcademy)building).AddToProductionQueue(HeavyCommander, ((MilitaryAcademy)building).GetLastTimingTick() + HeavyCommander.GetComponent<HeavyCommander>().GetProductionTime());
+                    engineers -= 1;
+                    goldProduction -= 1;
+                    ironStorage -= 1;
+                }
+            }
+        }
+    }
+
+    private void CreateSoldier()
+    {
+        foreach (Building building in selectedBuildingsList.Where(x => x.GetType() == typeof(MilitaryAcademy)))
+        {
+            if (!building.IsDestroyed())
+            {
+                if (engineers >= 1 && goldProduction >= 1 && ironStorage >= 1)
+                {
+                    ((MilitaryAcademy)building).AddToProductionQueue(Soldier, ((MilitaryAcademy)building).GetLastTimingTick() + Soldier.GetComponent<Soldier>().GetProductionTime());
+                    engineers -= 1;
+                    goldProduction -= 1;
+                    ironStorage -= 1;
+                }
+            }
+        }
+    }
+
+    private void CreateScout()
+    {
+        foreach (Building building in selectedBuildingsList.Where(x => x.GetType() == typeof(MilitaryAcademy)))
+        {
+            if (!building.IsDestroyed())
+            {
+                if (engineers >= 1 && goldProduction >= 1 && ironStorage >= 1)
+                {
+                    ((MilitaryAcademy)building).AddToProductionQueue(Scout, ((MilitaryAcademy)building).GetLastTimingTick() + Scout.GetComponent<Scout>().GetProductionTime());
+                    engineers -= 1;
+                    goldProduction -= 1;
+                    ironStorage -= 1;
+                }
+            }
+        }
+    }
+
+    private void CreateSniper()
+    {
+        foreach (Building building in selectedBuildingsList.Where(x => x.GetType() == typeof(MilitaryAcademy)))
+        {
+            if (!building.IsDestroyed())
+            {
+                if (engineers >= 1 && goldProduction >= 1 && ironStorage >= 1)
+                {
+                    ((MilitaryAcademy)building).AddToProductionQueue(Sniper, ((MilitaryAcademy)building).GetLastTimingTick() + Sniper.GetComponent<Sniper>().GetProductionTime());
                     engineers -= 1;
                     goldProduction -= 1;
                     ironStorage -= 1;
@@ -1266,16 +1338,33 @@ public class GameController : MonoBehaviour
         {
             if (selectedBuildingsList.Where(x => x.GetType() == typeof(MilitaryAcademy)).Count() > 0)
             {
-                transform.Find("MilitaryAcademyUI").transform.Find("CreateUnitButton").gameObject.GetComponent<Button>().gameObject.SetActive(true);
+                transform.Find("MilitaryAcademyUI").transform.Find("CreateHeavyCommander").gameObject.GetComponent<Button>().gameObject.SetActive(true);
+
+                transform.Find("MilitaryAcademyUI").transform.Find("CreateSoldier").gameObject.GetComponent<Button>().gameObject.SetActive(true);
+
+                transform.Find("MilitaryAcademyUI").transform.Find("CreateScout").gameObject.GetComponent<Button>().gameObject.SetActive(true);
+
+                transform.Find("MilitaryAcademyUI").transform.Find("CreateSniper").gameObject.GetComponent<Button>().gameObject.SetActive(true);
             }
             else
             {
-                if (transform.Find("MilitaryAcademyUI").transform.Find("CreateUnitButton").gameObject.GetComponent<Button>().gameObject.activeInHierarchy)
+                if (transform.Find("MilitaryAcademyUI").transform.Find("CreateHeavyCommander").gameObject.GetComponent<Button>().gameObject.activeInHierarchy)
                 {
-                    transform.Find("MilitaryAcademyUI").transform.Find("CreateUnitButton").gameObject.GetComponent<Button>().gameObject.SetActive(false);
+                    transform.Find("MilitaryAcademyUI").transform.Find("CreateHeavyCommander").gameObject.GetComponent<Button>().gameObject.SetActive(false);
+
+                    transform.Find("MilitaryAcademyUI").transform.Find("CreateSoldier").gameObject.GetComponent<Button>().gameObject.SetActive(false);
+
+                    transform.Find("MilitaryAcademyUI").transform.Find("CreateScout").gameObject.GetComponent<Button>().gameObject.SetActive(false);
+
+                    transform.Find("MilitaryAcademyUI").transform.Find("CreateSniper").gameObject.GetComponent<Button>().gameObject.SetActive(false);
                 }
             }
         }
+    }
+
+    public void CreateEnemy()
+    {
+        Instantiate(enemy, UtilsClass.GetMouseWorldPosition(), Quaternion.identity);
     }
     private void FixedUpdate()
     {
@@ -1316,62 +1405,6 @@ public class GameController : MonoBehaviour
         DeleteBuildings(KeyCode.Delete);
 
         MilitaryAcademyCreateUnitsUI();
-
-        if (Input.GetKey(KeyCode.L))
-        {
-            foreach (Unit unit in selectedEntitiesList)
-            {
-                if (!unit.IsDestroyed())
-                {
-                    unit.healthBar.Heal(1);
-                }
-            }
-        }
-
-        if (Input.GetKey(KeyCode.K))
-        {
-            foreach (Unit unit in selectedEntitiesList)
-            {
-                if (!unit.IsDestroyed())
-                {
-                    unit.healthBar.Damage(1);
-                    if (unit.healthBar.GetHealthPercent() == 0)
-                    {
-                        Destroy(unit.transform.gameObject);
-                    }
-                }
-            }
-        }
-
-        if (Input.GetKey(KeyCode.P))
-        {
-            foreach (Building building in selectedBuildingsList)
-            {
-                if (!building.IsDestroyed())
-                {
-                    if (building.GetType() == typeof(MilitaryAcademy))
-                    {
-                        if (engineers >= 1 && goldProduction >= 1 && ironStorage >= 1)
-                        {
-                            ((MilitaryAcademy)building).AddToProductionQueue(unit, ((MilitaryAcademy)building).GetLastTimingTick() + unit.GetComponent<Unit>().GetProductionTime());
-                            engineers -= 1;
-                            goldProduction -= 1;
-                            ironStorage -= 1;
-                        }
-                    }
-                }
-            }
-        }
-
-        if (Input.GetKey(KeyCode.M))
-        {
-            Instantiate(unit, UtilsClass.GetMouseWorldPosition(), Quaternion.identity);
-        }
-
-        if (Input.GetKey(KeyCode.O))
-        {
-            Instantiate(enemy, UtilsClass.GetMouseWorldPosition(), Quaternion.identity);
-        }
     }
     private void Update()
     {

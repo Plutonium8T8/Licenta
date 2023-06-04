@@ -33,9 +33,9 @@ public class Enemy : Entity
 
     private void Start()
     {
-        moveSpeed = 0.05f;
+        moveSpeed = 0.005f;
 
-        damage = 25;
+        damage = 20;
 
         startingPosition = transform.position;
 
@@ -82,9 +82,9 @@ public class Enemy : Entity
     {
         if (actions.Count > 0)
         {
-            if (rigidBody.position != (Vector2)((Move)actions.ElementAt(0)).GetMovement())
+            if (transform.position != ((Move)actions.ElementAt(0)).GetMovement())
             {
-                rigidBody.transform.position = Vector2.MoveTowards(rigidBody.position, (Vector2)((Move)actions.ElementAt(0)).GetMovement(), moveSpeed);
+                transform.transform.position = Vector2.MoveTowards(transform.position, (Vector2)((Move)actions.ElementAt(0)).GetMovement(), moveSpeed);
             }
             else
             {

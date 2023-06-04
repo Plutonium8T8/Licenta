@@ -96,6 +96,7 @@ GameObject:
   - component: {fileID: 4964976204638215567}
   - component: {fileID: -3013083488587304099}
   - component: {fileID: 4527742529488522200}
+  - component: {fileID: -4573414044006147413}
   m_Layer: 0
   m_Name: WaterTile
   m_TagString: Untagged
@@ -212,3 +213,24 @@ PolygonCollider2D:
       - {x: -0.02, y: 0}
       - {x: 0.5, y: -0.27}
       - {x: 1.02, y: 0}
+--- !u!50 &-4573414044006147413
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7434151154307435650}
+  m_BodyType: 2
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0

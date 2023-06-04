@@ -10,9 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 9041108151666730601}
   - component: {fileID: 9041108151666730614}
-  - component: {fileID: 5913748806716178055}
   - component: {fileID: 5106135646868388495}
   - component: {fileID: 9041108151666730600}
+  - component: {fileID: 2039639474}
   m_Layer: 0
   m_Name: Grid
   m_TagString: Untagged
@@ -48,18 +48,6 @@ Grid:
   m_CellGap: {x: 0, y: 0, z: 0}
   m_CellLayout: 2
   m_CellSwizzle: 0
---- !u!114 &5913748806716178055
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9041108151666730615}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 99cd5e0247c4f374788f00b7670780ac, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &5106135646868388495
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -87,18 +75,18 @@ MonoBehaviour:
   tile:
   - {fileID: 5277617872992745864, guid: e8bfc8b74af44454cb4a7c24965b3049, type: 3}
   - {fileID: 6272410536829813358, guid: ebe78df1ca1a77a488c00db2495e6d33, type: 3}
+  - {fileID: 1002511440362977070, guid: a4829fa3e781b0b468b8c522f3f7a371, type: 3}
   - {fileID: 4924857879610367293, guid: 56083844a2195c0498b21f84fe767475, type: 3}
   - {fileID: 7434151154307435650, guid: f84745fbeb643af4fba69df1a6891af8, type: 3}
-  - {fileID: 1002511440362977070, guid: a4829fa3e781b0b468b8c522f3f7a371, type: 3}
   - {fileID: 5582699500024884891, guid: 6b5d1d1980a84a147a12f382558765ac, type: 3}
   - {fileID: 6147338450135705942, guid: 96e6b37ec93d4d04d82f0356f1ffb261, type: 3}
   - {fileID: 4846220403062424257, guid: 66923e78342a3c847a35f4bf98fff9f6, type: 3}
-  gridHeight: 100
-  gridWidth: 100
+  gridHeight: 50
+  gridWidth: 50
   tileSize: 1
-  magnification: 20
-  grassMnification: 4
-  oreMagnification: 16
+  magnification: 10
+  grassMnification: 16
+  oreMagnification: 4
   x_offset: 0
   y_offset: 0
   ironProbability: 0.25
@@ -106,12 +94,23 @@ MonoBehaviour:
   titaniumProbability: 0.1
   oreProbability: 0.15
   dirtProbability: 0.15
-  grassProbability: 0.35
-  woodProbability: 0.1
-  waterProbability: 0.2
-  stoneProbability: 0.5
-  passableProbability: 0.7
-  impassableProbability: 0.3
+  grassProbability: 0.45
+  woodProbability: 0.35
+  waterProbability: 0.25
+  stoneProbability: 0.4
+  passableProbability: 0.6
+--- !u!114 &2039639474
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9041108151666730615}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 99cd5e0247c4f374788f00b7670780ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &9041108152254426631
 GameObject:
   m_ObjectHideFlags: 0

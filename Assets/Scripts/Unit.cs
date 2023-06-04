@@ -22,7 +22,9 @@ public class Unit : Entity
 
     public List<Action> actions = new List<Action>();
 
-    private int productionTime = 20;
+    public int productionTime;
+
+    public int maxHealth;
 
     private int currentTick;
 
@@ -30,7 +32,7 @@ public class Unit : Entity
 
     public int damage;
 
-    private int attackRate = 10;
+    public int attackRate;
 
     private bool attacking = false;
 
@@ -44,13 +46,11 @@ public class Unit : Entity
     {
         healthBar = transform.GetChild(0).GetComponent<HealthBar>();
 
-        HealthSystem healthSystem = new HealthSystem(100);
+        HealthSystem healthSystem = new HealthSystem(maxHealth);
 
         healthBar.Setup(healthSystem);
 
         damageCollider = GetComponent<CircleCollider2D>();
-
-        damage = 50;
 
         colliders = new List<Collider2D>();
 
@@ -97,9 +97,9 @@ public class Unit : Entity
         {
             if (actions.ElementAt(0).GetType() == typeof(Move))
             {
-                if (rigidBody.position != (Vector2)((Move)actions.ElementAt(0)).GetMovement())
+                if (transform.position != ((Move)actions.ElementAt(0)).GetMovement())
                 {
-                    rigidBody.transform.position = Vector2.MoveTowards(rigidBody.position, (Vector2)((Move)actions.ElementAt(0)).GetMovement(), moveSpeed);
+                    transform.transform.position = Vector2.MoveTowards(transform.position, (Vector2)((Move)actions.ElementAt(0)).GetMovement(), moveSpeed);
                 }
                 else
                 {
@@ -114,7 +114,7 @@ public class Unit : Entity
                 }
                 else if (damageCollider.Distance(((Attack)actions.ElementAt(0)).target.GetComponent<CapsuleCollider2D>()).distance > 0.25 && !attacking)
                 {
-                    rigidBody.transform.position = Vector2.MoveTowards(rigidBody.position, (Vector2)((Attack)actions.ElementAt(0)).target.transform.position, moveSpeed);
+                    transform.transform.position = Vector2.MoveTowards(transform.position, (Vector2)((Attack)actions.ElementAt(0)).target.transform.position, moveSpeed);
                 }
                 else if (damageCollider.Distance(((Attack)actions.ElementAt(0)).target.GetComponent<CapsuleCollider2D>()).distance <= 0.25 && !attacking)
                 {

@@ -95,7 +95,7 @@ public class Building : MonoBehaviour
 
                             enemy.healthBar.transform.Find("Bar").transform.Find("BarSprite").GetComponent<Renderer>().enabled = true;
                         }
-                        else
+/*                        else
 
                         if (collider.GameObject().GetComponent<Renderer>().enabled == true)
                         {
@@ -106,7 +106,7 @@ public class Building : MonoBehaviour
                             enemy.healthBar.transform.Find("BarBackground").GetComponent<Renderer>().enabled = false;
 
                             enemy.healthBar.transform.Find("Bar").transform.Find("BarSprite").GetComponent<Renderer>().enabled = false;
-                        }
+                        }*/
                     }
                 }
             }
