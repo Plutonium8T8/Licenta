@@ -77,7 +77,7 @@ public class GameController : MonoBehaviour
 
     private int stoneStorage = 999;
 
-    private int ironStorage = 0;
+    private int ironStorage = 200;
 
     private int goldStorage = 100;
 
@@ -385,7 +385,7 @@ public class GameController : MonoBehaviour
         }
     }
 
-    private  void PlaceWoodCutterButton()
+    private void PlaceWoodCutterButton()
     {
         newBuilding = Instantiate(buildings[0], UtilsClass.GetMouseWorldPosition(), Quaternion.identity);
 
@@ -1179,7 +1179,10 @@ public class GameController : MonoBehaviour
                     {
                         if (building.productionType == 11)
                         {
-                            selectedBuildingsList.Add(building);
+                            if (!selectedBuildingsList.Contains(building))
+                            {
+                                selectedBuildingsList.Add(building);
+                            }
                         }
                     }
 

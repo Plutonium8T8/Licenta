@@ -41,23 +41,6 @@ public class Building : MonoBehaviour
         productionRate = 0;
 
         level = 1;
-    }
-    public void Damage(float damage)
-    {
-        healthBar.Damage(damage);
-    }
-
-    public void Heal(float heal)
-    {
-        healthBar.Heal(heal);
-    }
-
-    public void Update()
-    {
-        if (healthBar.GetHealthPercent() == 0) 
-        {
-            Destroy(transform.gameObject);
-        }
 
         if (isPlaced)
         {
@@ -80,33 +63,61 @@ public class Building : MonoBehaviour
                         collider.gameObject.transform.Find("Shadow").gameObject.GetComponent<Renderer>().enabled = true;
                     }
                 }
+            }
+        }
+    }
+    public void Damage(float damage)
+    {
+        healthBar.Damage(damage);
+    }
 
-                if (collider.GetComponent<Enemy>() != null)
+    public void Heal(float heal)
+    {
+        healthBar.Heal(heal);
+    }
+
+    public void Update()
+    {
+        if (healthBar.GetHealthPercent() == 0) 
+        {
+            Destroy(transform.gameObject);
+        }
+
+        if (isPlaced)
+        {
+            fowCollider.OverlapCollider(colliderFiler, colliders);
+
+            if (colliders.Where(x => x.GetComponent<Enemy>() != null).Count() > 0)
+            {
+                foreach (Collider2D collider in colliders.Where(x => x.GetComponent<Enemy>() != null))
                 {
-                    Enemy enemy = collider.GetComponent<Enemy>();
-
-                    if (colliders.Count(x => x.GetComponent<Enemy>() == enemy) >= 2)
+                    if (collider.GetComponent<Enemy>() != null)
                     {
-                        if (enemy.GameObject().GetComponent<Renderer>().enabled == false)
+                        Enemy enemy = collider.GetComponent<Enemy>();
+
+                        if (colliders.Where(x => x.GetComponent<Enemy>() != null).Count(x => x.GetComponent<Enemy>() == enemy) >= 2)
                         {
-                            enemy.GameObject().GetComponent<Renderer>().enabled = true;
+                            if (enemy.GameObject().GetComponent<Renderer>().enabled == false)
+                            {
+                                enemy.GameObject().GetComponent<Renderer>().enabled = true;
 
-                            enemy.healthBar.transform.Find("BarBackground").GetComponent<Renderer>().enabled = true;
+                                enemy.healthBar.transform.Find("BarBackground").GetComponent<Renderer>().enabled = true;
 
-                            enemy.healthBar.transform.Find("Bar").transform.Find("BarSprite").GetComponent<Renderer>().enabled = true;
+                                enemy.healthBar.transform.Find("Bar").transform.Find("BarSprite").GetComponent<Renderer>().enabled = true;
+                            }
+                            /*                        else
+
+                                                    if (collider.GameObject().GetComponent<Renderer>().enabled == true)
+                                                    {
+                                                        Debug.Log(collider.Distance(fowCollider).distance);
+
+                                                        enemy.GameObject().GetComponent<Renderer>().enabled = false;
+
+                                                        enemy.healthBar.transform.Find("BarBackground").GetComponent<Renderer>().enabled = false;
+
+                                                        enemy.healthBar.transform.Find("Bar").transform.Find("BarSprite").GetComponent<Renderer>().enabled = false;
+                                                    }*/
                         }
-/*                        else
-
-                        if (collider.GameObject().GetComponent<Renderer>().enabled == true)
-                        {
-                            Debug.Log(collider.Distance(fowCollider).distance);
-
-                            enemy.GameObject().GetComponent<Renderer>().enabled = false;
-
-                            enemy.healthBar.transform.Find("BarBackground").GetComponent<Renderer>().enabled = false;
-
-                            enemy.healthBar.transform.Find("Bar").transform.Find("BarSprite").GetComponent<Renderer>().enabled = false;
-                        }*/
                     }
                 }
             }
