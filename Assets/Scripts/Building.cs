@@ -10,11 +10,15 @@ public class Building : MonoBehaviour
 
     public int productionType;
 
+    public int maxHealth;
+
     public HealthBar healthBar;
 
     private CircleCollider2D fowCollider;
 
-    private List<Collider2D> colliders;
+    private List<Collider2D> currentCcollidersList;
+
+    private List<Collider2D> previousCollidersList;
 
     private ContactFilter2D colliderFiler;
 
@@ -32,7 +36,9 @@ public class Building : MonoBehaviour
 
         fowCollider = GetComponent<CircleCollider2D>();
 
-        colliders = new List<Collider2D>();
+        currentCcollidersList = new List<Collider2D>();
+
+        previousCollidersList = new List<Collider2D>();
 
         colliderFiler = new ContactFilter2D();
 
@@ -44,9 +50,9 @@ public class Building : MonoBehaviour
 
         if (isPlaced)
         {
-            fowCollider.OverlapCollider(colliderFiler, colliders);
+            fowCollider.OverlapCollider(colliderFiler, currentCcollidersList);
 
-            foreach (Collider2D collider in colliders)
+            foreach (Collider2D collider in currentCcollidersList)
             {
                 if (collider.GetComponent<Tile>() != null)
                 {
@@ -85,17 +91,54 @@ public class Building : MonoBehaviour
 
         if (isPlaced)
         {
-            fowCollider.OverlapCollider(colliderFiler, colliders);
+            fowCollider.OverlapCollider(colliderFiler, currentCcollidersList);
 
-            if (colliders.Where(x => x.GetComponent<Enemy>() != null).Count() > 0)
+            currentCcollidersList = currentCcollidersList.Where(x => x.GetType() == typeof(CapsuleCollider2D)).ToList();
+
+            if (!currentCcollidersList.SequenceEqual(previousCollidersList))
             {
-                foreach (Collider2D collider in colliders.Where(x => x.GetComponent<Enemy>() != null))
+                foreach (CapsuleCollider2D capsuleCollider2D in previousCollidersList)
+                {
+                    if (capsuleCollider2D.GetComponent<Enemy>() != null)
+                    {
+                        if (capsuleCollider2D.GameObject().GetComponent<Renderer>().enabled == true && !currentCcollidersList.Contains(capsuleCollider2D))
+                        {
+                            capsuleCollider2D.GameObject().GetComponent<Renderer>().enabled = false;
+
+                            capsuleCollider2D.GetComponent<Enemy>().healthBar.transform.Find("BarBackground").GetComponent<Renderer>().enabled = false;
+
+                            capsuleCollider2D.GetComponent<Enemy>().healthBar.transform.Find("Bar").transform.Find("BarSprite").GetComponent<Renderer>().enabled = false;
+                        }
+                    }
+                }
+
+                previousCollidersList.Clear();
+                previousCollidersList.InsertRange(0, currentCcollidersList.Where(x => x.GetType() == typeof(CapsuleCollider2D)));
+
+                foreach (CapsuleCollider2D capsuleCollider2D in currentCcollidersList)
+                {
+                    if (capsuleCollider2D.GameObject().GetComponent<Renderer>().enabled == false)
+                    {
+                        capsuleCollider2D.GameObject().GetComponent<Renderer>().enabled = true;
+
+                        capsuleCollider2D.GetComponent<Enemy>().healthBar.transform.Find("BarBackground").GetComponent<Renderer>().enabled = true;
+
+                        capsuleCollider2D.GetComponent<Enemy>().healthBar.transform.Find("Bar").transform.Find("BarSprite").GetComponent<Renderer>().enabled = true;
+                    }
+                }
+            }
+
+
+
+            /*if (currentCcollidersList.Where(x => x.GetComponent<Enemy>() != null).Count() > 0)
+            {
+                foreach (Collider2D collider in currentCcollidersList.Where(x => x.GetComponent<Enemy>() != null))
                 {
                     if (collider.GetComponent<Enemy>() != null)
                     {
                         Enemy enemy = collider.GetComponent<Enemy>();
 
-                        if (colliders.Where(x => x.GetComponent<Enemy>() != null).Count(x => x.GetComponent<Enemy>() == enemy) >= 2)
+                        if (currentCcollidersList.Where(x => x.GetComponent<Enemy>() != null).Count(x => x.GetComponent<Enemy>() == enemy) >= 2)
                         {
                             if (enemy.GameObject().GetComponent<Renderer>().enabled == false)
                             {
@@ -105,7 +148,7 @@ public class Building : MonoBehaviour
 
                                 enemy.healthBar.transform.Find("Bar").transform.Find("BarSprite").GetComponent<Renderer>().enabled = true;
                             }
-                            /*                        else
+                            *//*                        else
 
                                                     if (collider.GameObject().GetComponent<Renderer>().enabled == true)
                                                     {
@@ -116,11 +159,11 @@ public class Building : MonoBehaviour
                                                         enemy.healthBar.transform.Find("BarBackground").GetComponent<Renderer>().enabled = false;
 
                                                         enemy.healthBar.transform.Find("Bar").transform.Find("BarSprite").GetComponent<Renderer>().enabled = false;
-                                                    }*/
+                                                    }*//*
                         }
                     }
                 }
-            }
+            }*/
         }
     }
 }

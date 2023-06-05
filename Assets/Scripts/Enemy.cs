@@ -17,6 +17,12 @@ public class Enemy : Entity
 
     private List<Collider2D> entities;
 
+    private Unit aggroUnit = null;
+
+    private Building aggroBuilding = null;
+
+    ContactFilter2D colliderFiler;
+
     public int damage;
 
     private int attackRate = 10;
@@ -37,7 +43,17 @@ public class Enemy : Entity
 
         damage = 20;
 
+        unitAggroFound = false;
+
+        buildingAggroFound = false;
+
         startingPosition = transform.position;
+
+        colliderFiler = new ContactFilter2D();
+
+        entities = new List<Collider2D>();
+
+        colliderFiler.NoFilter();
 
         aggroCollider = GetComponent<CircleCollider2D>();
 
@@ -99,133 +115,6 @@ public class Enemy : Entity
             Destroy(transform.gameObject);
         }
 
-        entities = new List<Collider2D>();
-
-        ContactFilter2D colliderFiler = new ContactFilter2D();
-
-        colliderFiler.NoFilter();
-
-        entities.Clear();
-
-        aggroCollider.OverlapCollider(colliderFiler, entities);
-
-        unitAggroFound = false;
-
-        buildingAggroFound = false;
-
-        Unit aggroUnit = null;
-
-        Building aggroBuilding = null;
-
-        float minimalDistance = float.MaxValue;
-
-        foreach (Collider2D collider in entities)
-        {
-            Unit unit = collider.GetComponent<Unit>();
-
-            if (unit != null)
-            {
-                if (minimalDistance > unit.GetComponent<CapsuleCollider2D>().Distance(enemyCollider).distance)
-                {
-                    minimalDistance = unit.GetComponent<CapsuleCollider2D>().Distance(enemyCollider).distance;
-
-                    aggroUnit = unit;
-                }
-            }
-            else
-            {
-                Building building = collider.GetComponent<Building>();
-
-                if (building != null)
-                {
-                    if (minimalDistance > building.GetComponent<PolygonCollider2D>().Distance(enemyCollider).distance)
-                    {
-                        minimalDistance = building.GetComponent<PolygonCollider2D>().Distance(enemyCollider).distance;
-
-                        aggroBuilding = building;
-                    }
-                    
-                }
-            }
-        }
-
-        if (aggroUnit != null && !unitAggroFound)
-        {
-            moveSpeed = 0.0125f;
-
-            actions.Clear();
-
-            if (entities.Count(x => x.GetComponent<Unit>() == aggroUnit) >= 2)
-            {
-                unitAggroFound = true;
-
-                actions.Add(new Move(new Vector3(aggroUnit.transform.position.x, aggroUnit.transform.position.y)));
-            }
-            else
-            {
-                actions.Clear();
-            }
-        }
-
-        if (unitAggroFound)
-        {
-            if (enemyCollider.Distance(aggroUnit.GetComponent<CapsuleCollider2D>()).distance <= 0.25f && !isAttacking)
-            {
-                targetTick = currentTick + attackRate;
-
-                isAttacking = true;
-
-                actions.Remove(actions.ElementAt(0));
-            }
-
-            if (enemyCollider.Distance(aggroUnit.GetComponent<CapsuleCollider2D>()).distance > 0.25f)
-            {
-                isAttacking = false;
-            }
-
-            if (isAttacking && currentTick == targetTick)
-            {
-                aggroUnit.Damage(damage);
-
-                isAttacking = false;
-            }
-        }
-
-        if (aggroBuilding != null && !buildingAggroFound)
-        {
-            buildingAggroFound = true;
-
-            moveSpeed = 0.0125f;
-
-            actions.Clear();
-
-            actions.Add(new Move(new Vector3(aggroBuilding.transform.position.x, aggroBuilding.transform.position.y)));
-        }
-
-        if (buildingAggroFound)
-        {
-            if (enemyCollider.Distance(aggroBuilding.GetComponent<PolygonCollider2D>()).distance <= 0.25f && !isAttacking)
-            {
-                targetTick = currentTick + attackRate;
-
-                isAttacking = true;
-
-                actions.Remove(actions.ElementAt(0));
-            }
-
-            if (enemyCollider.Distance(aggroBuilding.GetComponent<PolygonCollider2D>()).distance > 0.25f)
-            {
-                isAttacking = false;
-            }
-
-            if (isAttacking && currentTick == targetTick)
-            {
-                aggroBuilding.Damage(damage);
-
-                isAttacking = false;
-            }
-        }
-
         if (aggroUnit.IsDestroyed())
         {
             aggroUnit = null;
@@ -241,9 +130,94 @@ public class Enemy : Entity
         if (!unitAggroFound && !buildingAggroFound)
         {
             moveSpeed = 0.005f;
+                
             if (actions.Count == 0)
             {
                 actions.Add(new Move(GetRoamingPosition()));
+            }
+
+            entities.Clear();
+
+            aggroCollider.OverlapCollider(colliderFiler, entities);
+
+            Collider2D collider = entities
+                .Where(x => x.GetType() == typeof(PolygonCollider2D) || x.GetType() == typeof(CapsuleCollider2D))
+                .Where(z => z.GetComponent<Unit>() != null || z.GetComponent<Building>() != null)
+                .OrderBy(y => aggroCollider.Distance(y).distance)
+                .FirstOrDefault();
+
+            if (collider != null) 
+            {
+                if (collider.GetComponent<Unit>() != null)
+                {
+                    aggroUnit = collider.GetComponent<Unit>();
+
+                    moveSpeed = 0.0125f;
+
+                    actions.Clear();
+
+                    actions.Add(new Move(new Vector3(aggroUnit.transform.position.x, aggroUnit.transform.position.y)));
+
+                    unitAggroFound = true;
+                }
+                else
+
+                if (collider.GetComponent<Building>() != null)
+                {
+                    aggroBuilding = collider.GetComponent<Building>();
+
+                    moveSpeed = 0.0125f;
+
+                    actions.Clear();
+
+                    actions.Add(new Move(new Vector3(aggroBuilding.transform.position.x, aggroBuilding.transform.position.y)));
+
+                    buildingAggroFound = true;
+                }
+            }
+        }
+
+        if (unitAggroFound)
+        {
+            if (enemyCollider.Distance(aggroUnit.GetComponent<CapsuleCollider2D>()).distance <= 0.25f && !isAttacking)
+            {
+                targetTick = currentTick + attackRate;
+
+                isAttacking = true;
+            }
+
+            if (enemyCollider.Distance(aggroUnit.GetComponent<CapsuleCollider2D>()).distance > 0.25f)
+            {
+                isAttacking = false;
+            }
+
+            if (isAttacking && currentTick == targetTick)
+            {
+                aggroUnit.Damage(damage);
+
+                isAttacking = false;
+            }
+        }
+
+        if (buildingAggroFound)
+        {
+            if (enemyCollider.Distance(aggroBuilding.GetComponent<PolygonCollider2D>()).distance <= 0.25f && !isAttacking)
+            {
+                targetTick = currentTick + attackRate;
+
+                isAttacking = true;
+            }
+
+            if (enemyCollider.Distance(aggroBuilding.GetComponent<PolygonCollider2D>()).distance > 0.25f)
+            {
+                isAttacking = false;
+            }
+
+            if (isAttacking && currentTick == targetTick)
+            {
+                aggroBuilding.Damage(damage);
+
+                isAttacking = false;
             }
         }
     }
