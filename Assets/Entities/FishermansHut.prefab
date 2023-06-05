@@ -379,6 +379,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   productionRate: 0
   productionType: 0
+  maxHealth: 0
   healthBar: {fileID: 826497088527468906}
   level: 0
   isPlaced: 0
@@ -409,7 +410,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0.5, y: 0}
   serializedVersion: 2
-  m_Radius: 2.5
+  m_Radius: 3
 --- !u!50 &6002995271120460751
 Rigidbody2D:
   serializedVersion: 4

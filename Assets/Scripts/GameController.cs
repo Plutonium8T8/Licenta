@@ -94,12 +94,13 @@ public class GameController : MonoBehaviour
 
     private int currentTick = -1;
 
-
     private bool placingBuilding = false;
 
     private bool buildingWall = false;
 
     private bool buildingMenuOpen = false;
+
+    private bool buttonIsClicked = false;
 
     private void Start()
     {
@@ -143,7 +144,6 @@ public class GameController : MonoBehaviour
         transform.Find("MilitaryAcademyUI").transform.Find("CreateScout").gameObject.GetComponent<Button>().onClick.AddListener(CreateScout);
 
         transform.Find("MilitaryAcademyUI").transform.Find("CreateSniper").gameObject.GetComponent<Button>().onClick.AddListener(CreateSniper);
-
 
         prodStats.text =
                 "Wood: " + woodStorage + " (+" + woodProduction + ")\n" +
@@ -357,7 +357,7 @@ public class GameController : MonoBehaviour
         {
             newBuilding = Instantiate(buildings[9], UtilsClass.GetMouseWorldPosition(), Quaternion.identity);
 
-            
+            newBuilding.GetComponent<Rigidbody2D>().simulated = false;
 
             buildingData = newBuilding.GetComponent<Building>();
 
@@ -519,7 +519,7 @@ public class GameController : MonoBehaviour
 
         newBuilding = Instantiate(buildings[9], UtilsClass.GetMouseWorldPosition(), Quaternion.identity);
 
-        
+        newBuilding.GetComponent<Rigidbody2D>().simulated = false;
 
         buildingData = newBuilding.GetComponent<Building>();
 
@@ -1143,7 +1143,7 @@ public class GameController : MonoBehaviour
 
         // LeftClick up
 
-        if (Input.GetMouseButtonUp(0) && !placingBuilding)
+        if (Input.GetMouseButtonUp(0) && !placingBuilding && !buttonIsClicked)
         {
             Collider2D[] collider2DArray = Physics2D.OverlapAreaAll(_startPosition, UtilsClass.GetMouseWorldPosition());
 
@@ -1335,6 +1335,39 @@ public class GameController : MonoBehaviour
         }
     }
 
+    private void Dismiss(KeyCode key1 , KeyCode key2)
+    {
+        if (Input.GetKey(key1) || (Input.GetKey(key2) && selectedEntitiesList.Count == 0))
+        {
+            buttonIsClicked = false;
+
+
+            buildingMenuOpen = false;
+
+            transform.Find("BuildingUI").transform.Find("WoodCutterButton").gameObject.GetComponent<Button>().gameObject.SetActive(buildingMenuOpen);
+
+            transform.Find("BuildingUI").transform.Find("StoneMineButton").gameObject.GetComponent<Button>().gameObject.SetActive(buildingMenuOpen);
+
+            transform.Find("BuildingUI").transform.Find("IronMineButton").gameObject.GetComponent<Button>().gameObject.SetActive(buildingMenuOpen);
+
+            transform.Find("BuildingUI").transform.Find("GoldMineButton").gameObject.GetComponent<Button>().gameObject.SetActive(buildingMenuOpen);
+
+            transform.Find("BuildingUI").transform.Find("TitaniumMineButton").gameObject.GetComponent<Button>().gameObject.SetActive(buildingMenuOpen);
+
+            transform.Find("BuildingUI").transform.Find("HouseButton").gameObject.GetComponent<Button>().gameObject.SetActive(buildingMenuOpen);
+
+            transform.Find("BuildingUI").transform.Find("FarmButton").gameObject.GetComponent<Button>().gameObject.SetActive(buildingMenuOpen);
+
+            transform.Find("BuildingUI").transform.Find("HuntersHutButton").gameObject.GetComponent<Button>().gameObject.SetActive(buildingMenuOpen);
+
+            transform.Find("BuildingUI").transform.Find("FishermansHutButton").gameObject.GetComponent<Button>().gameObject.SetActive(buildingMenuOpen);
+
+            transform.Find("BuildingUI").transform.Find("MilitaryAcademyButton").gameObject.GetComponent<Button>().gameObject.SetActive(buildingMenuOpen);
+
+            transform.Find("BuildingUI").transform.Find("WallButton").gameObject.GetComponent<Button>().gameObject.SetActive(buildingMenuOpen);
+        }
+    }
+
     private void MilitaryAcademyCreateUnitsUI()
     {
         if (!buildingMenuOpen)
@@ -1372,6 +1405,8 @@ public class GameController : MonoBehaviour
     private void FixedUpdate()
     {
         UpdateProductionStats();
+
+        Dismiss(KeyCode.Escape, KeyCode.Mouse1);
 
         PlaceWoodCutter(KeyCode.F1);
 

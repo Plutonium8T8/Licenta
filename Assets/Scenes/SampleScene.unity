@@ -435,19 +435,19 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 9041108151666730600, guid: c7a11dbea36db5741ba166d967b244fd, type: 3}
       propertyPath: x_offset
-      value: 25
+      value: 45
       objectReference: {fileID: 0}
     - target: {fileID: 9041108151666730600, guid: c7a11dbea36db5741ba166d967b244fd, type: 3}
       propertyPath: y_offset
-      value: 35
+      value: 45
       objectReference: {fileID: 0}
     - target: {fileID: 9041108151666730600, guid: c7a11dbea36db5741ba166d967b244fd, type: 3}
       propertyPath: gridWidth
-      value: 50
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 9041108151666730600, guid: c7a11dbea36db5741ba166d967b244fd, type: 3}
       propertyPath: gridHeight
-      value: 50
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 9041108151666730600, guid: c7a11dbea36db5741ba166d967b244fd, type: 3}
       propertyPath: magnification
@@ -459,7 +459,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9041108151666730600, guid: c7a11dbea36db5741ba166d967b244fd, type: 3}
       propertyPath: oreMagnification
-      value: 6
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 9041108151666730601, guid: c7a11dbea36db5741ba166d967b244fd, type: 3}
       propertyPath: m_RootOrder

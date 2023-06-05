@@ -20,6 +20,10 @@ public class Building : MonoBehaviour
 
     private List<Collider2D> previousCollidersList;
 
+    private List<Collider2D> currentCcollidersListTiles;
+
+    private List<Collider2D> previousCollidersListTiles;
+
     private ContactFilter2D colliderFiler;
 
     public int level;
@@ -40,6 +44,10 @@ public class Building : MonoBehaviour
 
         previousCollidersList = new List<Collider2D>();
 
+        currentCcollidersListTiles = new List<Collider2D>();
+
+        previousCollidersListTiles = new List<Collider2D>();
+
         colliderFiler = new ContactFilter2D();
 
         colliderFiler.NoFilter();
@@ -47,30 +55,6 @@ public class Building : MonoBehaviour
         productionRate = 0;
 
         level = 1;
-
-        if (isPlaced)
-        {
-            fowCollider.OverlapCollider(colliderFiler, currentCcollidersList);
-
-            foreach (Collider2D collider in currentCcollidersList)
-            {
-                if (collider.GetComponent<Tile>() != null)
-                {
-                    if (collider.GameObject().GetComponent<Renderer>().enabled == false)
-                    {
-                        collider.GameObject().GetComponent<Renderer>().enabled = true;
-
-                        collider.gameObject.transform.Find("Shadow").gameObject.GetComponent<Renderer>().enabled = false;
-                    }
-                    else
-
-                    if (collider.GameObject().GetComponent<Renderer>().enabled == true && collider.Distance(fowCollider).distance == 0.1f)
-                    {
-                        collider.gameObject.transform.Find("Shadow").gameObject.GetComponent<Renderer>().enabled = true;
-                    }
-                }
-            }
-        }
     }
     public void Damage(float damage)
     {
@@ -93,77 +77,47 @@ public class Building : MonoBehaviour
         {
             fowCollider.OverlapCollider(colliderFiler, currentCcollidersList);
 
-            currentCcollidersList = currentCcollidersList.Where(x => x.GetType() == typeof(CapsuleCollider2D)).ToList();
+            currentCcollidersListTiles = currentCcollidersList.Where(x => x.GetType() == typeof(PolygonCollider2D)).Where(y => y.GetComponent<Tile>() != null).ToList();
+
+            currentCcollidersList = currentCcollidersList.Where(x => x.GetType() == typeof(CapsuleCollider2D)).Where(y => y.GetComponent<Enemy>()).ToList();
 
             if (!currentCcollidersList.SequenceEqual(previousCollidersList))
             {
-                foreach (CapsuleCollider2D capsuleCollider2D in previousCollidersList)
+                foreach (CapsuleCollider2D capsuleCollider2D in previousCollidersList.Where(x => !currentCcollidersList.Contains(x)))
                 {
-                    if (capsuleCollider2D.GetComponent<Enemy>() != null)
+                    if (!capsuleCollider2D.IsDestroyed())
                     {
-                        if (capsuleCollider2D.GameObject().GetComponent<Renderer>().enabled == true && !currentCcollidersList.Contains(capsuleCollider2D))
-                        {
-                            capsuleCollider2D.GameObject().GetComponent<Renderer>().enabled = false;
+                        capsuleCollider2D.GetComponent<Enemy>().RemoveObserver();
+                    }
+                }
 
-                            capsuleCollider2D.GetComponent<Enemy>().healthBar.transform.Find("BarBackground").GetComponent<Renderer>().enabled = false;
-
-                            capsuleCollider2D.GetComponent<Enemy>().healthBar.transform.Find("Bar").transform.Find("BarSprite").GetComponent<Renderer>().enabled = false;
-                        }
+                foreach (CapsuleCollider2D capsuleCollider2D in currentCcollidersList.Where(x => !previousCollidersList.Contains(x)))
+                {
+                    if (!capsuleCollider2D.IsDestroyed())
+                    {
+                        capsuleCollider2D.GetComponent<Enemy>().AddObserver();
                     }
                 }
 
                 previousCollidersList.Clear();
-                previousCollidersList.InsertRange(0, currentCcollidersList.Where(x => x.GetType() == typeof(CapsuleCollider2D)));
-
-                foreach (CapsuleCollider2D capsuleCollider2D in currentCcollidersList)
-                {
-                    if (capsuleCollider2D.GameObject().GetComponent<Renderer>().enabled == false)
-                    {
-                        capsuleCollider2D.GameObject().GetComponent<Renderer>().enabled = true;
-
-                        capsuleCollider2D.GetComponent<Enemy>().healthBar.transform.Find("BarBackground").GetComponent<Renderer>().enabled = true;
-
-                        capsuleCollider2D.GetComponent<Enemy>().healthBar.transform.Find("Bar").transform.Find("BarSprite").GetComponent<Renderer>().enabled = true;
-                    }
-                }
+                previousCollidersList.InsertRange(0, currentCcollidersList);
             }
 
-
-
-            /*if (currentCcollidersList.Where(x => x.GetComponent<Enemy>() != null).Count() > 0)
+            if (!currentCcollidersListTiles.SequenceEqual(previousCollidersListTiles))
             {
-                foreach (Collider2D collider in currentCcollidersList.Where(x => x.GetComponent<Enemy>() != null))
+                foreach (PolygonCollider2D pollygonCollider2D in previousCollidersListTiles.Where(x => !currentCcollidersListTiles.Contains(x)))
                 {
-                    if (collider.GetComponent<Enemy>() != null)
-                    {
-                        Enemy enemy = collider.GetComponent<Enemy>();
-
-                        if (currentCcollidersList.Where(x => x.GetComponent<Enemy>() != null).Count(x => x.GetComponent<Enemy>() == enemy) >= 2)
-                        {
-                            if (enemy.GameObject().GetComponent<Renderer>().enabled == false)
-                            {
-                                enemy.GameObject().GetComponent<Renderer>().enabled = true;
-
-                                enemy.healthBar.transform.Find("BarBackground").GetComponent<Renderer>().enabled = true;
-
-                                enemy.healthBar.transform.Find("Bar").transform.Find("BarSprite").GetComponent<Renderer>().enabled = true;
-                            }
-                            *//*                        else
-
-                                                    if (collider.GameObject().GetComponent<Renderer>().enabled == true)
-                                                    {
-                                                        Debug.Log(collider.Distance(fowCollider).distance);
-
-                                                        enemy.GameObject().GetComponent<Renderer>().enabled = false;
-
-                                                        enemy.healthBar.transform.Find("BarBackground").GetComponent<Renderer>().enabled = false;
-
-                                                        enemy.healthBar.transform.Find("Bar").transform.Find("BarSprite").GetComponent<Renderer>().enabled = false;
-                                                    }*//*
-                        }
-                    }
+                    pollygonCollider2D.GetComponent<Tile>().RemoveObserver();
                 }
-            }*/
+
+                foreach (PolygonCollider2D pollygonCollider2D in currentCcollidersListTiles.Where(x => !previousCollidersListTiles.Contains(x)))
+                {
+                    pollygonCollider2D.GetComponent<Tile>().AddObserver();
+                }
+
+                previousCollidersListTiles.Clear();
+                previousCollidersListTiles.InsertRange(0, currentCcollidersListTiles);
+            }
         }
     }
 }

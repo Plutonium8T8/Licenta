@@ -21,6 +21,8 @@ public class Enemy : Entity
 
     private Building aggroBuilding = null;
 
+    private List<bool> isObserved = new List<bool>();
+
     ContactFilter2D colliderFiler;
 
     public int damage;
@@ -36,6 +38,8 @@ public class Enemy : Entity
     private bool unitAggroFound;
 
     private bool buildingAggroFound;
+
+    private bool hasChanged = false;
 
     private void Start()
     {
@@ -90,6 +94,20 @@ public class Enemy : Entity
         healthBar.Heal(heal);
     }
 
+    public void AddObserver()
+    {
+        isObserved.Add(true);
+
+        hasChanged = true;
+    }
+
+    public void RemoveObserver()
+    {
+        isObserved.RemoveAt(0);
+
+        hasChanged = true;
+    }
+
     private Vector3 GetRoamingPosition()
     {
         return startingPosition + Utils.UtilsClass.GetRandomDirection() * Random.Range(1f, 1f);
@@ -127,6 +145,33 @@ public class Enemy : Entity
             buildingAggroFound = false;
         }
 
+        Debug.Log(isObserved.Count());
+
+        Debug.Log(hasChanged);
+
+        if (hasChanged)
+        {
+            if (isObserved.Count() == 0)
+            {
+                gameObject.GetComponent<Renderer>().enabled = false;
+
+                healthBar.transform.Find("BarBackground").GetComponent<Renderer>().enabled = false;
+
+                healthBar.transform.Find("Bar").transform.Find("BarSprite").GetComponent<Renderer>().enabled = false;
+            }
+
+            if (isObserved.Count() >= 1)
+            {
+                gameObject.GetComponent<Renderer>().enabled = true;
+
+                healthBar.transform.Find("BarBackground").GetComponent<Renderer>().enabled = true;
+
+                healthBar.transform.Find("Bar").transform.Find("BarSprite").GetComponent<Renderer>().enabled = true;
+            }
+
+            hasChanged = false;
+        }
+
         if (!unitAggroFound && !buildingAggroFound)
         {
             moveSpeed = 0.005f;
@@ -150,29 +195,35 @@ public class Enemy : Entity
             {
                 if (collider.GetComponent<Unit>() != null)
                 {
-                    aggroUnit = collider.GetComponent<Unit>();
+                    if (aggroUnit == null)
+                    {
+                        aggroUnit = collider.GetComponent<Unit>();
 
-                    moveSpeed = 0.0125f;
+                        moveSpeed = 0.0125f;
 
-                    actions.Clear();
+                        actions.Clear();
 
-                    actions.Add(new Move(new Vector3(aggroUnit.transform.position.x, aggroUnit.transform.position.y)));
+                        actions.Add(new Move(new Vector3(aggroUnit.transform.position.x, aggroUnit.transform.position.y)));
 
-                    unitAggroFound = true;
+                        unitAggroFound = true;
+                    }
                 }
                 else
 
                 if (collider.GetComponent<Building>() != null)
                 {
-                    aggroBuilding = collider.GetComponent<Building>();
+                    if (aggroBuilding == null)
+                    {
+                        aggroBuilding = collider.GetComponent<Building>();
 
-                    moveSpeed = 0.0125f;
+                        moveSpeed = 0.0125f;
 
-                    actions.Clear();
+                        actions.Clear();
 
-                    actions.Add(new Move(new Vector3(aggroBuilding.transform.position.x, aggroBuilding.transform.position.y)));
+                        actions.Add(new Move(new Vector3(aggroBuilding.transform.position.x, aggroBuilding.transform.position.y)));
 
-                    buildingAggroFound = true;
+                        buildingAggroFound = true;
+                    }
                 }
             }
         }
@@ -189,6 +240,17 @@ public class Enemy : Entity
             if (enemyCollider.Distance(aggroUnit.GetComponent<CapsuleCollider2D>()).distance > 0.25f)
             {
                 isAttacking = false;
+
+                if (aggroUnit != null)
+                {
+                    actions.Add(new Move(new Vector3(aggroUnit.transform.position.x, aggroUnit.transform.position.y)));
+                }
+                else
+
+                if (aggroBuilding != null)
+                {
+                    actions.Add(new Move(new Vector3(aggroBuilding.transform.position.x, aggroBuilding.transform.position.y)));
+                }
             }
 
             if (isAttacking && currentTick == targetTick)
@@ -218,6 +280,26 @@ public class Enemy : Entity
                 aggroBuilding.Damage(damage);
 
                 isAttacking = false;
+            }
+        }
+
+        if (aggroUnit.IsDestroyed())
+        {
+            moveSpeed = 0.005f;
+
+            if (actions.Count == 0)
+            {
+                actions.Add(new Move(GetRoamingPosition()));
+            }
+        }
+
+        if (aggroBuilding.IsDestroyed())
+        {
+            moveSpeed = 0.005f;
+
+            if (actions.Count == 0)
+            {
+                actions.Add(new Move(GetRoamingPosition()));
             }
         }
     }

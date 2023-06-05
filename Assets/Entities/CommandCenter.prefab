@@ -219,7 +219,7 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
-  m_SpriteSortPoint: 0
+  m_SpriteSortPoint: 1
 --- !u!114 &7735158280860322522
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -234,6 +234,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   productionRate: 0
   productionType: -1
+  maxHealth: 0
   healthBar: {fileID: 7735158279771967431}
   level: 2
   isPlaced: 1
@@ -274,10 +275,10 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: 2.55, y: -1.31}
-      - {x: 0.02, y: 0.02}
-      - {x: -2.55, y: -1.31}
-      - {x: -0.02, y: -2.55}
+    - - {x: 2, y: -1}
+      - {x: 0, y: 0}
+      - {x: -2, y: -1}
+      - {x: 0, y: -2}
 --- !u!58 &2656836822029354779
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -293,7 +294,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: -1}
   serializedVersion: 2
-  m_Radius: 10
+  m_Radius: 7
 --- !u!50 &838963889447234700
 Rigidbody2D:
   serializedVersion: 4

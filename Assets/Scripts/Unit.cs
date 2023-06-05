@@ -18,7 +18,15 @@ public class Unit : Entity
 
     private List<Collider2D> entities;
 
-    private List<Collider2D> colliders;
+    private CircleCollider2D fowCollider;
+
+    private List<Collider2D> currentCcollidersList;
+
+    private List<Collider2D> previousCollidersList;
+
+    private List<Collider2D> currentCcollidersListTiles;
+
+    private List<Collider2D> previousCollidersListTiles;
 
     public List<Action> actions = new List<Action>();
 
@@ -52,7 +60,13 @@ public class Unit : Entity
 
         damageCollider = GetComponent<CircleCollider2D>();
 
-        colliders = new List<Collider2D>();
+        currentCcollidersList = new List<Collider2D>();
+
+        previousCollidersList = new List<Collider2D>();
+
+        currentCcollidersListTiles = new List<Collider2D>();
+
+        previousCollidersListTiles = new List<Collider2D>();
 
         colliderFiler = new ContactFilter2D();
 
@@ -119,7 +133,7 @@ public class Unit : Entity
                 else if (damageCollider.Distance(((Attack)actions.ElementAt(0)).target.GetComponent<CapsuleCollider2D>()).distance <= 0.25 && !attacking)
                 {
                     targetTick = currentTick + attackRate;
-                    
+
                     attacking = true;
                 }
 
@@ -132,44 +146,48 @@ public class Unit : Entity
             }
         }
 
-        damageCollider.OverlapCollider(colliderFiler, colliders);
+        damageCollider.OverlapCollider(colliderFiler, currentCcollidersList);
 
-        foreach (Collider2D collider in colliders)
+        currentCcollidersListTiles = currentCcollidersList.Where(x => x.GetType() == typeof(PolygonCollider2D)).Where(y => y.GetComponent<Tile>() != null).ToList();
+
+        currentCcollidersList = currentCcollidersList.Where(x => x.GetType() == typeof(CapsuleCollider2D)).Where(y => y.GetComponent<Enemy>()).ToList();
+
+        if (!currentCcollidersList.SequenceEqual(previousCollidersList))
         {
-            if (collider.GetComponent<Tile>() != null)
+            foreach (CapsuleCollider2D capsuleCollider2D in previousCollidersList.Where(x => !currentCcollidersList.Contains(x)))
             {
-                if (collider.GameObject().GetComponent<Renderer>().enabled == false)
+                if (!capsuleCollider2D.IsDestroyed())
                 {
-                    collider.GameObject().GetComponent<Renderer>().enabled = true;
-
-                    collider.gameObject.transform.Find("Shadow").gameObject.GetComponent<Renderer>().enabled = false;
-                }
-/*                else
-
-                if (collider.GameObject().GetComponent<Renderer>().enabled == true)
-                {
-                    Debug.Log(collider.Distance(damageCollider).distance);
-
-                    collider.gameObject.transform.Find("Shadow").gameObject.GetComponent<Renderer>().enabled = true;
-                }*/
-            }
-
-            if (collider.GetComponent<Enemy>() != null)
-            {
-                Enemy enemy = collider.GetComponent<Enemy>();
-
-                if (colliders.Count(x => x.GetComponent<Enemy>() == enemy) >= 2)
-                {
-                    if (enemy.GameObject().GetComponent<Renderer>().enabled == false)
-                    {
-                        enemy.GameObject().GetComponent<Renderer>().enabled = true;
-
-                        enemy.healthBar.transform.Find("BarBackground").GetComponent<Renderer>().enabled = true;
-
-                        enemy.healthBar.transform.Find("Bar").transform.Find("BarSprite").GetComponent<Renderer>().enabled = true;
-                    }
+                    capsuleCollider2D.GetComponent<Enemy>().RemoveObserver();
                 }
             }
+
+            foreach (CapsuleCollider2D capsuleCollider2D in currentCcollidersList.Where(x => !previousCollidersList.Contains(x)))
+            {
+                if (!capsuleCollider2D.IsDestroyed())
+                {
+                    capsuleCollider2D.GetComponent<Enemy>().AddObserver();
+                }   
+            }
+
+            previousCollidersList.Clear();
+            previousCollidersList.InsertRange(0, currentCcollidersList);
+        }
+
+        if (!currentCcollidersListTiles.SequenceEqual(previousCollidersListTiles))
+        {
+            foreach (PolygonCollider2D pollygonCollider2D in previousCollidersListTiles.Where(x => !currentCcollidersListTiles.Contains(x)))
+            {
+                pollygonCollider2D.GetComponent<Tile>().RemoveObserver();
+            }
+
+            foreach (PolygonCollider2D pollygonCollider2D in currentCcollidersListTiles.Where(x => !previousCollidersListTiles.Contains(x)))
+            {
+                pollygonCollider2D.GetComponent<Tile>().AddObserver();
+            }
+
+            previousCollidersListTiles.Clear();
+            previousCollidersListTiles.InsertRange(0, currentCcollidersListTiles);
         }
     }
 }
