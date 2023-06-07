@@ -145,10 +145,6 @@ public class Enemy : Entity
             buildingAggroFound = false;
         }
 
-        Debug.Log(isObserved.Count());
-
-        Debug.Log(hasChanged);
-
         if (hasChanged)
         {
             if (isObserved.Count() == 0)

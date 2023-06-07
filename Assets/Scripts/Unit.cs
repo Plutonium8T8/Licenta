@@ -32,6 +32,8 @@ public class Unit : Entity
 
     public List<Action> actions = new List<Action>();
 
+    private Enemy aggroEnemy = null;
+
     private Seeker seeker;
 
     private Path unitPath;
@@ -58,6 +60,8 @@ public class Unit : Entity
 
     private bool reachedEndOfPath = false;
 
+    private bool enemyAggroFound;
+
     private void Awake()
     {
         selectedGameObject = transform.Find("Selected").gameObject;
@@ -75,6 +79,8 @@ public class Unit : Entity
         healthBar.Setup(healthSystem);
 
         seeker = gameObject.GetComponent<Seeker>();
+
+        entities = new List<Collider2D>();
 
         InvokeRepeating("UpdatePath", 0f, 0.5f);
 
@@ -122,19 +128,7 @@ public class Unit : Entity
                 {
                     seeker.StartPath(capsuleCollider.transform.position, (Vector2)((Attack)actions.ElementAt(0)).target.transform.position, OnPathComplete);
                 }
-                else if (damageCollider.Distance(((Attack)actions.ElementAt(0)).target.GetComponent<CapsuleCollider2D>()).distance <= 0.25 && !attacking)
-                {
-                    targetTick = currentTick + attackRate;
 
-                    attacking = true;
-                }
-
-                if (currentTick == targetTick && attacking)
-                {
-                    ((Attack)actions.ElementAt(0)).target.Damage(damage);
-
-                    attacking = false;
-                }
             }
         }
     }
@@ -174,36 +168,138 @@ public class Unit : Entity
             Destroy(transform.gameObject);
         }
 
-        if (unitPath == null)
+        if (actions.Count > 0)
         {
-            return;
-        }
-
-        if (currentWaypoint >= unitPath.vectorPath.Count)
-        {
-            reachedEndOfPath = true;
-            if (actions.Count > 0)
+            if (actions.ElementAt(0).GetType() == typeof(Move))
             {
-                actions.RemoveAt(0);
+                if (unitPath != null)
+                {
+                    if (currentWaypoint >= unitPath.vectorPath.Count)
+                    {
+                        reachedEndOfPath = true;
+                        actions.RemoveAt(0);
+                    }
+                    else
+                    {
+                        reachedEndOfPath = false;
+                    }
+
+                    distance = Vector2.Distance(capsuleCollider.transform.position, unitPath.vectorPath[currentWaypoint]);
+
+                    capsuleCollider.transform.position = Vector2.MoveTowards(capsuleCollider.transform.position, (Vector2)unitPath.vectorPath[currentWaypoint], moveSpeed);
+
+                    while (distance <= nextWaypointDistance && currentWaypoint < unitPath.vectorPath.Count - 1)
+                    {
+                        currentWaypoint++;
+
+                        distance = Vector2.Distance(capsuleCollider.transform.position, unitPath.vectorPath[currentWaypoint]);
+                    }
+                }
             }
-            return;
-        }
-        else
-        {
-            reachedEndOfPath = false;
-        }
+            else if (actions.ElementAt(0).GetType() == typeof(Attack))
+            {
+                if (((Attack)actions.ElementAt(0)).target.IsDestroyed())
+                {
+                    actions.RemoveAt(0);
+                }
+                else if (damageCollider.Distance(((Attack)actions.ElementAt(0)).target.GetComponent<CapsuleCollider2D>()).distance > 0 && !attacking)
+                {
+                    if (unitPath != null)
+                    {
+                        if (currentWaypoint >= unitPath.vectorPath.Count - 1)
+                        {
+                            reachedEndOfPath = true;
+                        }
+                        else
+                        {
+                            reachedEndOfPath = false;
+                        }
 
-        distance = Vector2.Distance(capsuleCollider.transform.position, unitPath.vectorPath[currentWaypoint]);
+                        distance = Vector2.Distance(capsuleCollider.transform.position, unitPath.vectorPath[currentWaypoint]);
 
-        Debug.Log(distance);
+                        capsuleCollider.transform.position = Vector2.MoveTowards(capsuleCollider.transform.position, (Vector2)unitPath.vectorPath[currentWaypoint], moveSpeed);
 
-        capsuleCollider.transform.position = Vector2.MoveTowards(capsuleCollider.transform.position, (Vector2)unitPath.vectorPath[currentWaypoint], moveSpeed);
+                        while (distance <= nextWaypointDistance && currentWaypoint < unitPath.vectorPath.Count - 1)
+                        {
+                            currentWaypoint++;
 
-        while (distance <= nextWaypointDistance && currentWaypoint < unitPath.vectorPath.Count - 1)
-        {
-            currentWaypoint++;
+                            distance = Vector2.Distance(capsuleCollider.transform.position, unitPath.vectorPath[currentWaypoint]);
+                        }
+                    } 
+                }
+                else if (damageCollider.Distance(((Attack)actions.ElementAt(0)).target.GetComponent<CapsuleCollider2D>()).distance <= 0 && !attacking)
+                {
+                    targetTick = currentTick + attackRate;
 
-            distance = Vector2.Distance(capsuleCollider.transform.position, unitPath.vectorPath[currentWaypoint]);
+                    attacking = true;
+                }
+
+                if (currentTick == targetTick && attacking)
+                {
+                    ((Attack)actions.ElementAt(0)).target.Damage(damage);
+
+                    attacking = false;
+                }
+            }
+            else
+            {
+                if (!enemyAggroFound)
+                {
+                    entities.Clear();
+
+                    damageCollider.OverlapCollider(colliderFiler, entities);
+
+                    Collider2D collider = entities
+                        .Where(x => x.GetType() == typeof(CapsuleCollider2D))
+                        .Where(z => z.GetComponent<Enemy>() != null)
+                        .OrderBy(y => damageCollider.Distance(y).distance)
+                        .FirstOrDefault();
+
+                    if (collider != null)
+                    {
+                        if (collider.GetComponent<Enemy>() != null)
+                        {
+                            if (aggroEnemy == null)
+                            {
+                                aggroEnemy = collider.GetComponent<Enemy>();
+
+                                actions.Clear();
+
+                                actions.Add(new Move(new Vector3(aggroEnemy.transform.position.x, aggroEnemy.transform.position.y)));
+
+                                enemyAggroFound = true;
+                            }
+                        }
+                    }
+                }
+
+                if (enemyAggroFound)
+                {
+                    if (damageCollider.Distance(aggroEnemy.GetComponent<CapsuleCollider2D>()).distance <= 0.25f && !attacking)
+                    {
+                        targetTick = currentTick + attackRate;
+
+                        attacking = true;
+                    }
+
+                    if (damageCollider.Distance(aggroEnemy.GetComponent<CapsuleCollider2D>()).distance > 0.25f)
+                    {
+                        attacking = false;
+
+                        if (aggroEnemy != null)
+                        {
+                            actions.Add(new Move(new Vector3(aggroEnemy.transform.position.x, aggroEnemy.transform.position.y)));
+                        }
+                    }
+
+                    if (attacking && currentTick == targetTick)
+                    {
+                        aggroEnemy.Damage(damage);
+
+                        attacking = false;
+                    }
+                }
+            }
         }
 
         damageCollider.OverlapCollider(colliderFiler, currentCcollidersList);

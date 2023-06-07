@@ -368,7 +368,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: -0.25}
   serializedVersion: 2
-  m_Radius: 10
+  m_Radius: 15
 --- !u!114 &-4967175055499461059
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -383,11 +383,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   healthBar: {fileID: 0}
   moveSpeed: 0.015
-  astar: {fileID: 60113648233668778, guid: 1c23b0230e6885743a3685849c2852b2, type: 3}
   productionTime: 125
   maxHealth: 150
   damage: 100
-  attackRate: 50
+  attackRate: 30
 --- !u!50 &4814653758543203863
 Rigidbody2D:
   serializedVersion: 4
