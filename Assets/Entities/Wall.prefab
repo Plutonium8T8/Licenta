@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 4920077694965234499}
   - component: {fileID: -4713651618857219178}
   - component: {fileID: 1149240756184599515}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Wall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -133,6 +133,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   productionRate: 0
   productionType: 0
+  maxHealth: 0
   healthBar: {fileID: 4920077695652243168}
   level: 0
   isPlaced: 0
@@ -195,7 +196,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4920077695499229314}
   - component: {fileID: 4920077695499229317}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: BarSprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -278,7 +279,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4920077695609383520}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Bar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -311,7 +312,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4920077695652243169}
   - component: {fileID: 4920077695652243168}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: HealthBar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -357,7 +358,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4920077696532893030}
   - component: {fileID: 4920077696532893017}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: BarBackground
   m_TagString: Untagged
   m_Icon: {fileID: 0}

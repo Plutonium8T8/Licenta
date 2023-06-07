@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: -7787140107424292253}
   - component: {fileID: 6235364148496857984}
   - component: {fileID: -1755447858657048800}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: StoneTile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -160,7 +160,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3407667525711640756}
   - component: {fileID: 1631741074470830349}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Shadow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -223,7 +223,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 265da49df2590b044acd5239e6acd4ae, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 680f354bf89d2304dadb1f058548c609, type: 3}
   m_Color: {r: 0, g: 0, b: 0, a: 0.39215687}
   m_FlipX: 0
   m_FlipY: 0

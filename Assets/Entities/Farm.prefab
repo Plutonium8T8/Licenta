@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 697671425280392999}
   - component: {fileID: 697671425280392996}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: BarSprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -93,7 +93,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 697671425349817600}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Bar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -126,7 +126,7 @@ GameObject:
   m_Component:
   - component: {fileID: 697671426045968602}
   - component: {fileID: 697671426045968603}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: BarBackground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -210,7 +210,7 @@ GameObject:
   m_Component:
   - component: {fileID: 697671427198529327}
   - component: {fileID: 697671427198529324}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: HealthBar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -261,7 +261,7 @@ GameObject:
   - component: {fileID: 697671427221336852}
   - component: {fileID: 4285727432042343156}
   - component: {fileID: 571365841026874113}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Farm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -350,6 +350,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   productionRate: 0
   productionType: 0
+  maxHealth: 0
   healthBar: {fileID: 697671427198529324}
   level: 0
   isPlaced: 0

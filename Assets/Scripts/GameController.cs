@@ -5,6 +5,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 using Utils;
+using Pathfinding;
 using static UnityEngine.UI.CanvasScaler;
 
 public class GameController : MonoBehaviour
@@ -28,6 +29,8 @@ public class GameController : MonoBehaviour
     [SerializeField] public GameObject CommandCenter;
 
     [SerializeField] public Grid grid;
+
+    [SerializeField] public AstarPath astar;
 
 
     private Vector3 cameraPosition = new Vector3(0, 0);
@@ -104,6 +107,8 @@ public class GameController : MonoBehaviour
 
     private void Start()
     {
+/*        InvokeRepeating("Scan", 0f, 5f);*/
+
         _camera.Setup(() => cameraPosition, () => _zoom);
 
         gridManager = grid.GetComponent<GridManager>();
@@ -155,6 +160,8 @@ public class GameController : MonoBehaviour
                 "Engineers: " + engineers + "\n" +
                 "Food: " + foodStorage;
 
+        astar.Scan();
+
         TimeTickSystem.OnTick += delegate (object sender, TimeTickSystem.OnTickEventArgs e)
         {
             currentTick = e.tick;
@@ -179,6 +186,11 @@ public class GameController : MonoBehaviour
         productionBuildingsList = new List<Building>();
 
         _camera.Setup(() => cameraPosition, () => _zoom);
+    }
+
+    private void Scan()
+    {
+        astar.Scan();
     }
 
     private void UpdateProductionStats()
@@ -1011,6 +1023,8 @@ public class GameController : MonoBehaviour
             if (buildingData.isPlaced) 
             { 
                 newBuilding.GetComponent<Rigidbody2D>().simulated = true;
+
+                astar.Scan();
             }
         }
     }
@@ -1019,6 +1033,8 @@ public class GameController : MonoBehaviour
     {
         if (gameBuildings.Count != gameBuildings.Where(x => !x.IsDestroyed()).Count())
         {
+            astar.Scan();
+
             woodProduction = 0;
             stoneProduction = 0;
             ironProduction = 0;

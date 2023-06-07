@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7735158279771967428}
   - component: {fileID: 7735158279771967431}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: HealthBar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -56,7 +56,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7735158280495982780}
   - component: {fileID: 7735158280495982783}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: BarBackground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -145,7 +145,7 @@ GameObject:
   - component: {fileID: 7735158280860322521}
   - component: {fileID: 2656836822029354779}
   - component: {fileID: 838963889447234700}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: CommandCenter
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -325,7 +325,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7735158280870388408}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Bar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -358,7 +358,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7735158281394542390}
   - component: {fileID: 7735158281394542385}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: BarSprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}

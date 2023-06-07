@@ -14,7 +14,8 @@ GameObject:
   - component: {fileID: -15594232433661071}
   - component: {fileID: 109559577412328138}
   - component: {fileID: 1422200465245461869}
-  m_Layer: 0
+  - component: {fileID: 3009289596999508482}
+  m_Layer: 3
   m_Name: Soldier
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -120,6 +121,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   healthBar: {fileID: 0}
   moveSpeed: 0.025
+  astar: {fileID: 60113648233668778, guid: 1c23b0230e6885743a3685849c2852b2, type: 3}
   productionTime: 75
   maxHealth: 200
   damage: 25
@@ -161,6 +163,34 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
+--- !u!114 &3009289596999508482
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 54176644149803989}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 373b52eb9bf8c40f785bb6947a1aee66, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  version: 1
+  drawGizmos: 1
+  detailedGizmos: 1
+  startEndModifier:
+    addPoints: 0
+    exactStartPoint: 3
+    exactEndPoint: 3
+    useRaycasting: 0
+    mask:
+      serializedVersion: 2
+      m_Bits: 4294967295
+    useGraphRaycasting: 0
+  traversableTags: -1
+  tagPenalties: 0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+  graphMask:
+    value: -1
 --- !u!1 &54176644163983522
 GameObject:
   m_ObjectHideFlags: 0
@@ -171,7 +201,7 @@ GameObject:
   m_Component:
   - component: {fileID: 54176644163983523}
   - component: {fileID: 54176644163983520}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Selected
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -255,7 +285,7 @@ GameObject:
   m_Component:
   - component: {fileID: 109559576107228236}
   - component: {fileID: 109559576107228275}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: BarSprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -339,7 +369,7 @@ GameObject:
   m_Component:
   - component: {fileID: 109559576317862400}
   - component: {fileID: 109559576317862407}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: HealthBar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -384,7 +414,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 109559576392714918}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Bar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -417,7 +447,7 @@ GameObject:
   m_Component:
   - component: {fileID: 109559577154951104}
   - component: {fileID: 109559577154951111}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: BarBackground
   m_TagString: Untagged
   m_Icon: {fileID: 0}

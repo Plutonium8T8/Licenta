@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 826497088527468907}
   - component: {fileID: 826497088527468906}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: HealthBar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -55,7 +55,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 826497088890610173}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Bar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -88,7 +88,7 @@ GameObject:
   m_Component:
   - component: {fileID: 826497089579815791}
   - component: {fileID: 826497089579815790}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: BarBackground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -172,7 +172,7 @@ GameObject:
   m_Component:
   - component: {fileID: 826497089976671588}
   - component: {fileID: 826497089976671591}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: BarSprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -261,7 +261,7 @@ GameObject:
   - component: {fileID: 826497088130877955}
   - component: {fileID: -5141817548840421794}
   - component: {fileID: 6002995271120460751}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: FishermansHut
   m_TagString: Untagged
   m_Icon: {fileID: 0}

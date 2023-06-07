@@ -7,6 +7,7 @@ using System.Linq;
 using System.Threading;
 using Unity.VisualScripting;
 using UnityEngine;
+using Pathfinding;
 
 public class Unit : Entity
 {
@@ -16,9 +17,10 @@ public class Unit : Entity
 
     private CircleCollider2D damageCollider;
 
+    private CapsuleCollider2D capsuleCollider;
+
     private List<Collider2D> entities;
 
-    private CircleCollider2D fowCollider;
 
     private List<Collider2D> currentCcollidersList;
 
@@ -29,6 +31,10 @@ public class Unit : Entity
     private List<Collider2D> previousCollidersListTiles;
 
     public List<Action> actions = new List<Action>();
+
+    private Seeker seeker;
+
+    private Path unitPath;
 
     public int productionTime;
 
@@ -42,7 +48,15 @@ public class Unit : Entity
 
     public int attackRate;
 
+    private int currentWaypoint = 0;
+
+    private float nextWaypointDistance = .6f;
+
+    private float distance;
+
     private bool attacking = false;
+
+    private bool reachedEndOfPath = false;
 
     private void Awake()
     {
@@ -52,11 +66,17 @@ public class Unit : Entity
 
     public void Start()
     {
+        capsuleCollider = gameObject.GetComponent<CapsuleCollider2D>();
+
         healthBar = transform.GetChild(0).GetComponent<HealthBar>();
 
         HealthSystem healthSystem = new HealthSystem(maxHealth);
 
         healthBar.Setup(healthSystem);
+
+        seeker = gameObject.GetComponent<Seeker>();
+
+        InvokeRepeating("UpdatePath", 0f, 0.5f);
 
         damageCollider = GetComponent<CircleCollider2D>();
 
@@ -79,6 +99,53 @@ public class Unit : Entity
                 currentTick = e.tick;
             }
         };
+    }
+
+    private void UpdatePath()
+    {
+        if (actions.Count > 0)
+        {
+            if (actions.ElementAt(0).GetType() == typeof(Move))
+            {
+                if (transform.position != ((Move)actions.ElementAt(0)).GetMovement())
+                {
+                    seeker.StartPath(capsuleCollider.transform.position, (Vector2)((Move)actions.ElementAt(0)).GetMovement(), OnPathComplete);
+                }
+            }
+            else if (actions.ElementAt(0).GetType() == typeof(Attack))
+            {
+                if (((Attack)actions.ElementAt(0)).target.IsDestroyed())
+                {
+                    actions.RemoveAt(0);
+                }
+                else if (damageCollider.Distance(((Attack)actions.ElementAt(0)).target.GetComponent<CapsuleCollider2D>()).distance > 0.25 && !attacking)
+                {
+                    seeker.StartPath(capsuleCollider.transform.position, (Vector2)((Attack)actions.ElementAt(0)).target.transform.position, OnPathComplete);
+                }
+                else if (damageCollider.Distance(((Attack)actions.ElementAt(0)).target.GetComponent<CapsuleCollider2D>()).distance <= 0.25 && !attacking)
+                {
+                    targetTick = currentTick + attackRate;
+
+                    attacking = true;
+                }
+
+                if (currentTick == targetTick && attacking)
+                {
+                    ((Attack)actions.ElementAt(0)).target.Damage(damage);
+
+                    attacking = false;
+                }
+            }
+        }
+    }
+
+    private void OnPathComplete(Path path)
+    {
+        if (!path.error)
+        {
+            unitPath = path;
+            currentWaypoint = 0;
+        }
     }
 
     public void Damage(float damage)
@@ -107,43 +174,36 @@ public class Unit : Entity
             Destroy(transform.gameObject);
         }
 
-        if (actions.Count > 0)
+        if (unitPath == null)
         {
-            if (actions.ElementAt(0).GetType() == typeof(Move))
+            return;
+        }
+
+        if (currentWaypoint >= unitPath.vectorPath.Count)
+        {
+            reachedEndOfPath = true;
+            if (actions.Count > 0)
             {
-                if (transform.position != ((Move)actions.ElementAt(0)).GetMovement())
-                {
-                    transform.transform.position = Vector2.MoveTowards(transform.position, (Vector2)((Move)actions.ElementAt(0)).GetMovement(), moveSpeed);
-                }
-                else
-                {
-                    actions.Remove(actions.ElementAt(0));
-                }
+                actions.RemoveAt(0);
             }
-            else if (actions.ElementAt(0).GetType() == typeof(Attack))
-            {
-                if (((Attack)actions.ElementAt(0)).target.IsDestroyed())
-                {
-                    actions.RemoveAt(0);
-                }
-                else if (damageCollider.Distance(((Attack)actions.ElementAt(0)).target.GetComponent<CapsuleCollider2D>()).distance > 0.25 && !attacking)
-                {
-                    transform.transform.position = Vector2.MoveTowards(transform.position, (Vector2)((Attack)actions.ElementAt(0)).target.transform.position, moveSpeed);
-                }
-                else if (damageCollider.Distance(((Attack)actions.ElementAt(0)).target.GetComponent<CapsuleCollider2D>()).distance <= 0.25 && !attacking)
-                {
-                    targetTick = currentTick + attackRate;
+            return;
+        }
+        else
+        {
+            reachedEndOfPath = false;
+        }
 
-                    attacking = true;
-                }
+        distance = Vector2.Distance(capsuleCollider.transform.position, unitPath.vectorPath[currentWaypoint]);
 
-                if (currentTick == targetTick && attacking)
-                {
-                    ((Attack)actions.ElementAt(0)).target.Damage(damage);
+        Debug.Log(distance);
 
-                    attacking = false;
-                }
-            }
+        capsuleCollider.transform.position = Vector2.MoveTowards(capsuleCollider.transform.position, (Vector2)unitPath.vectorPath[currentWaypoint], moveSpeed);
+
+        while (distance <= nextWaypointDistance && currentWaypoint < unitPath.vectorPath.Count - 1)
+        {
+            currentWaypoint++;
+
+            distance = Vector2.Distance(capsuleCollider.transform.position, unitPath.vectorPath[currentWaypoint]);
         }
 
         damageCollider.OverlapCollider(colliderFiler, currentCcollidersList);

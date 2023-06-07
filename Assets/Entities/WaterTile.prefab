@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 696885227179069724}
   - component: {fileID: 8933933293304074278}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Shadow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -73,7 +73,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 265da49df2590b044acd5239e6acd4ae, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 292b64323ecb75244954c159d2f32995, type: 3}
   m_Color: {r: 0, g: 0, b: 0, a: 0.39215687}
   m_FlipX: 0
   m_FlipY: 0
@@ -97,7 +97,7 @@ GameObject:
   - component: {fileID: -3013083488587304099}
   - component: {fileID: 4527742529488522200}
   - component: {fileID: -4573414044006147413}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: WaterTile
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 7594787307629551389}
   - component: {fileID: 2331618013038022957}
   - component: {fileID: 6176221400821656275}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: WoodTile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -160,7 +160,7 @@ GameObject:
   m_Component:
   - component: {fileID: 180556334033018159}
   - component: {fileID: 9183405817937112194}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Shadow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -223,7 +223,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 265da49df2590b044acd5239e6acd4ae, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 87796c15bfd867f4a8580cfe0c8cf1d7, type: 3}
   m_Color: {r: 0, g: 0, b: 0, a: 0.39215687}
   m_FlipX: 0
   m_FlipY: 0

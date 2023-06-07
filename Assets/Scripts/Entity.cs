@@ -7,7 +7,5 @@ public class Entity : MonoBehaviour
 {
     public HealthBar healthBar;
 
-    private CapsuleCollider2D capsuleCollider;
-
     public float moveSpeed;
 }

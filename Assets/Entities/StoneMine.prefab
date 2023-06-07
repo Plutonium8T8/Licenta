@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3273420596949511569}
   - component: {fileID: 3273420596949511568}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: BarBackground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -93,7 +93,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3273420597377169483}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Bar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -126,7 +126,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3273420597445612140}
   - component: {fileID: 3273420597445612143}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: BarSprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -210,7 +210,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3273420598179381860}
   - component: {fileID: 3273420598179381863}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: HealthBar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -261,7 +261,7 @@ GameObject:
   - component: {fileID: 3273420598189088351}
   - component: {fileID: 6086230106343821078}
   - component: {fileID: 928008395479072264}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: StoneMine
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -350,6 +350,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   productionRate: 0
   productionType: 0
+  maxHealth: 0
   healthBar: {fileID: 3273420598179381863}
   level: 0
   isPlaced: 0

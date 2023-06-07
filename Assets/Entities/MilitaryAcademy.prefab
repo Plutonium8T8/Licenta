@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2998225963965816709}
   - component: {fileID: 2998225963965816710}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: HealthBar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -61,7 +61,7 @@ GameObject:
   - component: {fileID: 2998225963988616126}
   - component: {fileID: -49323564879826947}
   - component: {fileID: 3881027160417920478}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: MilitaryAcademy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -242,7 +242,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2998225965432942704}
   - component: {fileID: 2998225965432942705}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: BarBackground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -325,7 +325,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2998225965860529578}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Bar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -358,7 +358,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2998225965925371789}
   - component: {fileID: 2998225965925371790}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: BarSprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
