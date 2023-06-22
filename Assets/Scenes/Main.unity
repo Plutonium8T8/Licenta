@@ -424,6 +424,38 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 333836365, guid: cf47e543752f15a43b4d9439c229b35a, type: 3}
+      propertyPath: m_Text
+      value: Heavy Commander
+      objectReference: {fileID: 0}
+    - target: {fileID: 555586793, guid: cf47e543752f15a43b4d9439c229b35a, type: 3}
+      propertyPath: m_Text
+      value: Scout
+      objectReference: {fileID: 0}
+    - target: {fileID: 1301796586, guid: cf47e543752f15a43b4d9439c229b35a, type: 3}
+      propertyPath: m_Text
+      value: Soldier
+      objectReference: {fileID: 0}
+    - target: {fileID: 1619576979, guid: cf47e543752f15a43b4d9439c229b35a, type: 3}
+      propertyPath: m_Text
+      value: Sniper
+      objectReference: {fileID: 0}
+    - target: {fileID: 1989128476, guid: cf47e543752f15a43b4d9439c229b35a, type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1989128476, guid: cf47e543752f15a43b4d9439c229b35a, type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1989128476, guid: cf47e543752f15a43b4d9439c229b35a, type: 3}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1989128476, guid: cf47e543752f15a43b4d9439c229b35a, type: 3}
+      propertyPath: m_FontData.m_RichText
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1467992771528227649, guid: cf47e543752f15a43b4d9439c229b35a, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -515,7 +547,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 9041108151666730600, guid: c7a11dbea36db5741ba166d967b244fd, type: 3}
       propertyPath: x_offset
-      value: 45
+      value: 245
       objectReference: {fileID: 0}
     - target: {fileID: 9041108151666730600, guid: c7a11dbea36db5741ba166d967b244fd, type: 3}
       propertyPath: y_offset

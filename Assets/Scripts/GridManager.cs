@@ -112,6 +112,7 @@ public class GridManager : MonoBehaviour
             }
         }
     }
+
     private void GenerateTerrainMap()
     {
         for (int x = 0; x < gridWidth; x++)

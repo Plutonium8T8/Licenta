@@ -5,8 +5,6 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 using Utils;
-using Pathfinding;
-using static UnityEngine.UI.CanvasScaler;
 
 public class GameController : MonoBehaviour
 {

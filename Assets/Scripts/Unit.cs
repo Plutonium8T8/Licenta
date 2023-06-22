@@ -21,7 +21,6 @@ public class Unit : Entity
 
     private List<Collider2D> entities;
 
-
     private List<Collider2D> currentCcollidersList;
 
     private List<Collider2D> previousCollidersList;
