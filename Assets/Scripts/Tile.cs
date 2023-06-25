@@ -6,14 +6,12 @@ using UnityEngine;
 
 public class Tile : MonoBehaviour
 {
-    private List<bool> isObserved;
+    private List<bool> isObserved = new List<bool>();
 
     private bool hasChanged;
 
     private void Start()
     {
-        isObserved = new List<bool>();
-
         hasChanged = false;
     }
 

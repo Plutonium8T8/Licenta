@@ -11,8 +11,15 @@ public class MilitaryAcademy : Building
 
     private List<int> productionTickTiming;
 
+    private int startTick = 0;
+
     public void AddToProductionQueue(GameObject unit, int timing)
     {
+        if (productionQueue.Count == 0)
+        {
+            startTick = currentTick;
+        }
+
         productionQueue.Add(unit);
         productionTickTiming.Add(timing);
     }
@@ -57,6 +64,16 @@ public class MilitaryAcademy : Building
                 productionQueue.RemoveAt(0);
 
                 productionTickTiming.RemoveAt(0);
+
+                transform.Find("TrainBar").transform.Find("Bar").localScale = new Vector3(0, 1);
+
+                startTick = currentTick;
+            }
+            else
+            {
+                float percent = (float)(currentTick - startTick) / (float)(productionTickTiming.ElementAt(0) - startTick);
+                Debug.Log(percent);
+                transform.Find("TrainBar").transform.Find("Bar").localScale = new Vector3(percent, 1);
             }
         }
     }

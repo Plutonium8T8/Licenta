@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -51,6 +52,8 @@ public class GameController : MonoBehaviour
 
     [SerializeField] private Text prodStats;
 
+    [SerializeField] private Text gameOver;
+
 
     private float _zoom = 12f;
 
@@ -74,11 +77,11 @@ public class GameController : MonoBehaviour
     private int titaniumProduction = 0;
 
 
-    private int woodStorage = 999;
+    private int woodStorage = 10;
 
-    private int stoneStorage = 999;
+    private int stoneStorage = 0;
 
-    private int ironStorage = 200;
+    private int ironStorage = 0;
 
     private int goldStorage = 100;
 
@@ -103,6 +106,8 @@ public class GameController : MonoBehaviour
 
     private bool buttonIsClicked = false;
 
+    private GameObject cc;
+
     private void Start()
     {
 /*        InvokeRepeating("Scan", 0f, 5f);*/
@@ -111,7 +116,7 @@ public class GameController : MonoBehaviour
 
         gridManager = grid.GetComponent<GridManager>();
 
-        Instantiate(CommandCenter, new Vector3(0f,0f), Quaternion.identity);
+        cc = Instantiate(CommandCenter, new Vector3(0f,0f), Quaternion.identity);
 
         CommandCenter.GetComponent<Building>().isPlaced = true;
 
@@ -189,6 +194,10 @@ public class GameController : MonoBehaviour
     private void Scan()
     {
         astar.Scan();
+
+        Instantiate(Soldier, CommandCenter.transform.position, Quaternion.identity);
+
+        Instantiate(Soldier, CommandCenter.transform.position, Quaternion.identity);
     }
 
     private void UpdateProductionStats()
@@ -589,6 +598,28 @@ public class GameController : MonoBehaviour
                 buildingData.productionType == 11)
             {
                 newBuilding.transform.position = new Vector2(UtilsClass.GetMouseWorldPosition().x - 1, UtilsClass.GetMouseWorldPosition().y + 0.25f);
+
+                float posX = Mathf.RoundToInt(newBuilding.transform.position.x * 2f) / 2f;
+
+                float posY = Mathf.RoundToInt(newBuilding.transform.position.y * 4f) / 4f - 0.25f;
+
+                int x = Mathf.CeilToInt((posY * 4f + posX * 2f - gridManager.gridWidth) / 2f + gridManager.gridWidth);
+
+                int y = Mathf.CeilToInt(posX * 2f - (x - gridManager.gridWidth));
+
+                if ((gridManager.tileMap[x, y] == 1 || gridManager.tileMap[x, y] == 3) &&
+                    (gridManager.tileMap[x, y + 1] == 1 || gridManager.tileMap[x, y + 1] == 3) &&
+                    (gridManager.tileMap[x + 1, y] == 1 || gridManager.tileMap[x + 1, y] == 3) &&
+                    (gridManager.tileMap[x + 1, y + 1] == 1 || gridManager.tileMap[x + 1, y + 1] == 3))
+                {
+                    newBuilding.transform.Find("CSprite").GetComponent<Renderer>().enabled = true;
+                    newBuilding.transform.Find("DSprite").GetComponent<Renderer>().enabled = false;
+                }
+                else
+                {
+                    newBuilding.transform.Find("CSprite").GetComponent<Renderer>().enabled = false;
+                    newBuilding.transform.Find("DSprite").GetComponent<Renderer>().enabled = true;
+                }
             }
             else if (
                 buildingData.productionType == 7 ||
@@ -596,6 +627,25 @@ public class GameController : MonoBehaviour
                 buildingData.productionType == 10)
             {
                 newBuilding.transform.position = new Vector2(UtilsClass.GetMouseWorldPosition().x - 0.5f, UtilsClass.GetMouseWorldPosition().y);
+
+                float posX = Mathf.RoundToInt(newBuilding.transform.position.x * 2f) / 2f;
+
+                float posY = Mathf.RoundToInt(newBuilding.transform.position.y * 4f) / 4f - 0.25f;
+
+                int x = Mathf.CeilToInt((posY * 4f + posX * 2f - gridManager.gridWidth) / 2f + gridManager.gridWidth);
+
+                int y = Mathf.CeilToInt(posX * 2f - (x - gridManager.gridWidth));
+
+                if ((gridManager.tileMap[x, y] == 1 || gridManager.tileMap[x, y] == 3))
+                {
+                    newBuilding.transform.Find("CSprite").GetComponent<Renderer>().enabled = true;
+                    newBuilding.transform.Find("DSprite").GetComponent<Renderer>().enabled = false;
+                }
+                else
+                {
+                    newBuilding.transform.Find("CSprite").GetComponent<Renderer>().enabled = false;
+                    newBuilding.transform.Find("DSprite").GetComponent<Renderer>().enabled = true;
+                }
             }
         }
     }
@@ -901,6 +951,9 @@ public class GameController : MonoBehaviour
                         buildingData.isPlaced = true;
                     }
 
+                    newBuilding.transform.Find("CSprite").GetComponent<Renderer>().enabled = false;
+                    newBuilding.transform.Find("DSprite").GetComponent<Renderer>().enabled = false;
+
                     gameBuildings.Add(newBuilding);
                 }
             }
@@ -985,6 +1038,8 @@ public class GameController : MonoBehaviour
 
                         gridManager.bitMap[x, y] = 999;
                     }
+                    newBuilding.transform.Find("CSprite").GetComponent<Renderer>().enabled = false;
+                    newBuilding.transform.Find("DSprite").GetComponent<Renderer>().enabled = false;
 
                     gameBuildings.Add(newBuilding);
                 }
@@ -1009,6 +1064,9 @@ public class GameController : MonoBehaviour
                     gridManager.tileMap[x, y] = 999;
 
                     gridManager.bitMap[x, y] = 999;
+
+                    newBuilding.transform.Find("CSprite").GetComponent<Renderer>().enabled = false;
+                    newBuilding.transform.Find("DSprite").GetComponent<Renderer>().enabled = false;
 
                     gameBuildings.Add(newBuilding);
 
@@ -1465,5 +1523,12 @@ public class GameController : MonoBehaviour
         MouseEdgeCameraMovement();
 
         WASDCameraMovement();
+
+        if (cc.IsDestroyed())
+        {
+            gameOver.text = "Game Over";
+
+            Application.Quit();
+        }
     }
 }

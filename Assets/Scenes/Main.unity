@@ -191,6 +191,86 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1171214651
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1171214652}
+  - component: {fileID: 1171214654}
+  - component: {fileID: 1171214653}
+  m_Layer: 5
+  m_Name: Game Over
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1171214652
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1171214651}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1467992771015099330}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 1, y: 1}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: -966, y: -641}
+  m_SizeDelta: {x: 213, y: 250}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1171214653
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1171214651}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FontData:
+    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    m_FontSize: 40
+    m_FontStyle: 1
+    m_BestFit: 0
+    m_MinSize: 2
+    m_MaxSize: 40
+    m_Alignment: 0
+    m_AlignByGeometry: 0
+    m_RichText: 1
+    m_HorizontalOverflow: 0
+    m_VerticalOverflow: 0
+    m_LineSpacing: 1
+  m_Text: 
+--- !u!222 &1171214654
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1171214651}
+  m_CullTransparentMesh: 1
 --- !u!114 &1615190361 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2546133798012592564, guid: cf47e543752f15a43b4d9439c229b35a, type: 3}
@@ -533,11 +613,20 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 54176644149803989, guid: 5b4487afeefb988449bcc73b6880780e, type: 3}
     - target: {fileID: 2546133798012592564, guid: cf47e543752f15a43b4d9439c229b35a, type: 3}
+      propertyPath: gameOver
+      value: 
+      objectReference: {fileID: 1171214653}
+    - target: {fileID: 2546133798012592564, guid: cf47e543752f15a43b4d9439c229b35a, type: 3}
       propertyPath: HeavyCommander
       value: 
       objectReference: {fileID: 7657765134462280566, guid: bf9f964cc06ffc14196301284f996330, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cf47e543752f15a43b4d9439c229b35a, type: 3}
+--- !u!224 &1467992771015099330 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 686006112, guid: cf47e543752f15a43b4d9439c229b35a, type: 3}
+  m_PrefabInstance: {fileID: 1467992771015099329}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &9041108152209327033
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -547,11 +636,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 9041108151666730600, guid: c7a11dbea36db5741ba166d967b244fd, type: 3}
       propertyPath: x_offset
-      value: 245
+      value: 560
       objectReference: {fileID: 0}
     - target: {fileID: 9041108151666730600, guid: c7a11dbea36db5741ba166d967b244fd, type: 3}
       propertyPath: y_offset
-      value: 45
+      value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 9041108151666730600, guid: c7a11dbea36db5741ba166d967b244fd, type: 3}
       propertyPath: gridWidth
@@ -571,7 +660,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9041108151666730600, guid: c7a11dbea36db5741ba166d967b244fd, type: 3}
       propertyPath: oreMagnification
-      value: 8
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 9041108151666730601, guid: c7a11dbea36db5741ba166d967b244fd, type: 3}
       propertyPath: m_RootOrder
